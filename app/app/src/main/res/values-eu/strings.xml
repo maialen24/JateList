@@ -1,4 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">JateList</string>
+    <string name="username">Erabiltzailea</string>
+    <string name="password">pasahitza</string>
+
 </resources>

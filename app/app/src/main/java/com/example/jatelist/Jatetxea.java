@@ -7,7 +7,7 @@ public class Jatetxea {
         private String ubicacion;
         private int valoracion;
 
-        public Jatetxea(){
+        public Jatetxea(String nombre, String ubicacion, String s){
 
         }
 

@@ -1,5 +1,6 @@
 package com.example.jatelist;
 
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
@@ -10,61 +11,69 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.ArrayList;
 
-public class JatetxeaAdapter extends RecyclerView.Adapter {
-    RecyclerView.Adapter<JatetxeaAdapter.JatetxeaViewHolder>{
+public class JatetxeaAdapter extends RecyclerView.Adapter<JatetxeaAdapter.JatetxeaViewHolder>{
 
-        private ArrayList<Jatetxea> data;
 
-    public JatetxeaAdapter(ArrayList<Jatetxea> data) {
-            this.data = data;
+    private ArrayList<Jatetxea> data;
+    private static boolean[] select;
+
+    public JatetxeaAdapter(ArrayList < Jatetxea > data) {
+        this.data = data;
+        select= new boolean[data.size()];
+    }
+
+    @Override
+    public JatetxeaViewHolder onCreateViewHolder (ViewGroup parent,int viewType){
+        View elLayoutDeCadaItem= LayoutInflater.from(parent.getContext()).inflate(R.layout.item_jatetxea,parent, false);
+        JatetxeaViewHolder evh = new JatetxeaViewHolder(elLayoutDeCadaItem);
+        evh.select = select;
+        return evh;
+
+    }
+
+    @Override
+    public void onBindViewHolder (JatetxeaViewHolder holder,int position){
+        Jatetxea jatetxea = data.get(position);
+        holder.tvUbicacion.setText(jatetxea.getUbicacion());
+        holder.tvNombre.setText(jatetxea.getNombre());
+        holder.tvValoracion.setText(jatetxea.getValoracion());
+    }
+
+    @Override
+    public int getItemCount () {
+        return data.size();
+    }
+
+
+    class JatetxeaViewHolder extends RecyclerView.ViewHolder{
+
+        TextView tvUbicacion;
+        TextView tvNombre;
+        TextView tvValoracion;
+        public boolean[] select;
+
+        public JatetxeaViewHolder(View itemView) {
+            super(itemView);
+            tvUbicacion = (TextView) itemView.findViewById(R.id.tv_ubicacion);
+            tvNombre = (TextView) itemView.findViewById(R.id.tv_nombre);
+            tvValoracion = (TextView) itemView.findViewById(R.id.tv_valoracion);
+
+            itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    if (select[getAdapterPosition()]==true){
+                        select[getAdapterPosition()]=false;
+
+                    }
+                    else{
+
+                    }
+                }
+            });
+
         }
-
-        @Override
-        public JatetxeaViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-            return new JatetxeaViewHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.item_musica, parent, false));
-        }
-
-        @Override
-        public void onBindViewHolder(JatetxeaViewHolder holder, int position) {
-            Jatetxea jatetxea = data.get(position);
-            holder.imgMusica.setImageResource(jatetxea.getUbicacion());
-            holder.tvNombre.setText(jatetxea.getNombre());
-            holder.tvArtista.setText(jatetxea.getValoracion());
-        }
-
-        @Override
-        public int getItemCount() {
-            return data.size();
-        }
-
-        class JatetxeaViewHolder extends RecyclerView.ViewHolder{
-
-            ImageView imgMusica;
-            TextView tvNombre;
-            TextView tvArtista;
-
-            public JatetxeaViewHolder(View itemView) {
-                super(itemView);
-                imgMusica = (ImageView) itemView.findViewById(R.id.img_musica);
-                tvNombre = (TextView) itemView.findViewById(R.id.tv_nombre);
-                tvArtista = (TextView) itemView.findViewById(R.id.tv_artista);
-            }
-        }
+    }
 
 }
 
-    @NonNull
-    @Override
-    public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        return null;
-    }
 
-    @Override
-    public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
-
-    }
-
-    @Override
-    public int getItemCount() {
-        return 0;
-    }
