@@ -55,7 +55,7 @@ public class DialogClass extends DialogFragment {
             public void onClick(DialogInterface dialog, int which) {
                 EditText user= (EditText) elaspecto.findViewById(R.id.username);
                 EditText password = (EditText) elaspecto.findViewById(R.id.password);
-                miListener.alpulsarSI(user.toString(),password.toString());
+                miListener.alpulsarSI(user.getText().toString(),password.getText().toString());
             }
         });
         builder.setNegativeButton("CANCEL", new DialogInterface.OnClickListener() {

@@ -35,7 +35,8 @@ public class login extends AppCompatActivity implements DialogClass.Listener{
             @Override
             public void onClick(View v) {
                 Log.i("info","CHECK USERNAME AND PASSWORD");
-
+                Log.i("info",user.getText().toString());
+                Log.i("info",password.getText().toString());
                 if (dbHelper.checkCredentials(user.getText().toString(), password.getText().toString())){
                     //GO TO MAIN ACTIVITY
 
@@ -44,6 +45,7 @@ public class login extends AppCompatActivity implements DialogClass.Listener{
                     startActivity(i);
                 }else{
                     //SHOW A INCORRET CREDENTIALS ALERT
+                    Log.i("info","LOGIN INCORRECT");
                     AlertDialog.Builder builder = new AlertDialog.Builder(login.this);
                     builder.setTitle("Error");
                     builder.setMessage("Username or password incorrect");
@@ -76,6 +78,11 @@ public class login extends AppCompatActivity implements DialogClass.Listener{
     @Override
     public void alpulsarSI(String user, String password) {
         //SAVE USER AND PASSWORD IN DB
+        Log.i("info","AL PULSAR SI METODO");
+        Log.i("info",user);
+        Log.i("info",password);
+
+
 
         db dbHelper = new db(this);
         //SQLiteDatabase db = dbHelper.getWritableDatabase();

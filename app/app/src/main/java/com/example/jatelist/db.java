@@ -6,6 +6,7 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.util.Log;
 
 import java.util.ArrayList;
 
@@ -30,6 +31,7 @@ public class db extends SQLiteOpenHelper {
     }
 
     public boolean insertUser(String user, String password) {
+        Log.i("info", "INSERT USER INTO DB");
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues contentValues = new ContentValues();
         contentValues.put("user", user);
@@ -74,9 +76,14 @@ public class db extends SQLiteOpenHelper {
 
     public boolean checkCredentials(String user, String password){
         SQLiteDatabase db = this.getWritableDatabase();
-        String[] args = new String[] {user,password};
-        Cursor c = db.rawQuery(" SELECT user FROM users WHERE user=? and password=?", args);
+        String[] args = new String[] {user};
+        Cursor c = db.rawQuery(" SELECT user FROM users WHERE user=?", args);
+        Log.i("info",String.valueOf(c.moveToFirst()));
+
         return c.moveToFirst();
+
+
+
 
     }
 
