@@ -21,13 +21,13 @@ public class MainActivity extends AppCompatActivity {
     private RecyclerView rvMusicas;
     private GridLayoutManager glm;
     private JatetxeaAdapter adapter;
-    private ArrayList<Jatetxea> data;
+    private ArrayList<Jatetxea> data=new ArrayList<Jatetxea>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
+        data.add(new Jatetxea("kaixo","jatetxe","berria"));
 
 
         String user="";
@@ -38,11 +38,12 @@ public class MainActivity extends AppCompatActivity {
             // Hacer las operaciones que queramos sobre la base de datos
             ArrayList jatetxeList=dbHelper.getAllCotacts();
 
-            for (int i=0;i<jatetxeList.size();i++){
-                ArrayList<String> a= (ArrayList<String>) jatetxeList.get(0);
+            for (int i = 0; i < jatetxeList.size(); i++) {
+                ArrayList<String> a = (ArrayList<String>) jatetxeList.get(0);
                 data.add(new Jatetxea(a.get(0), a.get(1), a.get(2)));
 
             }
+
         }
 
 

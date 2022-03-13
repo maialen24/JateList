@@ -18,7 +18,7 @@ public class DialogClass extends DialogFragment {
     Listener miListener;
 
     public interface Listener {
-        void alpulsarSI();
+        void alpulsarSI(String user, String password);
 
         void alpulsarNO();
     }
@@ -31,7 +31,7 @@ public class DialogClass extends DialogFragment {
 
         Log.i("info","CREATE NEW USER");
 
-        @Override
+      /*  @Override
         public void onAttach(Context activity) {
             super.onAttach(activity);
             try {
@@ -40,7 +40,8 @@ public class DialogClass extends DialogFragment {
             catch (final ClassCastException e) {
                 throw new ClassCastException(activity.toString() + " must implement OnCompleteListener");
             }
-        }
+        }*/
+
 
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
         builder.setTitle("SIGN UP");
@@ -52,7 +53,9 @@ public class DialogClass extends DialogFragment {
         builder.setPositiveButton("CREATE", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                miListener.alpulsarSI();
+                EditText user= (EditText) elaspecto.findViewById(R.id.username);
+                EditText password = (EditText) elaspecto.findViewById(R.id.password);
+                miListener.alpulsarSI(user.toString(),password.toString());
             }
         });
         builder.setNegativeButton("CANCEL", new DialogInterface.OnClickListener() {

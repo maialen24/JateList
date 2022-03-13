@@ -14,12 +14,12 @@ import java.util.ArrayList;
 public class JatetxeaAdapter extends RecyclerView.Adapter<JatetxeaAdapter.JatetxeaViewHolder>{
 
 
-    private ArrayList<Jatetxea> data;
+    private ArrayList<Jatetxea> data=new ArrayList<Jatetxea>();
     private static boolean[] select;
 
     public JatetxeaAdapter(ArrayList < Jatetxea > data) {
         this.data = data;
-        select= new boolean[data.size()];
+        select= new boolean[80000];
     }
 
     @Override
@@ -36,7 +36,7 @@ public class JatetxeaAdapter extends RecyclerView.Adapter<JatetxeaAdapter.Jatetx
         Jatetxea jatetxea = data.get(position);
         holder.tvUbicacion.setText(jatetxea.getUbicacion());
         holder.tvNombre.setText(jatetxea.getNombre());
-        holder.tvValoracion.setText(jatetxea.getValoracion());
+        holder.tvValoracion.setText(String.valueOf(jatetxea.getValoracion()));
     }
 
     @Override

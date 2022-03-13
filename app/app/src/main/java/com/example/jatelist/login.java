@@ -74,13 +74,18 @@ public class login extends AppCompatActivity implements DialogClass.Listener{
 
 
     @Override
-    public void alpulsarSI() {
+    public void alpulsarSI(String user, String password) {
         //SAVE USER AND PASSWORD IN DB
+
+        db dbHelper = new db(this);
+        //SQLiteDatabase db = dbHelper.getWritableDatabase();
+        dbHelper.insertUser(user, password);
 
     }
 
     @Override
     public void alpulsarNO() {
         //CLOSE DIALOG
+
     }
 }
