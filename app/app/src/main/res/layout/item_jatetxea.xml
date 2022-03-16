@@ -5,7 +5,7 @@
         xmlns:app="http://schemas.android.com/apk/res-auto"
         xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
-        android:layout_height="220dp"
+        android:layout_height="100dp"
         android:layout_margin="5dp"
         app:cardCornerRadius="4dp"
         app:cardElevation="4dp"
@@ -21,7 +21,7 @@
             <TextView
                 android:id="@+id/tv_nombre"
                 android:layout_width="match_parent"
-                android:layout_height="0dp"
+                android:layout_height="20dp"
                 android:layout_weight="1"
                 android:gravity="center"
                 android:text="Radioactive"
@@ -31,7 +31,7 @@
             <TextView
                 android:id="@+id/tv_ubicacion"
                 android:layout_width="match_parent"
-                android:layout_height="0dp"
+                android:layout_height="25dp"
                 android:layout_weight="1"
                 android:gravity="center"
                 android:text="r"
@@ -43,7 +43,7 @@
             <TextView
                 android:id="@+id/tv_valoracion"
                 android:layout_width="match_parent"
-                android:layout_height="0dp"
+                android:layout_height="35dp"
                 android:layout_weight="1"
                 android:gravity="center"
                 android:text="Imagine Dragons"

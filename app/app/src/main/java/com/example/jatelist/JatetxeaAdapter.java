@@ -1,5 +1,7 @@
 package com.example.jatelist;
 
+import android.content.Intent;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -61,13 +63,15 @@ public class JatetxeaAdapter extends RecyclerView.Adapter<JatetxeaAdapter.Jatetx
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    if (select[getAdapterPosition()]==true){
-                        select[getAdapterPosition()]=false;
+                    Log.i("info","CLICK ON JATETXEA");
+                    Intent i = new Intent (view.getContext(), EditActivity.class);
+                    i.putExtra("izena",tvNombre.getText().toString());
+                    i.putExtra("ubi",tvUbicacion.getText().toString());
+                    i.putExtra("valoracion",tvValoracion.getText().toString());
+                    i.putExtra("update",true);
 
-                    }
-                    else{
+                    view.getContext().startActivity(i);
 
-                    }
                 }
             });
 

@@ -2,4 +2,12 @@
     <string name="app_name">JateList</string>
     <string name="username">username</string>
     <string name="password">password</string>
+    <string name="editButton">Editar</string>
+    <string name="saveButton">Guardar</string>
+    <string name="backButton">Atras</string>
+    <string name="map">Mapa</string>
+    <string name="izena">Nombre</string>
+    <string name="comments">Comentarios</string>
+    <string name="ubicacion">Ubicacion</string>
+    <string name="valoracion">Valoracion</string>
 </resources>

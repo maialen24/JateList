@@ -20,12 +20,26 @@ import android.widget.TextView;
 
 public class login extends AppCompatActivity implements DialogClass.Listener{
 
+    private String user;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        if (savedInstanceState!= null) {
+            // cambioOrientacion= savedInstanceState.getInt(“contador");
+            user = savedInstanceState.getString("user");
+
+        }
+
         setContentView(R.layout.activity_login);
 
-        EditText user=findViewById((R.id.username));
+        Bundle extras = getIntent().getExtras();
+        if (extras != null) {
+            user = extras.getString("user");
+        }
+
+        EditText userEditText=findViewById((R.id.username));
         EditText password=findViewById((R.id.password));
         db dbHelper = new db(this);
         SQLiteDatabase db = dbHelper.getWritableDatabase();
@@ -35,13 +49,14 @@ public class login extends AppCompatActivity implements DialogClass.Listener{
             @Override
             public void onClick(View v) {
                 Log.i("info","CHECK USERNAME AND PASSWORD");
-                Log.i("info",user.getText().toString());
+                Log.i("info",userEditText.getText().toString());
                 Log.i("info",password.getText().toString());
-                if (dbHelper.checkCredentials(user.getText().toString(), password.getText().toString())){
+                if (dbHelper.checkCredentials(userEditText.getText().toString(), password.getText().toString())){
                     //GO TO MAIN ACTIVITY
-
+                    user=userEditText.getText().toString();
                     Log.i("info","LOGIN SUCCESS");
                     Intent i = new Intent (login.this, MainActivity.class);
+                    i.putExtra("user",user);
                     startActivity(i);
                 }else{
                     //SHOW A INCORRET CREDENTIALS ALERT
@@ -93,6 +108,20 @@ public class login extends AppCompatActivity implements DialogClass.Listener{
     @Override
     public void alpulsarNO() {
         //CLOSE DIALOG
+
+    }
+
+    protected void onSaveInstanceState(Bundle savedInstanceState) {
+        super.onSaveInstanceState(savedInstanceState);
+        savedInstanceState.putString("user",user );
+
+
+
+    }
+    protected void onRestoreInstanceState(Bundle savedInstanceState) {
+        super.onRestoreInstanceState(savedInstanceState);
+        user = savedInstanceState.getString("user");
+
 
     }
 }

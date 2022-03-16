@@ -3,4 +3,12 @@
     <string name="app_name">JateList</string>
     <string name="username">username</string>
     <string name="password">password</string>
+    <string name="editButton">Edit</string>
+    <string name="saveButton">Save</string>
+    <string name="backButton">Back</string>
+    <string name="map">Maoa</string>
+    <string name="izena">Name</string>
+    <string name="ubicacion">Location</string>
+    <string name="comments">Comments</string>
+    <string name="valoracion">Opinion</string>
 </resources>

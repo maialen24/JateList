@@ -42,7 +42,20 @@ public class db extends SQLiteOpenHelper {
         return true;
     }
 
-    public boolean insertJatetxe(String name, String ubi, int valoracion, String comentarios, String user) {
+    public boolean updateJatetxe(String name, String ubi, String valoracion, String comentarios,String user) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues contentValues = new ContentValues();
+        contentValues.put("izena", name);
+        contentValues.put("ubicacion", ubi);
+        contentValues.put("valoracion", valoracion);
+        contentValues.put("comentarios", comentarios);
+
+        db.update("jatetxea", contentValues, "izena=?  AND user =?",  new String[]{name,user});
+
+        return true;
+    }
+
+    public boolean insertJatetxe(String name, String ubi, String valoracion, String comentarios, String user) {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues contentValues = new ContentValues();
         contentValues.put("izena", name);
@@ -56,10 +69,10 @@ public class db extends SQLiteOpenHelper {
     }
 
     @SuppressLint("Range")
-    public ArrayList getAllCotacts() {
+    public ArrayList getAllCotacts(String user) {
         SQLiteDatabase db = this.getReadableDatabase();
         ArrayList<ArrayList<String>> array_list = new ArrayList<>();
-        Cursor res = db.rawQuery( "select * from jatetxea" , null );
+        Cursor res = db.rawQuery( "select * from jatetxea", null );
         res.moveToFirst();
         while(res.isAfterLast() == false) {
             ArrayList<String> ezaugarriak = new ArrayList<String>();
@@ -83,10 +96,15 @@ public class db extends SQLiteOpenHelper {
         return c.moveToFirst();
 
 
-
-
     }
 
+
+    public boolean deleteJatetxea(String izena,  String user) {
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        db.delete("jatetxea", "izena=? and user=?", new String[]{izena,user});
+        return true;
+    }
 
 
 }

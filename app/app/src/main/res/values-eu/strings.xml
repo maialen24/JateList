@@ -3,5 +3,13 @@
     <string name="app_name">JateList</string>
     <string name="username">Erabiltzailea</string>
     <string name="password">pasahitza</string>
+    <string name="editButton">Editatu</string>
+    <string name="saveButton">Gorde</string>
+    <string name="backButton">Atzera</string>
+    <string name="map">Mapa</string>
+    <string name="izena">Izena</string>
+    <string name="comments">Iruzkinak</string>
+    <string name="ubicacion">Localizazioa</string>
+    <string name="valoracion">Iritzia</string>
 
 </resources>
