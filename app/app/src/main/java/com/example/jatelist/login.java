@@ -2,13 +2,18 @@ package com.example.jatelist;
 
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.NotificationCompat;
 import androidx.fragment.app.DialogFragment;
 
 import android.app.Dialog;
+import android.app.NotificationChannel;
+import android.app.NotificationManager;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.sqlite.SQLiteDatabase;
+import android.graphics.Color;
+import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -102,6 +107,28 @@ public class login extends AppCompatActivity implements DialogClass.Listener{
         db dbHelper = new db(this);
         //SQLiteDatabase db = dbHelper.getWritableDatabase();
         dbHelper.insertUser(user, password);
+
+        NotificationManager elManager = (NotificationManager)getSystemService(Context.NOTIFICATION_SERVICE);
+        NotificationCompat.Builder elBuilder = new NotificationCompat.Builder(this, "1");
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            NotificationChannel elCanal = new NotificationChannel("1", "login",
+                    NotificationManager.IMPORTANCE_DEFAULT);
+            elManager.createNotificationChannel(elCanal);
+            elCanal.setDescription("Descripción del canal");
+            elCanal.enableLights(true);
+            elCanal.setLightColor(Color.RED);
+            elCanal.setVibrationPattern(new long[]{0, 1000, 500, 1000});
+            elCanal.enableVibration(true);
+        }
+        elBuilder.setSmallIcon(android.R.drawable.stat_sys_warning)
+                .setContentTitle("Sign up")
+                .setContentText("User perfectly created :)")
+                .setSubText("Users")
+                .setVibrate(new long[]{0, 1000, 500, 1000})
+                .setAutoCancel(true);
+        elManager.notify(1, elBuilder.build());
+
+
 
     }
 

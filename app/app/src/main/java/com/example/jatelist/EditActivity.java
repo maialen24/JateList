@@ -1,5 +1,6 @@
 package com.example.jatelist;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
@@ -11,17 +12,26 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageButton;
 
-public class EditActivity extends AppCompatActivity {
+import com.google.android.gms.maps.GoogleMap;
+import com.google.android.gms.maps.MapView;
+import com.google.android.gms.maps.OnMapReadyCallback;
+import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.MarkerOptions;
+
+public class EditActivity extends AppCompatActivity implements OnMapReadyCallback {
 
     private Boolean update = true;
     private db dbHelper = new db(this);
     private SQLiteDatabase db;
     private String user;
+    private MapView map;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
         db=dbHelper.getWritableDatabase();
 
         if (savedInstanceState!= null) {
@@ -31,7 +41,14 @@ public class EditActivity extends AppCompatActivity {
 
         }
 
+
+
         setContentView(R.layout.activity_edit);
+
+        map = (MapView) findViewById(R.id.mapView);
+        map.onCreate(savedInstanceState);
+
+
 
         dbHelper = new db(this);
         db = dbHelper.getWritableDatabase();
@@ -53,11 +70,6 @@ public class EditActivity extends AppCompatActivity {
             }
 
         }
-
-
-
-
-
 
 
 
@@ -152,8 +164,10 @@ public class EditActivity extends AppCompatActivity {
 
     protected void onSaveInstanceState(Bundle savedInstanceState) {
         super.onSaveInstanceState(savedInstanceState);
+        map.onSaveInstanceState(savedInstanceState);
         savedInstanceState.putString("user",user );
         savedInstanceState.putBoolean("update", update);
+
 
 
     }
@@ -163,4 +177,49 @@ public class EditActivity extends AppCompatActivity {
         update = savedInstanceState.getBoolean("update");
         ;
     }
+
+    @Override
+    public void onMapReady(@NonNull GoogleMap googleMap) {
+        LatLng sydney = new LatLng(-33.852, 151.211);
+        googleMap.addMarker(new MarkerOptions()
+                .position(sydney)
+                .title("Marker in Sydney"));
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        map.onPause();
+    }
+    @Override
+    protected void onStart() {
+        super.onStart();
+        map.onStart();
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        map.onResume();
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        map.onStop();
+    }
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        map.onDestroy();
+    }
+    @Override
+    public void onLowMemory() {
+        super.onLowMemory();
+        map.onLowMemory();
+    }
+
+
+
+
 }

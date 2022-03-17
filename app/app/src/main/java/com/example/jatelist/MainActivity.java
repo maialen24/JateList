@@ -44,7 +44,7 @@ public class MainActivity extends AppCompatActivity {
 
             //The key argument here must match that used in the other activity
         }
-        data.add(new Jatetxea("kaixo","jatetxe","berria"));
+       // data.add(new Jatetxea("kaixo","jatetxe","berria"));
 
         update=false;
 
@@ -55,7 +55,7 @@ public class MainActivity extends AppCompatActivity {
             ArrayList jatetxeList=dbHelper.getAllCotacts(user);
 
             for (int i = 0; i < jatetxeList.size(); i++) {
-                ArrayList<String> a = (ArrayList<String>) jatetxeList.get(0);
+                ArrayList<String> a = (ArrayList<String>) jatetxeList.get(i);
                 Log.i("data",a.get(0)+a.get(1)+a.get(2));
                 data.add(new Jatetxea(a.get(0), a.get(1), a.get(2)));
 
@@ -68,7 +68,7 @@ public class MainActivity extends AppCompatActivity {
 
         glm = new GridLayoutManager(this, 2);
         rvJatetxeak.setLayoutManager(glm);
-        adapter = new JatetxeaAdapter(data);
+        adapter = new JatetxeaAdapter(data,user);
         rvJatetxeak.setAdapter(adapter);
 
 
@@ -114,6 +114,10 @@ public class MainActivity extends AppCompatActivity {
         user = savedInstanceState.getString("user");
         update = savedInstanceState.getBoolean("update");
      ;
+    }
+
+    public String getUser(){
+        return user;
     }
 
 

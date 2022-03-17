@@ -70,9 +70,15 @@ public class db extends SQLiteOpenHelper {
 
     @SuppressLint("Range")
     public ArrayList getAllCotacts(String user) {
-        SQLiteDatabase db = this.getReadableDatabase();
+
+        SQLiteDatabase db = this.getWritableDatabase();
+        String[] args = new String[] {user};
+        Cursor res = db.rawQuery(" SELECT  * FROM jatetxea WHERE user=?", args);
+        Log.i("info","GET ALL RESTAURANTS");
+
+
         ArrayList<ArrayList<String>> array_list = new ArrayList<>();
-        Cursor res = db.rawQuery( "select * from jatetxea", null );
+
         res.moveToFirst();
         while(res.isAfterLast() == false) {
             ArrayList<String> ezaugarriak = new ArrayList<String>();
