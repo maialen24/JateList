@@ -50,7 +50,7 @@ public class DialogClass extends DialogFragment {
         builder.setView(elaspecto);
 
 
-        builder.setPositiveButton("CREATE", new DialogInterface.OnClickListener() {
+        builder.setPositiveButton(builder.getContext().getString(R.string.crear), new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 EditText user= (EditText) elaspecto.findViewById(R.id.username);
@@ -58,7 +58,7 @@ public class DialogClass extends DialogFragment {
                 miListener.alpulsarSI(user.getText().toString(),password.getText().toString());
             }
         });
-        builder.setNegativeButton("CANCEL", new DialogInterface.OnClickListener() {
+        builder.setNegativeButton(builder.getContext().getString(R.string.cancel), new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 miListener.alpulsarNO();

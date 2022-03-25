@@ -11,5 +11,16 @@
     <string name="comments">Iruzkinak</string>
     <string name="ubicacion">Localizazioa</string>
     <string name="valoracion">Iritzia</string>
+    <string name="mode">Gaua</string>
+    <string name="salir">Atera</string>
+    <string name="toast">Jatetxe berri bat gehitu da</string>
+    <string name="login_mssg">Erabiltzaile edo pasahitza okerrak</string>
+    <string name="remove_mssg">Ziur zauda jatetxea ezabatu nahi duzula?</string>
+    <string name="si">Bai</string>
+    <string name="No">Ez</string>
+    <string name="crear">Sortu</string>
+    <string name="cancel">Ezeztatu</string>
+    <string name="usercreate_mssg">Erabiltzailea sortu da :)</string>
+    <string name="toastOut">Deskonektatuta</string>
 
 </resources>

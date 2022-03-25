@@ -11,4 +11,15 @@
     <string name="ubicacion">Location</string>
     <string name="comments">Comments</string>
     <string name="valoracion">Opinion</string>
+    <string name="mode">Night</string>
+    <string name="salir">Exit</string>
+    <string name="toast">New restaurant added</string>
+    <string name="login_mssg">Username or password incorrect</string>
+    <string name="remove_mssg">Are you sure to delete the restaurant?</string>
+    <string name="si">Yes</string>
+    <string name="No">No</string>
+    <string name="crear">Create</string>
+    <string name="cancel">Cancel</string>
+    <string name="usercreate_mssg">User perfectly created :)</string>
+    <string name="toastOut">Log out</string>
 </resources>

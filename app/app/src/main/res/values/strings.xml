@@ -1,7 +1,7 @@
 <resources>
     <string name="app_name">JateList</string>
-    <string name="username">username</string>
-    <string name="password">password</string>
+    <string name="username">usuario</string>
+    <string name="password">contraseña</string>
     <string name="editButton">Editar</string>
     <string name="saveButton">Guardar</string>
     <string name="backButton">Atras</string>
@@ -10,4 +10,15 @@
     <string name="comments">Comentarios</string>
     <string name="ubicacion">Ubicacion</string>
     <string name="valoracion">Valoracion</string>
+    <string name="mode">Noche</string>
+    <string name="salir">Salir</string>
+    <string name="toast">Nuevo restaurante añadido</string>
+    <string name="login_mssg">Usuario o contraseña incorrectos</string>
+    <string name="remove_mssg">¿Estas seguro que deseas eliminar este restaurante?</string>
+    <string name="si">Si</string>
+    <string name="No">No</string>
+    <string name="crear">Crear</string>
+    <string name="cancel">Cancelar</string>
+    <string name="usercreate_mssg">Usuario creado correctamente :)</string>
+    <string name="toastOut">Desconectado</string>
 </resources>

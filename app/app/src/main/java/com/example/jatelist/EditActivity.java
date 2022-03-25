@@ -14,6 +14,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.Toast;
 
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapView;
@@ -141,9 +142,9 @@ public class EditActivity extends AppCompatActivity implements OnMapReadyCallbac
 
                 AlertDialog.Builder builder = new AlertDialog.Builder(v.getContext());
                 builder.setTitle("Delete");
-                builder.setMessage("¿Estas seguro que quieres eliminar este restaurante?");
+                builder.setMessage(v.getContext().getString(R.string.remove_mssg));
 
-                builder.setPositiveButton("YES", new DialogInterface.OnClickListener() {
+                builder.setPositiveButton(v.getContext().getString(R.string.si), new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
                         //Jatetxea ezabatu
@@ -154,7 +155,7 @@ public class EditActivity extends AppCompatActivity implements OnMapReadyCallbac
                     }
                 });
 
-                builder.setNegativeButton("NO", new DialogInterface.OnClickListener() {
+                builder.setNegativeButton(v.getContext().getString(R.string.No), new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
 
@@ -175,19 +176,23 @@ public class EditActivity extends AppCompatActivity implements OnMapReadyCallbac
             public void onClick(View v) {
                 //MIRAR SI YA EXISTE EN LA BASE DE DATOS O NO Y GUARDAR EN LA BASE DE DATOS
                 Log.i("info","SAVE RESTAURANT AND DISABLE EDITABLE");
-
+                Boolean succes;
                 if (update){
-                    dbHelper.updateJatetxe(izena.getText().toString(),ubi.getText().toString(),valoracion.getText().toString(),comments.getText().toString(),user);
+                    succes=dbHelper.updateJatetxe(izena.getText().toString(),ubi.getText().toString(),valoracion.getText().toString(),comments.getText().toString(),user);
                 }else{
-                    dbHelper.insertJatetxe(izena.getText().toString(),ubi.getText().toString(),valoracion.getText().toString(),comments.getText().toString(),user);
+                   succes=dbHelper.insertJatetxe(izena.getText().toString(),ubi.getText().toString(),valoracion.getText().toString(),comments.getText().toString(),user);
                 }
 
                 disableEditText(izena);
                 disableEditText(ubi);
                 disableEditText(valoracion);
                 disableEditText(comments);
+                if (succes){
+                    Toast.makeText(getApplicationContext(),v.getContext().getString(R.string.toast),Toast.LENGTH_SHORT).show();
+                }
 
-              //  izena.setKeyListener(null);
+
+                //  izena.setKeyListener(null);
              //   ubi.setKeyListener(null);
              //   valoracion.setKeyListener(null);
             //    comments.setKeyListener(null);
