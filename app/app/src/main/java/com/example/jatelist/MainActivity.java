@@ -57,7 +57,7 @@ public class MainActivity extends AppCompatActivity {
             for (int i = 0; i < jatetxeList.size(); i++) {
                 ArrayList<String> a = (ArrayList<String>) jatetxeList.get(i);
                 Log.i("data",a.get(0)+a.get(1)+a.get(2));
-                data.add(new Jatetxea(a.get(0), a.get(1), a.get(2)));
+                data.add(new Jatetxea(a.get(0), a.get(1), a.get(2), a.get(3)));
 
             }
 

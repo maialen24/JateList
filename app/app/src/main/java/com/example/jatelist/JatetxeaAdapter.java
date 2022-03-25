@@ -21,6 +21,7 @@ public class JatetxeaAdapter extends RecyclerView.Adapter<JatetxeaAdapter.Jatetx
     private static boolean[] select;
     private String user;
 
+
     public JatetxeaAdapter(ArrayList < Jatetxea > data,String username) {
         this.data = data;
         select= new boolean[80000];
@@ -42,6 +43,8 @@ public class JatetxeaAdapter extends RecyclerView.Adapter<JatetxeaAdapter.Jatetx
         holder.tvUbicacion.setText(jatetxea.getUbicacion());
         holder.tvNombre.setText(jatetxea.getNombre());
         holder.tvValoracion.setText(String.valueOf(jatetxea.getValoracion()));
+        holder.comentarios= jatetxea.getComentarios();
+
     }
 
     @Override
@@ -56,6 +59,8 @@ public class JatetxeaAdapter extends RecyclerView.Adapter<JatetxeaAdapter.Jatetx
         TextView tvNombre;
         TextView tvValoracion;
         String user;
+        String comentarios;
+
         public boolean[] select;
 
         public JatetxeaViewHolder(View itemView,String username) {
@@ -64,6 +69,7 @@ public class JatetxeaAdapter extends RecyclerView.Adapter<JatetxeaAdapter.Jatetx
             tvNombre = (TextView) itemView.findViewById(R.id.tv_nombre);
             tvValoracion = (TextView) itemView.findViewById(R.id.tv_valoracion);
             user=username;
+
 
 
 
@@ -77,6 +83,7 @@ public class JatetxeaAdapter extends RecyclerView.Adapter<JatetxeaAdapter.Jatetx
                     i.putExtra("valoracion",tvValoracion.getText().toString());
                     i.putExtra("user",user);
                     i.putExtra("update",true);
+                    i.putExtra("comentarios",comentarios);
 
                     view.getContext().startActivity(i);
 

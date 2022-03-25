@@ -1,12 +1,15 @@
 package com.example.jatelist;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.text.method.KeyListener;
 import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
@@ -58,6 +61,12 @@ public class EditActivity extends AppCompatActivity implements OnMapReadyCallbac
         EditText valoracion=(EditText) findViewById(R.id.valoracion);
         EditText comments=(EditText) findViewById(R.id.comments);
 
+
+        KeyListener izenalistener = izena.getKeyListener();
+        KeyListener ubiListener = ubi.getKeyListener();
+        KeyListener valListener = valoracion.getKeyListener();
+        KeyListener comListener = comments.getKeyListener();
+
         Bundle extras = getIntent().getExtras();
         if (extras != null) {
             user = extras.getString("user");
@@ -66,7 +75,8 @@ public class EditActivity extends AppCompatActivity implements OnMapReadyCallbac
                 izena.setText(extras.getString("izena"));
                 ubi.setText(extras.getString("ubi"));
                 valoracion.setText(extras.getString("valoracion"));
-              //  comments.setText(extras.getString("comments"));
+                comments.setText(extras.getString("comentarios"));
+
             }
 
         }
@@ -76,13 +86,18 @@ public class EditActivity extends AppCompatActivity implements OnMapReadyCallbac
 
 
         ImageButton editButton=(ImageButton) findViewById(R.id.editButton);
-        if (update){
+        if (!update){
             editButton.performClick();
         }else{
-           // disableEditText(izena);
-           // disableEditText(ubi);
-           // disableEditText(valoracion);
-            //disableEditText(comments);
+           // izena.setKeyListener(null);
+          //  ubi.setKeyListener(null);
+          //  valoracion.setKeyListener(null);
+          //  comments.setKeyListener(null);
+
+            disableEditText(izena);
+            disableEditText(ubi);
+            disableEditText(valoracion);
+            disableEditText(comments);
         }
 
         //ImageButton editButton=(ImageButton) findViewById(R.id.editButton);
@@ -91,11 +106,29 @@ public class EditActivity extends AppCompatActivity implements OnMapReadyCallbac
             public void onClick(View v) {
                 Log.i("info","ENABLE EDITABLE");
 
+                enableEditText(izena,izenalistener);
+                enableEditText(ubi,ubiListener);
+                enableEditText(valoracion,valListener);
+                enableEditText(comments,comListener);
 
-                enableEditText(izena);
-                enableEditText(ubi);
-                enableEditText(valoracion);
-                enableEditText(comments);
+              //  izena.setKeyListener(izenalistener);
+              //  ubi.setKeyListener(ubiListener);
+                //valoracion.setKeyListener(valListener);
+                //comments.setKeyListener(comListener);
+
+            }
+        });
+
+        ImageButton bueltatu= (ImageButton) findViewById(R.id.backButton);
+        bueltatu.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Log.i("info","GO TO MAIN ACTIVITY");
+                Intent i = new Intent (EditActivity.this, MainActivity.class);
+                i.putExtra("user",user);
+                i.putExtra("update",update);
+                startActivity(i);
+
 
             }
         });
@@ -105,23 +138,36 @@ public class EditActivity extends AppCompatActivity implements OnMapReadyCallbac
             @Override
             public void onClick(View v) {
                 Log.i("info","REMOVE JATETXEA");
-                dbHelper.deleteJatetxea(izena.getText().toString(),user);
+
+                AlertDialog.Builder builder = new AlertDialog.Builder(v.getContext());
+                builder.setTitle("Delete");
+                builder.setMessage("¿Estas seguro que quieres eliminar este restaurante?");
+
+                builder.setPositiveButton("YES", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        //Jatetxea ezabatu
+                        dbHelper.deleteJatetxea(izena.getText().toString(),user);
+                        //pulsar button bueltatu
+                        bueltatu.performClick();
+
+                    }
+                });
+
+                builder.setNegativeButton("NO", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+
+                    }
+                });
+                builder.show();
+
 
             }
         });
 
 
-        ImageButton bueltatu= (ImageButton) findViewById(R.id.backButton);
-        bueltatu.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Log.i("info","GO TO MAIN ACTIVITY");
-                Intent i = new Intent (EditActivity.this, MainActivity.class);
-                startActivity(i);
 
-
-            }
-        });
 
         ImageButton gorde= (ImageButton) findViewById(R.id.saveButton);
         gorde.setOnClickListener(new View.OnClickListener() {
@@ -136,10 +182,15 @@ public class EditActivity extends AppCompatActivity implements OnMapReadyCallbac
                     dbHelper.insertJatetxe(izena.getText().toString(),ubi.getText().toString(),valoracion.getText().toString(),comments.getText().toString(),user);
                 }
 
-               // disableEditText(izena);
-               // disableEditText(ubi);
-               // disableEditText(valoracion);
-                //disableEditText(comments);
+                disableEditText(izena);
+                disableEditText(ubi);
+                disableEditText(valoracion);
+                disableEditText(comments);
+
+              //  izena.setKeyListener(null);
+             //   ubi.setKeyListener(null);
+             //   valoracion.setKeyListener(null);
+            //    comments.setKeyListener(null);
 
 
             }
@@ -151,13 +202,15 @@ public class EditActivity extends AppCompatActivity implements OnMapReadyCallbac
         editText.setEnabled(false);
         editText.setCursorVisible(false);
         editText.setKeyListener(null);
-        editText.setBackgroundColor(Color.TRANSPARENT);
+        //editText.setBackgroundColor(Color.TRANSPARENT);
     }
 
-    private void enableEditText(EditText editText) {
+    private void enableEditText(EditText editText, KeyListener listener) {
+        editText.setFocusableInTouchMode(true);
         editText.setFocusable(true);
         editText.setEnabled(true);
         editText.setCursorVisible(true);
+        editText.setKeyListener(listener);
 
     }
 
