@@ -1,7 +1,6 @@
 package com.example.jatelist;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -30,10 +29,7 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 
 import java.io.IOException;
-import java.util.Collection;
-import java.util.Iterator;
 import java.util.List;
-import java.util.ListIterator;
 
 public class EditActivity extends AppCompatActivity implements OnMapReadyCallback {
 
@@ -41,6 +37,7 @@ public class EditActivity extends AppCompatActivity implements OnMapReadyCallbac
     private db dbHelper = new db(this);
     private SQLiteDatabase db;
     private String user;
+    private MapView map;
     String nameJatetxe;
     double lat;
     double lo;
@@ -55,10 +52,12 @@ public class EditActivity extends AppCompatActivity implements OnMapReadyCallbac
 
         db=dbHelper.getWritableDatabase();
 
+        Bundle mapViewBundle=null;
         if (savedInstanceState!= null) {
             // cambioOrientacion= savedInstanceState.getInt(“contador");
             user = savedInstanceState.getString("user");
             update=savedInstanceState.getBoolean("update");
+            mapViewBundle=savedInstanceState.getBundle(MAPVIEW_BUNDLE_KEY);
             lat=savedInstanceState.getDouble("latitude");
             lo=savedInstanceState.getDouble("longitud");
             nameJatetxe=savedInstanceState.getString("jatetxeName");
@@ -69,8 +68,6 @@ public class EditActivity extends AppCompatActivity implements OnMapReadyCallbac
 
 
         setContentView(R.layout.activity_edit);
-
-
 
 
 
@@ -107,6 +104,7 @@ public class EditActivity extends AppCompatActivity implements OnMapReadyCallbac
 
         }
 
+
         nameJatetxe=izena.getText().toString();
 
         Geocoder geocoder = new Geocoder(this);
@@ -122,12 +120,10 @@ public class EditActivity extends AppCompatActivity implements OnMapReadyCallbac
         lat= address.get(0).getLatitude();
         lo= address.get(0).getLongitude();
 
-
-
-        SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
-                .findFragmentById(R.id.map);
-        mapFragment.getMapAsync(this);
-
+        map = (MapView) findViewById(R.id.mapView);
+        map.onCreate(mapViewBundle);
+        map.getMapAsync(  this);
+        map.onResume();
 
 
         ImageButton editButton=(ImageButton) findViewById(R.id.editButton);
@@ -271,7 +267,13 @@ public class EditActivity extends AppCompatActivity implements OnMapReadyCallbac
 
     protected void onSaveInstanceState(Bundle savedInstanceState) {
         super.onSaveInstanceState(savedInstanceState);
-
+        //map.onSaveInstanceState(savedInstanceState);
+        Bundle mapViewBundle =savedInstanceState.getBundle(MAPVIEW_BUNDLE_KEY);
+        if (mapViewBundle==null){
+            mapViewBundle=new Bundle();
+            savedInstanceState.putBundle(MAPVIEW_BUNDLE_KEY, mapViewBundle);
+        }
+        map.onSaveInstanceState(mapViewBundle);
         savedInstanceState.putString("user",user );
         savedInstanceState.putBoolean("update", update);
 
@@ -288,7 +290,6 @@ public class EditActivity extends AppCompatActivity implements OnMapReadyCallbac
     @Override
     public void onMapReady(GoogleMap googleMap) {
 
-
         LatLng jatetxea = new LatLng(lat, lo);
         googleMap.addMarker(new MarkerOptions()
                 .position(jatetxea)
@@ -301,34 +302,34 @@ public class EditActivity extends AppCompatActivity implements OnMapReadyCallbac
     @Override
     protected void onPause() {
         super.onPause();
-
+        map.onPause();
     }
     @Override
     protected void onStart() {
         super.onStart();
-
+        map.onStart();
     }
 
     @Override
     protected void onResume() {
         super.onResume();
-
+        map.onResume();
     }
 
     @Override
     protected void onStop() {
         super.onStop();
-
+        map.onStop();
     }
     @Override
     protected void onDestroy() {
         super.onDestroy();
-
+        map.onDestroy();
     }
     @Override
     public void onLowMemory() {
         super.onLowMemory();
-
+        map.onLowMemory();
     }
 
 
