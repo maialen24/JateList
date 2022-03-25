@@ -60,7 +60,7 @@ public class EditActivity extends AppCompatActivity implements OnMapReadyCallbac
         map = (MapView) findViewById(R.id.mapView);
         map.onCreate(mapViewBundle);
         map.getMapAsync(  this);
-
+        map.onResume();
 
 
         dbHelper = new db(this);
@@ -267,6 +267,7 @@ public class EditActivity extends AppCompatActivity implements OnMapReadyCallbac
         map.addMarker(new MarkerOptions()
                 .position(sydney)
                 .title("Marker in Sydney"));
+
     }
 
     @Override
