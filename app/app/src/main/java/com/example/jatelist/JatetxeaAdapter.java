@@ -7,6 +7,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.RatingBar;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -42,8 +43,10 @@ public class JatetxeaAdapter extends RecyclerView.Adapter<JatetxeaAdapter.Jatetx
         Jatetxea jatetxea = data.get(position);
         holder.tvUbicacion.setText(jatetxea.getUbicacion());
         holder.tvNombre.setText(jatetxea.getNombre());
-        holder.tvValoracion.setText(String.valueOf(jatetxea.getValoracion()));
+        holder.rbValoracion.setRating(Float.parseFloat(jatetxea.getValoracion()));
+        //holder.tvValoracion.setText(String.valueOf(jatetxea.getValoracion()));
         holder.comentarios= jatetxea.getComentarios();
+        holder.tlf_number=jatetxea.getTlf();
 
     }
 
@@ -55,11 +58,13 @@ public class JatetxeaAdapter extends RecyclerView.Adapter<JatetxeaAdapter.Jatetx
 
     class JatetxeaViewHolder extends RecyclerView.ViewHolder{
 
+        RatingBar rbValoracion;
         TextView tvUbicacion;
         TextView tvNombre;
         TextView tvValoracion;
         String user;
         String comentarios;
+        String tlf_number;
 
         public boolean[] select;
 
@@ -67,7 +72,8 @@ public class JatetxeaAdapter extends RecyclerView.Adapter<JatetxeaAdapter.Jatetx
             super(itemView);
             tvUbicacion = (TextView) itemView.findViewById(R.id.tv_ubicacion);
             tvNombre = (TextView) itemView.findViewById(R.id.tv_nombre);
-            tvValoracion = (TextView) itemView.findViewById(R.id.tv_valoracion);
+            //tvValoracion = (TextView) itemView.findViewById(R.id.tv_valoracion);
+            rbValoracion = (RatingBar) itemView.findViewById(R.id.rating);
             user=username;
 
 
@@ -80,10 +86,12 @@ public class JatetxeaAdapter extends RecyclerView.Adapter<JatetxeaAdapter.Jatetx
                     Intent i = new Intent (view.getContext(), EditActivity.class);
                     i.putExtra("izena",tvNombre.getText().toString());
                     i.putExtra("ubi",tvUbicacion.getText().toString());
-                    i.putExtra("valoracion",tvValoracion.getText().toString());
+                    //i.putExtra("valoracion",tvValoracion.getText().toString());
+                    i.putExtra("valoracion",String.valueOf(rbValoracion.getRating()));
                     i.putExtra("user",user);
                     i.putExtra("update",true);
                     i.putExtra("comentarios",comentarios);
+                    i.putExtra("tlf_number",tlf_number);
 
                     view.getContext().startActivity(i);
 

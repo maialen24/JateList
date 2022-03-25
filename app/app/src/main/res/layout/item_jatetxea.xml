@@ -10,45 +10,44 @@
         app:cardCornerRadius="4dp"
         app:cardElevation="4dp"
         layout_height="200dp"
-        layout_width="100dp">
+        layout_width="300dp">
 
-        <LinearLayout
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:weightSum="5">
+
+        <TextView
+            android:id="@+id/tv_nombre"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:orientation="vertical"
-            android:weightSum="5">
+            android:layout_height="20dp"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:text="@string/izena"
+            android:textSize="20sp"
+            android:textStyle="bold" />
 
-            <TextView
-                android:id="@+id/tv_nombre"
-                android:layout_width="match_parent"
-                android:layout_height="20dp"
-                android:layout_weight="1"
-                android:gravity="center"
-                android:text="@string/izena"
-                android:textSize="20sp"
-                android:textStyle="bold" />
+        <TextView
+            android:id="@+id/tv_ubicacion"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:text="@string/ubicacion"
+            android:textSize="14sp"
+            android:textStyle="bold" />
 
-            <TextView
-                android:id="@+id/tv_ubicacion"
-                android:layout_width="match_parent"
-                android:layout_height="25dp"
-                android:layout_weight="1"
-                android:gravity="center"
-                android:text="@string/ubicacion"
-                android:textSize="20sp"
-                android:textStyle="bold" />
-
+        <RatingBar
+            android:id="@+id/rating"
+            android:layout_width="match_parent"
+            android:layout_height="36dp"
+            android:layout_weight="1"
+            android:numStars="5"
+            android:stepSize="1"
+            android:isIndicator="true"/>
 
 
-            <TextView
-                android:id="@+id/tv_valoracion"
-                android:layout_width="match_parent"
-                android:layout_height="35dp"
-                android:layout_weight="1"
-                android:gravity="center"
-                android:text="@string/valoracion"
-                android:textSize="16sp" />
-
-        </LinearLayout>
+    </LinearLayout>
 </androidx.cardview.widget.CardView>
 

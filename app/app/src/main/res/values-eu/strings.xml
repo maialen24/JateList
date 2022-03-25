@@ -22,5 +22,6 @@
     <string name="cancel">Ezeztatu</string>
     <string name="usercreate_mssg">Erabiltzailea sortu da :)</string>
     <string name="toastOut">Deskonektatuta</string>
+    <string name="phone">Telefonoa: 123456789</string>
 
 </resources>

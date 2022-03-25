@@ -22,4 +22,5 @@
     <string name="cancel">Cancel</string>
     <string name="usercreate_mssg">User perfectly created :)</string>
     <string name="toastOut">Log out</string>
+    <string name="phone">Phone: 123456789</string>
 </resources>

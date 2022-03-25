@@ -12,7 +12,7 @@ import java.util.ArrayList;
 
 public class db extends SQLiteOpenHelper {
     private static final String users_TABLE_CREATE = "CREATE TABLE users(user TEXT PRIMARY KEY, password TEXT)";
-    private static final String jatetxea_TABLE_CREATE = "CREATE TABLE jatetxea(_id INTEGER PRIMARY KEY AUTOINCREMENT, izena TEXT, ubicacion TEXT, valoracion INTERGER, comentarios TEXT, user TEXT)";
+    private static final String jatetxea_TABLE_CREATE = "CREATE TABLE jatetxea(_id INTEGER PRIMARY KEY AUTOINCREMENT, izena TEXT, ubicacion TEXT, valoracion INTERGER, comentarios TEXT, tlf TEXT,user TEXT)";
     private static final String DB_NAME = "JateList.sqlite";
     private static final int DB_VERSION = 1;
     public db(Context context) {
@@ -42,26 +42,28 @@ public class db extends SQLiteOpenHelper {
         return true;
     }
 
-    public boolean updateJatetxe(String name, String ubi, String valoracion, String comentarios,String user) {
+    public boolean updateJatetxe(String name, String ubi, String valoracion, String comentarios,String tlf,String user) {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues contentValues = new ContentValues();
         contentValues.put("izena", name);
         contentValues.put("ubicacion", ubi);
         contentValues.put("valoracion", valoracion);
         contentValues.put("comentarios", comentarios);
+        contentValues.put("tlf", tlf);
 
         db.update("jatetxea", contentValues, "izena=?  AND user =?",  new String[]{name,user});
 
         return true;
     }
 
-    public boolean insertJatetxe(String name, String ubi, String valoracion, String comentarios, String user) {
+    public boolean insertJatetxe(String name, String ubi, String valoracion, String comentarios,String tlf, String user) {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues contentValues = new ContentValues();
         contentValues.put("izena", name);
         contentValues.put("ubicacion", ubi);
         contentValues.put("valoracion", valoracion);
         contentValues.put("comentarios", comentarios);
+        contentValues.put("tlf", tlf);
         contentValues.put("user", user);
 
         db.insert("jatetxea", null, contentValues);
@@ -86,6 +88,7 @@ public class db extends SQLiteOpenHelper {
             ezaugarriak.add(res.getString(res.getColumnIndex("ubicacion")));
             ezaugarriak.add(res.getString(res.getColumnIndex("valoracion")));
             ezaugarriak.add(res.getString(res.getColumnIndex("comentarios")));
+            ezaugarriak.add(res.getString(res.getColumnIndex("tlf")));
 
             array_list.add(ezaugarriak);
             res.moveToNext();

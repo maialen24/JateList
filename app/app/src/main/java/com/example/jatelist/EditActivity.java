@@ -8,12 +8,14 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Color;
+import android.net.Uri;
 import android.os.Bundle;
 import android.text.method.KeyListener;
 import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.RatingBar;
 import android.widget.Toast;
 
 import com.google.android.gms.maps.GoogleMap;
@@ -32,16 +34,22 @@ public class EditActivity extends AppCompatActivity implements OnMapReadyCallbac
     private MapView map;
 
 
+    private static final  String MAPVIEW_BUNDLE_KEY="MapViewBundleKey";
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
         db=dbHelper.getWritableDatabase();
 
+        Bundle mapViewBundle=null;
         if (savedInstanceState!= null) {
             // cambioOrientacion= savedInstanceState.getInt(“contador");
             user = savedInstanceState.getString("user");
             update=savedInstanceState.getBoolean("update");
+            mapViewBundle=savedInstanceState.getBundle(MAPVIEW_BUNDLE_KEY);
+
 
         }
 
@@ -50,7 +58,8 @@ public class EditActivity extends AppCompatActivity implements OnMapReadyCallbac
         setContentView(R.layout.activity_edit);
 
         map = (MapView) findViewById(R.id.mapView);
-        map.onCreate(savedInstanceState);
+        map.onCreate(mapViewBundle);
+        map.getMapAsync(  this);
 
 
 
@@ -59,13 +68,16 @@ public class EditActivity extends AppCompatActivity implements OnMapReadyCallbac
 
         EditText izena=(EditText) findViewById(R.id.izena);
         EditText ubi=(EditText) findViewById(R.id.ubi);
-        EditText valoracion=(EditText) findViewById(R.id.valoracion);
+       // EditText valoracion=(EditText) findViewById(R.id.valoracion);
         EditText comments=(EditText) findViewById(R.id.comments);
+        EditText tlf_number=(EditText) findViewById(R.id.phoneNumber);
+        RatingBar valoracion = (RatingBar) findViewById(R.id.rating);
 
 
         KeyListener izenalistener = izena.getKeyListener();
         KeyListener ubiListener = ubi.getKeyListener();
-        KeyListener valListener = valoracion.getKeyListener();
+        KeyListener tlfListener = tlf_number.getKeyListener();
+        //KeyListener valListener = valoracion.getKeyListener();
         KeyListener comListener = comments.getKeyListener();
 
         Bundle extras = getIntent().getExtras();
@@ -75,8 +87,10 @@ public class EditActivity extends AppCompatActivity implements OnMapReadyCallbac
             if(update){
                 izena.setText(extras.getString("izena"));
                 ubi.setText(extras.getString("ubi"));
-                valoracion.setText(extras.getString("valoracion"));
+                valoracion.setRating(Float.parseFloat(extras.getString("valoracion")));
+                //valoracion.setText(extras.getString("valoracion"));
                 comments.setText(extras.getString("comentarios"));
+                tlf_number.setText(extras.getString("tlf_number"));
 
             }
 
@@ -88,20 +102,18 @@ public class EditActivity extends AppCompatActivity implements OnMapReadyCallbac
 
         ImageButton editButton=(ImageButton) findViewById(R.id.editButton);
         if (!update){
+            valoracion.setIsIndicator(false);
             editButton.performClick();
         }else{
-           // izena.setKeyListener(null);
-          //  ubi.setKeyListener(null);
-          //  valoracion.setKeyListener(null);
-          //  comments.setKeyListener(null);
 
             disableEditText(izena);
             disableEditText(ubi);
-            disableEditText(valoracion);
+            disableEditText(tlf_number);
+            valoracion.setIsIndicator(true);
             disableEditText(comments);
         }
 
-        //ImageButton editButton=(ImageButton) findViewById(R.id.editButton);
+
         editButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -109,13 +121,10 @@ public class EditActivity extends AppCompatActivity implements OnMapReadyCallbac
 
                 enableEditText(izena,izenalistener);
                 enableEditText(ubi,ubiListener);
-                enableEditText(valoracion,valListener);
+                valoracion.setIsIndicator(false);
+                enableEditText(tlf_number,tlfListener);
+                //enableEditText(valoracion,valListener);
                 enableEditText(comments,comListener);
-
-              //  izena.setKeyListener(izenalistener);
-              //  ubi.setKeyListener(ubiListener);
-                //valoracion.setKeyListener(valListener);
-                //comments.setKeyListener(comListener);
 
             }
         });
@@ -178,28 +187,38 @@ public class EditActivity extends AppCompatActivity implements OnMapReadyCallbac
                 Log.i("info","SAVE RESTAURANT AND DISABLE EDITABLE");
                 Boolean succes;
                 if (update){
-                    succes=dbHelper.updateJatetxe(izena.getText().toString(),ubi.getText().toString(),valoracion.getText().toString(),comments.getText().toString(),user);
+                    succes=dbHelper.updateJatetxe(izena.getText().toString(),ubi.getText().toString(),String.valueOf(valoracion.getRating()),comments.getText().toString(),tlf_number.getText().toString(),user);
                 }else{
-                   succes=dbHelper.insertJatetxe(izena.getText().toString(),ubi.getText().toString(),valoracion.getText().toString(),comments.getText().toString(),user);
+                   succes=dbHelper.insertJatetxe(izena.getText().toString(),ubi.getText().toString(),String.valueOf(valoracion.getRating()),comments.getText().toString(),tlf_number.getText().toString(),user);
                 }
 
                 disableEditText(izena);
                 disableEditText(ubi);
-                disableEditText(valoracion);
+                //disableEditText(valoracion);
+                valoracion.setIsIndicator(true);
                 disableEditText(comments);
+                disableEditText(tlf_number);
                 if (succes){
                     Toast.makeText(getApplicationContext(),v.getContext().getString(R.string.toast),Toast.LENGTH_SHORT).show();
                 }
+            }
+        });
 
-
-                //  izena.setKeyListener(null);
-             //   ubi.setKeyListener(null);
-             //   valoracion.setKeyListener(null);
-            //    comments.setKeyListener(null);
+        ImageButton call= (ImageButton) findViewById(R.id.callButton);
+        call.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //MIRAR SI YA EXISTE EN LA BASE DE DATOS O NO Y GUARDAR EN LA BASE DE DATOS
+                Log.i("info","MARK RESTAURANT NUMBER");
+                Intent i = new Intent(Intent.ACTION_DIAL, Uri.parse("tel:"+tlf_number.getText()));
+                startActivity(i);
 
 
             }
         });
+
+
+
     }
 
     private void disableEditText(EditText editText) {
@@ -222,7 +241,13 @@ public class EditActivity extends AppCompatActivity implements OnMapReadyCallbac
 
     protected void onSaveInstanceState(Bundle savedInstanceState) {
         super.onSaveInstanceState(savedInstanceState);
-        map.onSaveInstanceState(savedInstanceState);
+        //map.onSaveInstanceState(savedInstanceState);
+        Bundle mapViewBundle =savedInstanceState.getBundle(MAPVIEW_BUNDLE_KEY);
+        if (mapViewBundle==null){
+            mapViewBundle=new Bundle();
+            savedInstanceState.putBundle(MAPVIEW_BUNDLE_KEY, mapViewBundle);
+        }
+        map.onSaveInstanceState(mapViewBundle);
         savedInstanceState.putString("user",user );
         savedInstanceState.putBoolean("update", update);
 
@@ -237,9 +262,9 @@ public class EditActivity extends AppCompatActivity implements OnMapReadyCallbac
     }
 
     @Override
-    public void onMapReady(@NonNull GoogleMap googleMap) {
+    public void onMapReady(GoogleMap map) {
         LatLng sydney = new LatLng(-33.852, 151.211);
-        googleMap.addMarker(new MarkerOptions()
+        map.addMarker(new MarkerOptions()
                 .position(sydney)
                 .title("Marker in Sydney"));
     }
