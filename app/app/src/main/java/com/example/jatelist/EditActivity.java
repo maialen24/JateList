@@ -42,8 +42,7 @@ public class EditActivity extends AppCompatActivity implements OnMapReadyCallbac
     double lat;
     double lo;
 
-
-
+    private static final  String MAPVIEW_BUNDLE_KEY="MapViewBundleKey";
 
 
     @Override
@@ -68,6 +67,7 @@ public class EditActivity extends AppCompatActivity implements OnMapReadyCallbac
 
 
         setContentView(R.layout.activity_edit);
+
 
 
 
@@ -120,7 +120,7 @@ public class EditActivity extends AppCompatActivity implements OnMapReadyCallbac
         lat= address.get(0).getLatitude();
         lo= address.get(0).getLongitude();
 
-        map = (MapView) findViewById(R.id.mapView);
+        map = (MapView) findViewById(R.id.mapview);
         map.onCreate(mapViewBundle);
         map.getMapAsync(  this);
         map.onResume();
@@ -276,6 +276,9 @@ public class EditActivity extends AppCompatActivity implements OnMapReadyCallbac
         map.onSaveInstanceState(mapViewBundle);
         savedInstanceState.putString("user",user );
         savedInstanceState.putBoolean("update", update);
+        savedInstanceState.putDouble("latitude",lat);
+        savedInstanceState.putDouble("longitud",lo);
+        savedInstanceState.putString("jatetxeName",nameJatetxe);
 
 
 
@@ -284,6 +287,9 @@ public class EditActivity extends AppCompatActivity implements OnMapReadyCallbac
         super.onRestoreInstanceState(savedInstanceState);
         user = savedInstanceState.getString("user");
         update = savedInstanceState.getBoolean("update");
+        lat=savedInstanceState.getDouble("latitude");
+        lo=savedInstanceState.getDouble("longitud");
+        nameJatetxe=savedInstanceState.getString("jatetxeName");
         ;
     }
 
@@ -295,7 +301,10 @@ public class EditActivity extends AppCompatActivity implements OnMapReadyCallbac
                 .position(jatetxea)
                 .title(nameJatetxe));
         // [START_EXCLUDE silent]
-        googleMap.moveCamera(CameraUpdateFactory.newLatLng(jatetxea));
+        googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(jatetxea, 15));
+
+        //googleMap.setMinZoomPreference(6.0f);
+       // googleMap.setMaxZoomPreference(14.0f);
 
     }
 
