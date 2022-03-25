@@ -8,6 +8,8 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Color;
+import android.location.Address;
+import android.location.Geocoder;
 import android.net.Uri;
 import android.os.Bundle;
 import android.text.method.KeyListener;
@@ -18,12 +20,16 @@ import android.widget.ImageButton;
 import android.widget.RatingBar;
 import android.widget.Toast;
 
+import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapView;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
+
+import java.io.IOException;
+import java.util.List;
 
 public class EditActivity extends AppCompatActivity implements OnMapReadyCallback {
 
@@ -32,6 +38,9 @@ public class EditActivity extends AppCompatActivity implements OnMapReadyCallbac
     private SQLiteDatabase db;
     private String user;
     private MapView map;
+    String nameJatetxe;
+    double lat;
+    double lo;
 
 
     private static final  String MAPVIEW_BUNDLE_KEY="MapViewBundleKey";
@@ -49,6 +58,9 @@ public class EditActivity extends AppCompatActivity implements OnMapReadyCallbac
             user = savedInstanceState.getString("user");
             update=savedInstanceState.getBoolean("update");
             mapViewBundle=savedInstanceState.getBundle(MAPVIEW_BUNDLE_KEY);
+            lat=savedInstanceState.getDouble("latitude");
+            lo=savedInstanceState.getDouble("longitud");
+            nameJatetxe=savedInstanceState.getString("jatetxeName");
 
 
         }
@@ -57,10 +69,7 @@ public class EditActivity extends AppCompatActivity implements OnMapReadyCallbac
 
         setContentView(R.layout.activity_edit);
 
-        map = (MapView) findViewById(R.id.mapView);
-        map.onCreate(mapViewBundle);
-        map.getMapAsync(  this);
-        map.onResume();
+
 
 
         dbHelper = new db(this);
@@ -97,7 +106,25 @@ public class EditActivity extends AppCompatActivity implements OnMapReadyCallbac
         }
 
 
+        nameJatetxe=izena.getText().toString();
 
+        Geocoder geocoder = new Geocoder(this);
+
+        List<Address> address = null;
+
+        try {
+            address =  geocoder.getFromLocationName(ubi.getText().toString(),1);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        lat= address.get(0).getLatitude();
+        lo= address.get(0).getLongitude();
+
+        map = (MapView) findViewById(R.id.mapView);
+        map.onCreate(mapViewBundle);
+        map.getMapAsync(  this);
+        map.onResume();
 
 
         ImageButton editButton=(ImageButton) findViewById(R.id.editButton);
@@ -262,11 +289,14 @@ public class EditActivity extends AppCompatActivity implements OnMapReadyCallbac
     }
 
     @Override
-    public void onMapReady(GoogleMap map) {
-        LatLng sydney = new LatLng(-33.852, 151.211);
-        map.addMarker(new MarkerOptions()
-                .position(sydney)
-                .title("Marker in Sydney"));
+    public void onMapReady(GoogleMap googleMap) {
+
+        LatLng jatetxea = new LatLng(lat, lo);
+        googleMap.addMarker(new MarkerOptions()
+                .position(jatetxea)
+                .title(nameJatetxe));
+        // [START_EXCLUDE silent]
+        googleMap.moveCamera(CameraUpdateFactory.newLatLng(jatetxea));
 
     }
 
