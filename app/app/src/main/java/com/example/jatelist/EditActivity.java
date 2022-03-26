@@ -43,6 +43,7 @@ public class EditActivity extends AppCompatActivity implements OnMapReadyCallbac
     double lat=0;
     double lo=0;
 
+
     private static final  String MAPVIEW_BUNDLE_KEY="MapViewBundleKey";
 
 
@@ -53,6 +54,7 @@ public class EditActivity extends AppCompatActivity implements OnMapReadyCallbac
         db=dbHelper.getWritableDatabase();
 
         Bundle mapViewBundle=null;
+
         if (savedInstanceState!= null) {
             // cambioOrientacion= savedInstanceState.getInt(“contador");
             user = savedInstanceState.getString("user");
@@ -121,6 +123,7 @@ public class EditActivity extends AppCompatActivity implements OnMapReadyCallbac
             }
 
         }
+
         map = (MapView) findViewById(R.id.mapview);
         map.onCreate(mapViewBundle);
         map.getMapAsync(  this);
@@ -283,6 +286,7 @@ public class EditActivity extends AppCompatActivity implements OnMapReadyCallbac
 
 
 
+
     }
     protected void onRestoreInstanceState(Bundle savedInstanceState) {
         super.onRestoreInstanceState(savedInstanceState);
@@ -291,6 +295,7 @@ public class EditActivity extends AppCompatActivity implements OnMapReadyCallbac
         lat=savedInstanceState.getDouble("latitude");
         lo=savedInstanceState.getDouble("longitud");
         nameJatetxe=savedInstanceState.getString("jatetxeName");
+
         ;
     }
 

@@ -67,7 +67,7 @@ public class MainActivity extends AppCompatActivity {
 
         rvJatetxeak = (RecyclerView) findViewById(R.id.rv_jatetxeak);
 
-        glm = new GridLayoutManager(this, 2);
+        glm = new GridLayoutManager(this, 1);
         rvJatetxeak.setLayoutManager(glm);
         adapter = new JatetxeaAdapter(data,user);
         rvJatetxeak.setAdapter(adapter);
