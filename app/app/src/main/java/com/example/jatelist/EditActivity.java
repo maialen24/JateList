@@ -318,33 +318,39 @@ public class EditActivity extends AppCompatActivity implements OnMapReadyCallbac
     protected void onPause() {
         super.onPause();
         map.onPause();
+        Log.i("CONTROL", "EDIT ON PAUSE");
     }
     @Override
     protected void onStart() {
         super.onStart();
         map.onStart();
+        Log.i("CONTROL", "EDIT ON START");
     }
 
     @Override
     protected void onResume() {
         super.onResume();
         map.onResume();
+        Log.i("CONTROL", "EDIT ON RESUME");
     }
 
     @Override
     protected void onStop() {
         super.onStop();
         map.onStop();
+        Log.i("CONTROL", "EDIT ON STOP");
     }
     @Override
     protected void onDestroy() {
         super.onDestroy();
         map.onDestroy();
+        Log.i("CONTROL", "EDIT ON DESTROY");
     }
     @Override
     public void onLowMemory() {
         super.onLowMemory();
         map.onLowMemory();
+        Log.i("CONTROL", "EDIT ON LOW MEMORY");
     }
 
 

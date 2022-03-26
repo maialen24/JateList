@@ -123,4 +123,39 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        Log.i("CONTROL","main ON PAUSE");
+
+    }
+    @Override
+    protected void onStart() {
+
+        super.onStart();
+        Log.i("CONTROL"," main ON START");
+
+
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        Log.i("CONTROL","main ON RESUME");
+
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        Log.i("CONTROL","main ON STOP");
+
+    }
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        Log.i("CONTROL","main ON DESTROY");
+
+    }
 }

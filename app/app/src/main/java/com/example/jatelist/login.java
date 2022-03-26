@@ -43,19 +43,24 @@ public class login extends AppCompatActivity implements DialogClass.Listener, se
     public static final String MyPREFERENCES = "MyPrefs" ;
     private Boolean night;
 
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
 
+        super.onCreate(savedInstanceState);
+        Log.i("CONTROL","ON CREATE");
         if (savedInstanceState!= null) {
 
             user = savedInstanceState.getString("user");
             language =savedInstanceState.getString("language");
             night=savedInstanceState.getBoolean("mode");
+            changeLanguage();
+           // changeTheme();
 
         }
 
-
+        preferences();
 
 
         setContentView(R.layout.activity_login);
@@ -68,22 +73,10 @@ public class login extends AppCompatActivity implements DialogClass.Listener, se
         TextView es=(TextView) findViewById(R.id.español);
 
         Switch mode=(Switch) findViewById(R.id.nightMode);
-
-
-        sharedpreferences = getSharedPreferences(MyPREFERENCES, Context.MODE_PRIVATE);
-        language = sharedpreferences.getString("language", "es");
-        night = sharedpreferences.getBoolean("mode",false);
-
         mode.setChecked(night);
 
 
-        if(language.equals("eu")){
-            eu.performClick();
-        }else if (language.equals("en")){
-            en.performClick();
-        }else{
-            es.performClick();
-        }
+
 
 
 
@@ -132,11 +125,8 @@ public class login extends AppCompatActivity implements DialogClass.Listener, se
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 // do something, the isChecked will be
                 // true if the switch is in the On position
-                if(isChecked){
-                    AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
-                }else{
-                    AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
-                }
+                night=isChecked;
+                changeTheme();
 
             }
         });
@@ -149,15 +139,7 @@ public class login extends AppCompatActivity implements DialogClass.Listener, se
             public void onClick(View v) {
                 Log.i("info-paso","Euskera");
                 language="eu";
-                Locale nuevaloc = new Locale(language);
-                Locale.setDefault(nuevaloc);
-                Configuration configuration = getBaseContext().getResources().getConfiguration();
-                configuration.setLocale(nuevaloc);
-                configuration.setLayoutDirection(nuevaloc);
-
-                Context context = getBaseContext().createConfigurationContext(configuration);
-                getBaseContext().getResources().updateConfiguration(configuration, context.getResources().getDisplayMetrics());
-
+                //changeLanguage();
                 finish();
                 startActivity(getIntent());
             }
@@ -170,17 +152,11 @@ public class login extends AppCompatActivity implements DialogClass.Listener, se
             public void onClick(View v) {
                 Log.i("info-paso","Ingelesa");
                 language="en";
-                Locale nuevaloc = new Locale(language);
-                Locale.setDefault(nuevaloc);
-                Configuration configuration = getBaseContext().getResources().getConfiguration();
-                configuration.setLocale(nuevaloc);
-                configuration.setLayoutDirection(nuevaloc);
-
-                Context context = getBaseContext().createConfigurationContext(configuration);
-                getBaseContext().getResources().updateConfiguration(configuration, context.getResources().getDisplayMetrics());
-
+               // changeLanguage();
                 finish();
+
                 startActivity(getIntent());
+                onStart();
             }
         });
 
@@ -191,17 +167,10 @@ public class login extends AppCompatActivity implements DialogClass.Listener, se
             public void onClick(View v) {
                 Log.i("info-paso","Castellano");
                 language="es";
-                Locale nuevaloc = new Locale(language);
-                Locale.setDefault(nuevaloc);
-                Configuration configuration = getBaseContext().getResources().getConfiguration();
-                configuration.setLocale(nuevaloc);
-                configuration.setLayoutDirection(nuevaloc);
-
-                Context context = getBaseContext().createConfigurationContext(configuration);
-                getBaseContext().getResources().updateConfiguration(configuration, context.getResources().getDisplayMetrics());
-
-                finish();
-                startActivity(getIntent());
+               // changeLanguage();
+              //  finish();
+               // startActivity(getIntent());
+                onStart();
             }
         });
 
@@ -337,7 +306,10 @@ public class login extends AppCompatActivity implements DialogClass.Listener, se
         // we need to commit to apply those changes made,
         // otherwise, it will throw an error
         myEdit.commit();
-        startActivity(this.getIntent());
+        preferences();
+        finish();
+        startActivity(getIntent());
+        //startActivity(this.getIntent());
 
 
 
@@ -351,4 +323,86 @@ public class login extends AppCompatActivity implements DialogClass.Listener, se
     public void alpulsarOK() {
         //clos info dialog
     }
+
+    private void preferences(){
+        sharedpreferences = getSharedPreferences(MyPREFERENCES, Context.MODE_PRIVATE);
+        language = sharedpreferences.getString("language", "es");
+        night = sharedpreferences.getBoolean("mode",false);
+        changeLanguage();
+        //changeTheme();
+
+        /*if(night){
+            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
+        }else{
+            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
+        }*/
+
+        //Loads Shared preferences
+
+
+
+    }
+
+    private void changeLanguage(){
+        Locale nuevaloc = new Locale(language);
+        Locale.setDefault(nuevaloc);
+        Configuration configuration = getBaseContext().getResources().getConfiguration();
+        configuration.setLocale(nuevaloc);
+        configuration.setLayoutDirection(nuevaloc);
+
+        Context context = getBaseContext().createConfigurationContext(configuration);
+        getBaseContext().getResources().updateConfiguration(configuration, context.getResources().getDisplayMetrics());
+
+
+
+    }
+
+    private void changeTheme(){
+        if(night){
+            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
+        }else{
+            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
+        }
+
+    }
+
+
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        Log.i("CONTROL","login ON PAUSE");
+
+    }
+    @Override
+    protected void onStart() {
+        changeTheme();
+        changeLanguage();
+        super.onStart();
+        Log.i("CONTROL"," login ON START");
+
+
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        Log.i("CONTROL","login ON RESUME");
+
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        Log.i("CONTROL","login ON STOP");
+
+    }
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        Log.i("CONTROL","login ON DESTROY");
+
+    }
+
+
 }
