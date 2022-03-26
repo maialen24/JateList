@@ -29,6 +29,7 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
 public class EditActivity extends AppCompatActivity implements OnMapReadyCallback {
@@ -39,8 +40,8 @@ public class EditActivity extends AppCompatActivity implements OnMapReadyCallbac
     private String user;
     private MapView map;
     String nameJatetxe;
-    double lat;
-    double lo;
+    double lat=0;
+    double lo=0;
 
     private static final  String MAPVIEW_BUNDLE_KEY="MapViewBundleKey";
 
@@ -107,19 +108,19 @@ public class EditActivity extends AppCompatActivity implements OnMapReadyCallbac
 
         nameJatetxe=izena.getText().toString();
 
-        Geocoder geocoder = new Geocoder(this);
+        if (update) {
+            Geocoder geocoder = new Geocoder(this);
+            List<Address> address = new ArrayList<>();
 
-        List<Address> address = null;
+            try {
+                address = geocoder.getFromLocationName(ubi.getText().toString(), 1);
+                lat = address.get(0).getLatitude();
+                lo = address.get(0).getLongitude();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
 
-        try {
-            address =  geocoder.getFromLocationName(ubi.getText().toString(),1);
-        } catch (IOException e) {
-            e.printStackTrace();
         }
-
-        lat= address.get(0).getLatitude();
-        lo= address.get(0).getLongitude();
-
         map = (MapView) findViewById(R.id.mapview);
         map.onCreate(mapViewBundle);
         map.getMapAsync(  this);
@@ -295,14 +296,14 @@ public class EditActivity extends AppCompatActivity implements OnMapReadyCallbac
 
     @Override
     public void onMapReady(GoogleMap googleMap) {
-
-        LatLng jatetxea = new LatLng(lat, lo);
-        googleMap.addMarker(new MarkerOptions()
-                .position(jatetxea)
-                .title(nameJatetxe));
-        // [START_EXCLUDE silent]
-        googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(jatetxea, 15));
-
+        if (update & lat!=0 & lo!=0) {
+            LatLng jatetxea = new LatLng(lat, lo);
+            googleMap.addMarker(new MarkerOptions()
+                    .position(jatetxea)
+                    .title(nameJatetxe));
+            // [START_EXCLUDE silent]
+            googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(jatetxea, 15));
+        }
         //googleMap.setMinZoomPreference(6.0f);
        // googleMap.setMaxZoomPreference(14.0f);
 
