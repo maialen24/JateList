@@ -41,7 +41,7 @@ public class login extends AppCompatActivity implements DialogClass.Listener, se
     private String language;
     SharedPreferences sharedpreferences;
     public static final String MyPREFERENCES = "MyPrefs" ;
-    private Boolean night=false;
+    private Boolean night;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -75,11 +75,7 @@ public class login extends AppCompatActivity implements DialogClass.Listener, se
         night = sharedpreferences.getBoolean("mode",false);
 
         mode.setChecked(night);
-        if(mode.isChecked()){
-            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
-        }else{
-            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
-        }
+
 
         if(language.equals("eu")){
             eu.performClick();
@@ -141,6 +137,7 @@ public class login extends AppCompatActivity implements DialogClass.Listener, se
                 }else{
                     AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
                 }
+
             }
         });
 
@@ -333,8 +330,8 @@ public class login extends AppCompatActivity implements DialogClass.Listener, se
         myEdit.putBoolean("mode", mode);
         myEdit.putString("language", language);
 
-        this.language=language;
-        this.night=mode;
+        //this.language=language;
+        //this.night=mode;
 
         // Once the changes have been made,
         // we need to commit to apply those changes made,
