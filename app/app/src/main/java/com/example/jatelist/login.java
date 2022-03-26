@@ -3,6 +3,7 @@ package com.example.jatelist;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.app.AppCompatDelegate;
+import androidx.appcompat.widget.Toolbar;
 import androidx.core.app.NotificationCompat;
 import androidx.fragment.app.DialogFragment;
 
@@ -12,6 +13,7 @@ import android.app.NotificationManager;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.content.res.Resources;
 import android.database.sqlite.SQLiteDatabase;
@@ -20,6 +22,9 @@ import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CompoundButton;
@@ -30,23 +35,58 @@ import android.widget.TextView;
 
 import java.util.Locale;
 
-public class login extends AppCompatActivity implements DialogClass.Listener{
+public class login extends AppCompatActivity implements DialogClass.Listener, settingsDialog.Listener,infoDialog.Listener{
 
     private String user;
     private String language;
+    SharedPreferences sharedpreferences;
+    public static final String MyPREFERENCES = "MyPrefs" ;
+    private Boolean night=false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
         if (savedInstanceState!= null) {
-            // cambioOrientacion= savedInstanceState.getInt(“contador");
+
             user = savedInstanceState.getString("user");
             language =savedInstanceState.getString("language");
 
         }
 
+
+
+
         setContentView(R.layout.activity_login);
+
+        Toolbar myToolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(myToolbar);
+
+        TextView eu=(TextView) findViewById(R.id.euskera);
+        TextView en=(TextView) findViewById(R.id.ingles);
+        TextView es=(TextView) findViewById(R.id.español);
+
+
+       /* sharedpreferences = getSharedPreferences(MyPREFERENCES, Context.MODE_PRIVATE);
+        language = sharedpreferences.getString("language", "es");
+        night = sharedpreferences.getBoolean("mode",false);
+        if(night){
+            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
+        }else{
+            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
+        }
+
+        switch (language) {
+            case "eu":
+                eu.performClick();
+            case "en":
+                en.performClick();
+            default:
+                es.performClick();
+
+        }*/
+
+
 
         Bundle extras = getIntent().getExtras();
         if (extras != null) {
@@ -99,7 +139,7 @@ public class login extends AppCompatActivity implements DialogClass.Listener{
 
         //euskera button clicked, change language
 
-        TextView eu=(TextView) findViewById(R.id.euskera);
+
         eu.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -120,7 +160,7 @@ public class login extends AppCompatActivity implements DialogClass.Listener{
         });
 
         // english button clicked change language
-        TextView en=(TextView) findViewById(R.id.ingles);
+
         en.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -141,7 +181,7 @@ public class login extends AppCompatActivity implements DialogClass.Listener{
         });
 
         //spanish button clicked change language
-        TextView es=(TextView) findViewById(R.id.español);
+
         es.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -219,6 +259,8 @@ public class login extends AppCompatActivity implements DialogClass.Listener{
 
     }
 
+
+
     protected void onSaveInstanceState(Bundle savedInstanceState) {
         super.onSaveInstanceState(savedInstanceState);
         savedInstanceState.putString("user",user );
@@ -233,5 +275,71 @@ public class login extends AppCompatActivity implements DialogClass.Listener{
         language = savedInstanceState.getString("language");
 
 
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        // Inflate the menu; this adds items to the action bar if it is present.
+        getMenuInflater().inflate(R.menu.toolbar_menu, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        // Handle action bar item clicks here. The action bar will
+        // automatically handle clicks on the Home/Up button, so long
+        // as you specify a parent activity in AndroidManifest.xml.
+        int id = item.getItemId();
+
+        //noinspection SimplifiableIfStatement
+        switch (item.getItemId()) {
+            case R.id.action_about:
+                DialogFragment dialogAbout= new infoDialog();
+                dialogAbout.show(getSupportFragmentManager(), "info dialog");
+
+                return true;
+            case R.id.action_settings:
+                DialogFragment dialogSettings= new settingsDialog();
+                dialogSettings.show(getSupportFragmentManager(), "settings dialog");
+
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
+
+
+    }
+
+    @Override
+    public void alpulsarSave(Boolean mode, int language) {
+        //save preferences (settings dialog)
+        /*SharedPreferences.Editor myEdit = sharedpreferences.edit();
+
+        // Storing the key and its value as the data fetched from edittext
+        myEdit.putBoolean("mode", mode);
+        String languageString="";
+        if (language==1){
+            languageString="eu";
+
+        }else if(language==2){
+            languageString="en";
+        }else{
+            languageString="es";
+        }
+        myEdit.putString("language", languageString);
+
+        // Once the changes have been made,
+        // we need to commit to apply those changes made,
+        // otherwise, it will throw an error
+        myEdit.commit();
+*/
+
+    }
+
+
+
+    @Override
+    public void alpulsarOK() {
+        //clos info dialog
     }
 }

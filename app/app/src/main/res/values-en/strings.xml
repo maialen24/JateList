@@ -23,4 +23,12 @@
     <string name="usercreate_mssg">User perfectly created :)</string>
     <string name="toastOut">Log out</string>
     <string name="phone">Phone: 123456789</string>
+    <string name="about">About</string>
+    <string name="infoText">Save your favourite restaurants or even those you did not like, to remember for the next time!</string>
+    <string name="settings">Settings</string>
+    <string name="euskera">Basque</string>
+    <string name="language">Language</string>
+    <string name="español">Spanish</string>
+    <string name="ingles">English</string>
+    <string name="modeText">Theme</string>
 </resources>

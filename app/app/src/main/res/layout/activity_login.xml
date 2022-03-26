@@ -6,6 +6,20 @@
     android:layout_height="match_parent">
 
 
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="30dp"
+        android:background="?attr/colorPrimary"
+        android:elevation="1dp"
+        android:theme="@style/ThemeOverlay.AppCompat.ActionBar"
+        app:layout_constraintBottom_toTopOf="@+id/español"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.0"
+        app:popupTheme="@style/ThemeOverlay.AppCompat.Light" />
 
     <TextView
         android:id="@+id/appName"
@@ -72,8 +86,8 @@
         android:layout_width="64dp"
         android:layout_height="62dp"
         android:layout_marginStart="312dp"
-        android:layout_marginTop="26dp"
-        android:layout_marginEnd="35dp"
+        android:layout_marginTop="30dp"
+        android:layout_marginEnd="5dp"
         android:layout_marginBottom="277dp"
         android:contentDescription="@string/app_name"
         app:layout_constraintBottom_toTopOf="@+id/username"
@@ -103,20 +117,22 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="5dp"
-        android:layout_marginTop="15dp"
+        android:layout_marginTop="30dp"
         android:layout_marginEnd="217dp"
         android:layout_marginBottom="322dp"
         android:text="@string/mode"
         app:layout_constraintBottom_toTopOf="@+id/username"
         app:layout_constraintEnd_toStartOf="@+id/signUp"
+        app:layout_constraintHorizontal_bias="0.333"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.0" />
 
     <TextView
         android:id="@+id/euskera"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="15dp"
+        android:layout_marginStart="40dp"
         android:layout_marginTop="12dp"
         android:layout_marginEnd="10dp"
         android:layout_marginBottom="658dp"
@@ -157,6 +173,7 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/ingles"
-        app:layout_constraintTop_toBottomOf="@+id/nightMode" />
+        app:layout_constraintTop_toBottomOf="@+id/nightMode"
+        app:layout_constraintVertical_bias="0.0" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

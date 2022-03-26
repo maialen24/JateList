@@ -23,5 +23,13 @@
     <string name="usercreate_mssg">Erabiltzailea sortu da :)</string>
     <string name="toastOut">Deskonektatuta</string>
     <string name="phone">Telefonoa: 123456789</string>
+    <string name="about">Info</string>
+    <string name="infoText">JateList jatetxe erregistro bat gordetzen ahalbidetzen dizun aplikazioa da</string>
+    <string name="settings">Ezarpenak</string>
+    <string name="language">Hizkuntza</string>
+    <string name="euskera">Euskera</string>
+    <string name="español">Erdera</string>
+    <string name="ingles">Ingelesa</string>
+    <string name="modeText">Itxura</string>
 
 </resources>
