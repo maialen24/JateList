@@ -43,19 +43,19 @@
                 android:text="@string/language" />
 
             <RadioButton
-                android:id="@+id/eusRB"
+                android:id="@+id/eu"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="Euskera" />
 
             <RadioButton
-                android:id="@+id/enRB"
+                android:id="@+id/en"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="Ingles" />
 
             <RadioButton
-                android:id="@+id/esRB"
+                android:id="@+id/es"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="Castellano" />

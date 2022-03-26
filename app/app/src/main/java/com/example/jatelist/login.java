@@ -51,6 +51,7 @@ public class login extends AppCompatActivity implements DialogClass.Listener, se
 
             user = savedInstanceState.getString("user");
             language =savedInstanceState.getString("language");
+            night=savedInstanceState.getBoolean("mode");
 
         }
 
@@ -66,25 +67,31 @@ public class login extends AppCompatActivity implements DialogClass.Listener, se
         TextView en=(TextView) findViewById(R.id.ingles);
         TextView es=(TextView) findViewById(R.id.español);
 
+        Switch mode=(Switch) findViewById(R.id.nightMode);
 
-       /* sharedpreferences = getSharedPreferences(MyPREFERENCES, Context.MODE_PRIVATE);
+
+        sharedpreferences = getSharedPreferences(MyPREFERENCES, Context.MODE_PRIVATE);
         language = sharedpreferences.getString("language", "es");
         night = sharedpreferences.getBoolean("mode",false);
-        if(night){
+
+        mode.setChecked(night);
+        if(mode.isChecked()){
             AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
         }else{
             AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
         }
 
-        switch (language) {
-            case "eu":
-                eu.performClick();
-            case "en":
-                en.performClick();
-            default:
-                es.performClick();
+        if(language.equals("eu")){
+            eu.performClick();
+        }else if (language.equals("en")){
+            en.performClick();
+        }else{
+            es.performClick();
+        }
 
-        }*/
+
+
+
 
 
 
@@ -124,7 +131,7 @@ public class login extends AppCompatActivity implements DialogClass.Listener, se
             }
         });
 
-        Switch mode=(Switch) findViewById(R.id.nightMode);
+
         mode.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 // do something, the isChecked will be
@@ -265,6 +272,7 @@ public class login extends AppCompatActivity implements DialogClass.Listener, se
         super.onSaveInstanceState(savedInstanceState);
         savedInstanceState.putString("user",user );
         savedInstanceState.putString("language",language );
+        savedInstanceState.putBoolean("modo",night );
 
 
 
@@ -273,6 +281,7 @@ public class login extends AppCompatActivity implements DialogClass.Listener, se
         super.onRestoreInstanceState(savedInstanceState);
         user = savedInstanceState.getString("user");
         language = savedInstanceState.getString("language");
+        night = savedInstanceState.getBoolean("modo");
 
 
     }
@@ -299,7 +308,12 @@ public class login extends AppCompatActivity implements DialogClass.Listener, se
 
                 return true;
             case R.id.action_settings:
+                Bundle bundle = new Bundle();
+                bundle.putString("language",language);
+                bundle.putBoolean("mode",night);
+
                 DialogFragment dialogSettings= new settingsDialog();
+                dialogSettings.setArguments(bundle);
                 dialogSettings.show(getSupportFragmentManager(), "settings dialog");
 
                 return true;
@@ -311,28 +325,26 @@ public class login extends AppCompatActivity implements DialogClass.Listener, se
     }
 
     @Override
-    public void alpulsarSave(Boolean mode, int language) {
+    public void alpulsarSave(Boolean mode, String language) {
         //save preferences (settings dialog)
-        /*SharedPreferences.Editor myEdit = sharedpreferences.edit();
+        SharedPreferences.Editor myEdit = sharedpreferences.edit();
 
         // Storing the key and its value as the data fetched from edittext
         myEdit.putBoolean("mode", mode);
-        String languageString="";
-        if (language==1){
-            languageString="eu";
+        myEdit.putString("language", language);
 
-        }else if(language==2){
-            languageString="en";
-        }else{
-            languageString="es";
-        }
-        myEdit.putString("language", languageString);
+        this.language=language;
+        this.night=mode;
 
         // Once the changes have been made,
         // we need to commit to apply those changes made,
         // otherwise, it will throw an error
         myEdit.commit();
-*/
+        startActivity(this.getIntent());
+
+
+
+
 
     }
 

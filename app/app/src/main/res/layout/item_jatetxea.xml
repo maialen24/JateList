@@ -1,27 +1,28 @@
 <?xml version="1.0" encoding="utf-8"?>
 
 
-    <androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:app="http://schemas.android.com/apk/res-auto"
-        xmlns:tools="http://schemas.android.com/tools"
-        android:layout_width="match_parent"
-        android:layout_height="100dp"
-        android:layout_margin="5dp"
-        app:cardCornerRadius="4dp"
-        app:cardElevation="4dp"
-        layout_height="200dp"
-        layout_width="300dp">
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_margin="5dp"
+    app:cardCornerRadius="4dp"
+    app:cardElevation="4dp"
+
+    >
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         android:orientation="vertical"
-        android:weightSum="5">
+
+        android:padding="8dp">
 
         <TextView
             android:id="@+id/tv_nombre"
             android:layout_width="match_parent"
-            android:layout_height="20dp"
+            android:layout_height="wrap_content"
             android:layout_weight="1"
             android:gravity="center"
             android:text="@string/izena"
@@ -41,11 +42,12 @@
         <RatingBar
             android:id="@+id/rating"
             android:layout_width="match_parent"
-            android:layout_height="36dp"
+            android:layout_height="wrap_content"
             android:layout_weight="1"
+
+            android:isIndicator="true"
             android:numStars="5"
-            android:stepSize="1"
-            android:isIndicator="true"/>
+            android:stepSize="1" />
 
 
     </LinearLayout>
