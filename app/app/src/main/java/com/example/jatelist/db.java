@@ -11,6 +11,9 @@ import android.util.Log;
 import java.util.ArrayList;
 
 public class db extends SQLiteOpenHelper {
+
+    /* This class manage the db */
+
     private static final String users_TABLE_CREATE = "CREATE TABLE users(user TEXT PRIMARY KEY, password TEXT)";
     private static final String jatetxea_TABLE_CREATE = "CREATE TABLE jatetxea(_id INTEGER PRIMARY KEY AUTOINCREMENT, izena TEXT, ubicacion TEXT, valoracion INTERGER, comentarios TEXT, tlf TEXT,user TEXT)";
     private static final String DB_NAME = "JateList.sqlite";
@@ -20,6 +23,7 @@ public class db extends SQLiteOpenHelper {
     }
     @Override
     public void onCreate(SQLiteDatabase db) {
+        //create sql tables
         db.execSQL(users_TABLE_CREATE);
         db.execSQL(jatetxea_TABLE_CREATE);
 
@@ -30,6 +34,7 @@ public class db extends SQLiteOpenHelper {
 
     }
 
+    //insert new user into users table in db
     public boolean insertUser(String user, String password) {
         Log.i("info", "INSERT USER INTO DB");
         SQLiteDatabase db = this.getWritableDatabase();
@@ -42,6 +47,7 @@ public class db extends SQLiteOpenHelper {
         return true;
     }
 
+    //update jatetxe info in jatetxea table
     public boolean updateJatetxe(String name, String ubi, String valoracion, String comentarios,String tlf,String user) {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues contentValues = new ContentValues();
@@ -56,6 +62,7 @@ public class db extends SQLiteOpenHelper {
         return true;
     }
 
+    //insert new jatetxe into jatetxea table
     public boolean insertJatetxe(String name, String ubi, String valoracion, String comentarios,String tlf, String user) {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues contentValues = new ContentValues();
@@ -70,6 +77,7 @@ public class db extends SQLiteOpenHelper {
         return true;
     }
 
+    //get all restaurants from the login user
     @SuppressLint("Range")
     public ArrayList getAllCotacts(String user) {
 
@@ -96,6 +104,7 @@ public class db extends SQLiteOpenHelper {
         return array_list;
     }
 
+    //check login user credentials
     public boolean checkCredentials(String user, String password){
         SQLiteDatabase db = this.getWritableDatabase();
         String[] args = new String[] {user};
@@ -107,13 +116,12 @@ public class db extends SQLiteOpenHelper {
 
     }
 
-
+    //remove jatetxea from the user register
     public boolean deleteJatetxea(String izena,  String user) {
         SQLiteDatabase db = this.getWritableDatabase();
 
         db.delete("jatetxea", "izena=? and user=?", new String[]{izena,user});
         return true;
     }
-
 
 }

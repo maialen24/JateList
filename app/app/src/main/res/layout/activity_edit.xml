@@ -115,8 +115,8 @@
         android:layout_marginStart="35dp"
         android:layout_marginTop="16dp"
         android:layout_marginBottom="10dp"
+        android:background="@null"
         android:contentDescription="@string/saveButton"
-
         app:layout_constraintBottom_toTopOf="@+id/callButton"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/editButton"

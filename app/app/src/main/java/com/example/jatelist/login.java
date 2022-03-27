@@ -20,6 +20,7 @@ import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -37,11 +38,18 @@ import java.util.Locale;
 
 public class login extends AppCompatActivity implements DialogClass.Listener, settingsDialog.Listener,infoDialog.Listener{
 
+    /* This class control login activity is used to login, sign up and to set preferences via toolbar */
+
     private String user;
     private String language;
-    SharedPreferences sharedpreferences;
-    public static final String MyPREFERENCES = "MyPrefs" ;
     private Boolean night;
+
+    public static final String MyPREFERENCES = "MyPrefs" ;
+    private SharedPreferences sharedpreferences;
+    private Boolean spNight;
+    private String spLanguage;
+
+
 
 
 
@@ -55,16 +63,20 @@ public class login extends AppCompatActivity implements DialogClass.Listener, se
             user = savedInstanceState.getString("user");
             language =savedInstanceState.getString("language");
             night=savedInstanceState.getBoolean("mode");
-            changeLanguage();
+            //changeLanguage();
            // changeTheme();
 
         }
 
+         //get user preferences
         preferences();
+        language=spLanguage;
+        night=spNight;
 
 
         setContentView(R.layout.activity_login);
 
+        //get elements
         Toolbar myToolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(myToolbar);
 
@@ -72,8 +84,12 @@ public class login extends AppCompatActivity implements DialogClass.Listener, se
         TextView en=(TextView) findViewById(R.id.ingles);
         TextView es=(TextView) findViewById(R.id.español);
 
+        EditText userEditText=findViewById((R.id.username));
+        EditText password=findViewById((R.id.password));
+
         Switch mode=(Switch) findViewById(R.id.nightMode);
-        mode.setChecked(night);
+        //set theme mode
+//        mode.setChecked(night);
 
 
 
@@ -89,11 +105,12 @@ public class login extends AppCompatActivity implements DialogClass.Listener, se
             user = extras.getString("user");
         }
 
-        EditText userEditText=findViewById((R.id.username));
-        EditText password=findViewById((R.id.password));
+
+        // get database instance
         db dbHelper = new db(this);
         SQLiteDatabase db = dbHelper.getWritableDatabase();
 
+        //login button on click, CHECK CREDENTIALS
         Button login= (Button)findViewById((R.id.loginButton));
         login.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -120,7 +137,7 @@ public class login extends AppCompatActivity implements DialogClass.Listener, se
             }
         });
 
-
+        // theme mode switch control
         mode.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 // do something, the isChecked will be
@@ -131,52 +148,48 @@ public class login extends AppCompatActivity implements DialogClass.Listener, se
             }
         });
 
-        //euskera button clicked, change language
-
-
+        //euskera button (textView) clicked, change language
         eu.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Log.i("info-paso","Euskera");
                 language="eu";
-                //changeLanguage();
+                changeLanguage();
                 finish();
                 startActivity(getIntent());
             }
         });
 
-        // english button clicked change language
-
+        // english button (textview) clicked change language
         en.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Log.i("info-paso","Ingelesa");
                 language="en";
-               // changeLanguage();
+                changeLanguage();
                 finish();
 
                 startActivity(getIntent());
-                onStart();
+                //onStart();
             }
         });
 
-        //spanish button clicked change language
-
+        //spanish button (textview) clicked change language
         es.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Log.i("info-paso","Castellano");
                 language="es";
-               // changeLanguage();
-              //  finish();
-               // startActivity(getIntent());
-                onStart();
+                changeLanguage();
+                finish();
+                startActivity(getIntent());
+               // onStart();
             }
         });
 
 
 
-
+        // sign up button, shows sing up dialog (DialogClass)
         ImageButton newUser= (ImageButton)findViewById((R.id.signUp));
         newUser.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -189,6 +202,8 @@ public class login extends AppCompatActivity implements DialogClass.Listener, se
     }
 
 
+    // implements alpulsarSI method from DialogClass listener interface
+    // on click positive button in DialogClass, sing up dialog
     @Override
     public void alpulsarSI(String user, String password) {
         //SAVE USER AND PASSWORD IN DB
@@ -196,12 +211,12 @@ public class login extends AppCompatActivity implements DialogClass.Listener, se
         Log.i("info",user);
         Log.i("info",password);
 
-
-
+        //insert new user in db
         db dbHelper = new db(this);
         //SQLiteDatabase db = dbHelper.getWritableDatabase();
         dbHelper.insertUser(user, password);
 
+        // Sends local notification with user ok created message
         NotificationManager elManager = (NotificationManager)getSystemService(Context.NOTIFICATION_SERVICE);
         NotificationCompat.Builder elBuilder = new NotificationCompat.Builder(this, "1");
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
@@ -226,6 +241,7 @@ public class login extends AppCompatActivity implements DialogClass.Listener, se
 
     }
 
+    //implements alpusarNO method of DialogClass interface
     @Override
     public void alpulsarNO() {
         //CLOSE DIALOG
@@ -261,22 +277,23 @@ public class login extends AppCompatActivity implements DialogClass.Listener, se
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
+        // Handle action bar item clicks here.
         int id = item.getItemId();
 
         //noinspection SimplifiableIfStatement
         switch (item.getItemId()) {
+
+            // click info option, shows infoDialog
             case R.id.action_about:
                 DialogFragment dialogAbout= new infoDialog();
                 dialogAbout.show(getSupportFragmentManager(), "info dialog");
-
                 return true;
+
+                //click settings option, shows settingsDialog
             case R.id.action_settings:
                 Bundle bundle = new Bundle();
-                bundle.putString("language",language);
-                bundle.putBoolean("mode",night);
+                bundle.putString("language",spLanguage);
+                bundle.putBoolean("mode",spNight);
 
                 DialogFragment dialogSettings= new settingsDialog();
                 dialogSettings.setArguments(bundle);
@@ -290,14 +307,16 @@ public class login extends AppCompatActivity implements DialogClass.Listener, se
 
     }
 
+    //implements alpulsarSave method of settingsDialog interface
+    // save user preferences
     @Override
-    public void alpulsarSave(Boolean mode, String language) {
+    public void alpulsarSave(Boolean pmode, String planguage) {
         //save preferences (settings dialog)
         SharedPreferences.Editor myEdit = sharedpreferences.edit();
 
         // Storing the key and its value as the data fetched from edittext
-        myEdit.putBoolean("mode", mode);
-        myEdit.putString("language", language);
+        myEdit.putBoolean("mode", pmode);
+        myEdit.putString("language", planguage);
 
         //this.language=language;
         //this.night=mode;
@@ -306,9 +325,11 @@ public class login extends AppCompatActivity implements DialogClass.Listener, se
         // we need to commit to apply those changes made,
         // otherwise, it will throw an error
         myEdit.commit();
+     //   this.language=planguage;
+     //   this.night=pmode;
         preferences();
-        finish();
-        startActivity(getIntent());
+     //   finish();
+     //   startActivity(getIntent());
         //startActivity(this.getIntent());
 
 
@@ -317,18 +338,18 @@ public class login extends AppCompatActivity implements DialogClass.Listener, se
 
     }
 
-
-
+    // implements infoDialog interface positive button method, close dialog
     @Override
     public void alpulsarOK() {
         //clos info dialog
     }
 
+    // metodo laguntzaile to save preferences
     private void preferences(){
         sharedpreferences = getSharedPreferences(MyPREFERENCES, Context.MODE_PRIVATE);
-        language = sharedpreferences.getString("language", "es");
-        night = sharedpreferences.getBoolean("mode",false);
-        changeLanguage();
+        spLanguage = sharedpreferences.getString("language", "es");
+        spNight = sharedpreferences.getBoolean("mode",false);
+        //changeLanguage();
         //changeTheme();
 
         /*if(night){
@@ -343,6 +364,7 @@ public class login extends AppCompatActivity implements DialogClass.Listener, se
 
     }
 
+    //metodo laguntzaile to change language
     private void changeLanguage(){
         Locale nuevaloc = new Locale(language);
         Locale.setDefault(nuevaloc);
@@ -357,6 +379,7 @@ public class login extends AppCompatActivity implements DialogClass.Listener, se
 
     }
 
+    //metodo laguntzaile to change app mode
     private void changeTheme(){
         if(night){
             AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
@@ -376,8 +399,6 @@ public class login extends AppCompatActivity implements DialogClass.Listener, se
     }
     @Override
     protected void onStart() {
-        changeTheme();
-        changeLanguage();
         super.onStart();
         Log.i("CONTROL"," login ON START");
 
@@ -387,9 +408,24 @@ public class login extends AppCompatActivity implements DialogClass.Listener, se
     @Override
     protected void onResume() {
         super.onResume();
-        Log.i("CONTROL","login ON RESUME");
 
+        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getBaseContext());
+        boolean previouslyStarted = prefs.getBoolean("preference", false);
+        if(!previouslyStarted) {
+            SharedPreferences.Editor edit = prefs.edit();
+            edit.putBoolean("preference", Boolean.TRUE);
+            edit.commit();
+            Log.i("CONTROL","perferences first time ON RESUME");
+            preferences();
+            this.language=spLanguage;
+            this.night=spNight;
+
+
+
+        }
     }
+
+
 
     @Override
     protected void onStop() {

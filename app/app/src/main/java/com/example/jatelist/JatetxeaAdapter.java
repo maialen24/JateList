@@ -44,7 +44,6 @@ public class JatetxeaAdapter extends RecyclerView.Adapter<JatetxeaAdapter.Jatetx
         holder.tvUbicacion.setText(jatetxea.getUbicacion());
         holder.tvNombre.setText(jatetxea.getNombre());
         holder.rbValoracion.setRating(Float.parseFloat(jatetxea.getValoracion()));
-        //holder.tvValoracion.setText(String.valueOf(jatetxea.getValoracion()));
         holder.comentarios= jatetxea.getComentarios();
         holder.tlf_number=jatetxea.getTlf();
 
@@ -72,13 +71,12 @@ public class JatetxeaAdapter extends RecyclerView.Adapter<JatetxeaAdapter.Jatetx
             super(itemView);
             tvUbicacion = (TextView) itemView.findViewById(R.id.tv_ubicacion);
             tvNombre = (TextView) itemView.findViewById(R.id.tv_nombre);
-            //tvValoracion = (TextView) itemView.findViewById(R.id.tv_valoracion);
             rbValoracion = (RatingBar) itemView.findViewById(R.id.rating);
             user=username;
 
 
 
-
+            /* pass info to activity when on click*/
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {

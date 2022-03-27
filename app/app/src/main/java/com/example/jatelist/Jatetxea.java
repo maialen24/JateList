@@ -2,7 +2,7 @@ package com.example.jatelist;
 
 public class Jatetxea {
 
-
+        /*  This class define Jatetxea object */
         private String nombre;
         private String ubicacion;
         private String valoracion;

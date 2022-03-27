@@ -16,12 +16,14 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.DialogFragment;
 
 public class settingsDialog  extends DialogFragment {
+
+    /* This class create settings dialog, toolbar menu option, set user shared preferences (language, theme) */
     settingsDialog.Listener miListener;
     String language;
     Boolean night;
 
 
-
+    // login activity implements positive button on click method
     public interface Listener {
         void alpulsarSave(Boolean mode, String language);
 
@@ -38,18 +40,12 @@ public class settingsDialog  extends DialogFragment {
 
 
 
-
-
-
-
-
-
-
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
         builder.setTitle(getString(R.string.settings));
         LayoutInflater inflater=getActivity().getLayoutInflater();
         View elaspecto= inflater.inflate(R.layout.settings_dialog,null);
 
+        //get actual language and theme
         Bundle bundle = getArguments();
         String language = bundle.getString("language","es");
         Boolean mode= bundle.getBoolean("mode",false);
@@ -72,7 +68,7 @@ public class settingsDialog  extends DialogFragment {
         builder.setView(elaspecto);
 
 
-
+        // postive button on click method, save new preferences
         builder.setPositiveButton(builder.getContext().getString(R.string.saveButton), new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {

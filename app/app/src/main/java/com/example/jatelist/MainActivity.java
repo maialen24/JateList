@@ -17,6 +17,7 @@ import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity {
 
+    /* This class implements main activity, show restaurants list */
 
 
     private RecyclerView rvJatetxeak;
@@ -31,7 +32,7 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
 
         if (savedInstanceState!= null) {
-            // cambioOrientacion= savedInstanceState.getInt(“contador");
+
             user = savedInstanceState.getString("user");
 
         }
@@ -43,12 +44,13 @@ public class MainActivity extends AppCompatActivity {
         if (extras != null) {
             user = extras.getString("user");
 
-            //The key argument here must match that used in the other activity
-        }
-       // data.add(new Jatetxea("kaixo","jatetxe","berria"));
 
+        }
+
+        // establecer a false, when restaurant clicked is true, otherwise (add button) false
         update=false;
 
+        //get all restaurants register of the user
         db dbHelper = new db(this);
         SQLiteDatabase db = dbHelper.getWritableDatabase();
         if (db != null) {
@@ -64,7 +66,7 @@ public class MainActivity extends AppCompatActivity {
 
         }
 
-
+        //initialize list
         rvJatetxeak = (RecyclerView) findViewById(R.id.rv_jatetxeak);
 
         glm = new GridLayoutManager(this, 1);
@@ -72,7 +74,7 @@ public class MainActivity extends AppCompatActivity {
         adapter = new JatetxeaAdapter(data,user);
         rvJatetxeak.setAdapter(adapter);
 
-
+        // add button on click method, go to edit activity (update=false)
         ImageButton add= (ImageButton)findViewById((R.id.addButton));
         add.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -88,7 +90,7 @@ public class MainActivity extends AppCompatActivity {
         });
 
 
-
+        // exit button on click method, return to login activity
         Button exit= (Button)findViewById((R.id.exitButton));
         exit.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -117,11 +119,6 @@ public class MainActivity extends AppCompatActivity {
         update = savedInstanceState.getBoolean("update");
      ;
     }
-
-    public String getUser(){
-        return user;
-    }
-
 
 
     @Override

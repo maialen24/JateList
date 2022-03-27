@@ -15,12 +15,13 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.DialogFragment;
 
 public class infoDialog extends DialogFragment {
+
+    /* This class create info dialog that shows a description of the app */
+
     infoDialog.Listener miListener;
 
+    //create interface that login class is going to implement
     public interface Listener {
-
-
-
         void alpulsarOK();
     }
 
@@ -41,12 +42,10 @@ public class infoDialog extends DialogFragment {
         View elaspecto= inflater.inflate(R.layout.info_dialog,null);
         builder.setView(elaspecto);
 
-
+        //close dialog
         builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-
-
 
                 miListener.alpulsarOK();
             }

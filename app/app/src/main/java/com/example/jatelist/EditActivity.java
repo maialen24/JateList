@@ -34,6 +34,8 @@ import java.util.List;
 
 public class EditActivity extends AppCompatActivity implements OnMapReadyCallback {
 
+    /* This class implements edit activity that is going to be used to add or update restaurants and to show more info about them */
+
     private Boolean update = true;
     private db dbHelper = new db(this);
     private SQLiteDatabase db;
@@ -64,19 +66,16 @@ public class EditActivity extends AppCompatActivity implements OnMapReadyCallbac
             lo=savedInstanceState.getDouble("longitud");
             nameJatetxe=savedInstanceState.getString("jatetxeName");
 
-
         }
-
-
 
         setContentView(R.layout.activity_edit);
 
 
-
-
+        //crear instancia de la base de datos
         dbHelper = new db(this);
         db = dbHelper.getWritableDatabase();
 
+        //instanciar los elementos del layout
         EditText izena=(EditText) findViewById(R.id.izena);
         EditText ubi=(EditText) findViewById(R.id.ubi);
        // EditText valoracion=(EditText) findViewById(R.id.valoracion);
@@ -84,13 +83,14 @@ public class EditActivity extends AppCompatActivity implements OnMapReadyCallbac
         EditText tlf_number=(EditText) findViewById(R.id.phoneNumber);
         RatingBar valoracion = (RatingBar) findViewById(R.id.rating);
 
-
+        //guardar los listener
         KeyListener izenalistener = izena.getKeyListener();
         KeyListener ubiListener = ubi.getKeyListener();
         KeyListener tlfListener = tlf_number.getKeyListener();
         //KeyListener valListener = valoracion.getKeyListener();
         KeyListener comListener = comments.getKeyListener();
 
+        //recuperar info de otras actividades
         Bundle extras = getIntent().getExtras();
         if (extras != null) {
             user = extras.getString("user");
@@ -108,6 +108,7 @@ public class EditActivity extends AppCompatActivity implements OnMapReadyCallbac
         }
 
 
+        //buscar la lat y long de la ubicacion del jatetxe
         nameJatetxe=izena.getText().toString();
 
         if (update) {
@@ -124,12 +125,13 @@ public class EditActivity extends AppCompatActivity implements OnMapReadyCallbac
 
         }
 
+        //crear mapa
         map = (MapView) findViewById(R.id.mapview);
         map.onCreate(mapViewBundle);
         map.getMapAsync(  this);
         map.onResume();
 
-
+        //habilitar o deshabilitar dependiendo si es update o new restaurant
         ImageButton editButton=(ImageButton) findViewById(R.id.editButton);
         if (!update){
             valoracion.setIsIndicator(false);
@@ -143,7 +145,7 @@ public class EditActivity extends AppCompatActivity implements OnMapReadyCallbac
             disableEditText(comments);
         }
 
-
+        //on click del boton edit (habilitar la ediccion)
         editButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -159,6 +161,7 @@ public class EditActivity extends AppCompatActivity implements OnMapReadyCallbac
             }
         });
 
+        //on click boton bueltatu (volver a la main activity)
         ImageButton bueltatu= (ImageButton) findViewById(R.id.backButton);
         bueltatu.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -173,12 +176,14 @@ public class EditActivity extends AppCompatActivity implements OnMapReadyCallbac
             }
         });
 
+        // on click boton borrar (eliminar el restaurante de la db y volver a la main activity)
         ImageButton ezabatu= (ImageButton) findViewById(R.id.removeButton);
         ezabatu.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Log.i("info","REMOVE JATETXEA");
 
+                //alerta de seguridad para borrar
                 AlertDialog.Builder builder = new AlertDialog.Builder(v.getContext());
                 builder.setTitle("Delete");
                 builder.setMessage(v.getContext().getString(R.string.remove_mssg));
@@ -208,7 +213,7 @@ public class EditActivity extends AppCompatActivity implements OnMapReadyCallbac
 
 
 
-
+        //on click boton guardar (se inserta o actualiza los datos de la db)
         ImageButton gorde= (ImageButton) findViewById(R.id.saveButton);
         gorde.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -221,7 +226,7 @@ public class EditActivity extends AppCompatActivity implements OnMapReadyCallbac
                 }else{
                    succes=dbHelper.insertJatetxe(izena.getText().toString(),ubi.getText().toString(),String.valueOf(valoracion.getRating()),comments.getText().toString(),tlf_number.getText().toString(),user);
                 }
-
+                //deshabilitar la ediccion
                 disableEditText(izena);
                 disableEditText(ubi);
                 //disableEditText(valoracion);
@@ -234,6 +239,7 @@ public class EditActivity extends AppCompatActivity implements OnMapReadyCallbac
             }
         });
 
+        //click boton call, marca el numero para llamada
         ImageButton call= (ImageButton) findViewById(R.id.callButton);
         call.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -251,6 +257,7 @@ public class EditActivity extends AppCompatActivity implements OnMapReadyCallbac
 
     }
 
+    //metodo laguntzaile para deshabilitar la edicion
     private void disableEditText(EditText editText) {
         editText.setFocusable(false);
         editText.setEnabled(false);
@@ -259,6 +266,7 @@ public class EditActivity extends AppCompatActivity implements OnMapReadyCallbac
         //editText.setBackgroundColor(Color.TRANSPARENT);
     }
 
+    //metodo laguntzaile para habilitar la edicion
     private void enableEditText(EditText editText, KeyListener listener) {
         editText.setFocusableInTouchMode(true);
         editText.setFocusable(true);
@@ -268,7 +276,7 @@ public class EditActivity extends AppCompatActivity implements OnMapReadyCallbac
 
     }
 
-
+    //guardar info
     protected void onSaveInstanceState(Bundle savedInstanceState) {
         super.onSaveInstanceState(savedInstanceState);
         //map.onSaveInstanceState(savedInstanceState);
@@ -288,6 +296,7 @@ public class EditActivity extends AppCompatActivity implements OnMapReadyCallbac
 
 
     }
+    //conseguir info
     protected void onRestoreInstanceState(Bundle savedInstanceState) {
         super.onRestoreInstanceState(savedInstanceState);
         user = savedInstanceState.getString("user");
@@ -299,6 +308,7 @@ public class EditActivity extends AppCompatActivity implements OnMapReadyCallbac
         ;
     }
 
+    //crear marker en el mapa
     @Override
     public void onMapReady(GoogleMap googleMap) {
         if (update & lat!=0 & lo!=0) {
@@ -309,8 +319,7 @@ public class EditActivity extends AppCompatActivity implements OnMapReadyCallbac
             // [START_EXCLUDE silent]
             googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(jatetxea, 15));
         }
-        //googleMap.setMinZoomPreference(6.0f);
-       // googleMap.setMaxZoomPreference(14.0f);
+
 
     }
 
