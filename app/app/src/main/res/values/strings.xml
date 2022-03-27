@@ -23,7 +23,7 @@
     <string name="toastOut">Desconectado</string>
     <string name="phone">Teléfono: 123456789</string>
     <string name="about">Info</string>
-    <string name="infoText">JateList es una aplicación creada para poder guardar tus restaurantes favoritos o incluso los que no lo son tanto. Te permite guardar un registro de los restaurantes que has estado con su informacion y tu valoracion.</string>
+    <string name="infoText">JateList es una aplicación creada para poder guardar tus restaurantes favoritos o incluso los que no lo son tanto. Te permite guardar un registro de los restaurantes que has estado con su informacion y tu valoracion. Así te será mas facil elegir y disfrutarás de tu comida como nunca! :)</string>
     <string name="settings">Configuración</string>
     <string name="language">Idioma</string>
     <string name="euskera">Euskera</string>

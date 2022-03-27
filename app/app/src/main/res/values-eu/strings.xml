@@ -24,7 +24,7 @@
     <string name="toastOut">Deskonektatuta</string>
     <string name="phone">Telefonoa: 123456789</string>
     <string name="about">Info</string>
-    <string name="infoText">JateList jatetxe erregistro bat gordetzen ahalbidetzen dizun aplikazioa da</string>
+    <string name="infoText">JateList jatetxe erregistro bat gordetzen ahalbidetzen dizun aplikazioa da. Jatetxearen informazioarekin batera, zure iritzia gorde dezakezu. JateList zure erabakia errazteko asmoz jaio da. On egin! :)</string>
     <string name="settings">Ezarpenak</string>
     <string name="language">Hizkuntza</string>
     <string name="euskera">Euskera</string>
