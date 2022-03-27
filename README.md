@@ -1,7 +1,7 @@
 # JateList
 JateList application - DAS proiektu individuala
 
-![alt text](https://github.com/[maialen24]/[JateList]/blob/[main]/app/app/Docu/JATELIST.png?raw=true)
+![alt text](https://github.com/[maialen24]/[JateList]/blob/[main]/JATELIST.png?raw=true)
 
 
 JateList es una aplicación que permite al usuario guardar un registro de los restaurantes
