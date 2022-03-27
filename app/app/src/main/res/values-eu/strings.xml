@@ -31,5 +31,7 @@
     <string name="español">Erdera</string>
     <string name="ingles">Ingelesa</string>
     <string name="modeText">Itxura</string>
+    <string name="permisos">Baimenak</string>
+    <string name="marcar">Markatu tlf</string>
 
 </resources>

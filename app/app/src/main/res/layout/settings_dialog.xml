@@ -6,8 +6,8 @@
     android:layout_height="match_parent">
 
     <LinearLayout
-        android:layout_width="230dp"
-        android:layout_height="258dp"
+        android:layout_width="235dp"
+        android:layout_height="279dp"
         android:layout_marginStart="81dp"
         android:layout_marginTop="107dp"
         android:layout_marginEnd="100dp"
@@ -34,7 +34,7 @@
         <RadioGroup
             android:id="@+id/radioGroup"
             android:layout_width="match_parent"
-            android:layout_height="196dp">
+            android:layout_height="178dp">
 
             <TextView
                 android:id="@+id/languageT"
@@ -60,5 +60,13 @@
                 android:layout_height="wrap_content"
                 android:text="Castellano" />
         </RadioGroup>
+        <![CDATA[
+
+        Switch
+            android:id="@+id/callpermiso"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/marcar" />
+    ]]>
     </LinearLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>

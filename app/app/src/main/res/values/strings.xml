@@ -30,4 +30,6 @@
     <string name="español">Castellano</string>
     <string name="ingles">Inglés</string>
     <string name="modeText">Modo</string>
+    <string name="permisos">Permisos</string>
+    <string name="marcar">Marcar tlf</string>
 </resources>

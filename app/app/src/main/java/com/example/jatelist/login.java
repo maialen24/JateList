@@ -58,6 +58,8 @@ public class login extends AppCompatActivity implements DialogClass.Listener, se
 
         super.onCreate(savedInstanceState);
         Log.i("CONTROL","ON CREATE");
+
+        preferences();
         if (savedInstanceState!= null) {
 
             user = savedInstanceState.getString("user");
@@ -66,15 +68,23 @@ public class login extends AppCompatActivity implements DialogClass.Listener, se
             //changeLanguage();
            // changeTheme();
 
+        }else{
+
+            language=spLanguage;
+            night=spNight;
+            changeTheme();
+            changeLanguage();
+
         }
 
          //get user preferences
-        preferences();
-        language=spLanguage;
-        night=spNight;
+
+
 
 
         setContentView(R.layout.activity_login);
+
+
 
         //get elements
         Toolbar myToolbar = (Toolbar) findViewById(R.id.toolbar);
@@ -89,7 +99,7 @@ public class login extends AppCompatActivity implements DialogClass.Listener, se
 
         Switch mode=(Switch) findViewById(R.id.nightMode);
         //set theme mode
-//        mode.setChecked(night);
+        mode.setChecked(night);
 
 
 
@@ -327,7 +337,7 @@ public class login extends AppCompatActivity implements DialogClass.Listener, se
         myEdit.commit();
      //   this.language=planguage;
      //   this.night=pmode;
-        preferences();
+     //   preferences();
      //   finish();
      //   startActivity(getIntent());
         //startActivity(this.getIntent());
@@ -408,21 +418,9 @@ public class login extends AppCompatActivity implements DialogClass.Listener, se
     @Override
     protected void onResume() {
         super.onResume();
-
-        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getBaseContext());
-        boolean previouslyStarted = prefs.getBoolean("preference", false);
-        if(!previouslyStarted) {
-            SharedPreferences.Editor edit = prefs.edit();
-            edit.putBoolean("preference", Boolean.TRUE);
-            edit.commit();
-            Log.i("CONTROL","perferences first time ON RESUME");
-            preferences();
-            this.language=spLanguage;
-            this.night=spNight;
+        Log.i("CONTROL","login ON RESUME");
 
 
-
-        }
     }
 
 

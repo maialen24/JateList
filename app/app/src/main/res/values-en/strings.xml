@@ -31,4 +31,6 @@
     <string name="español">Spanish</string>
     <string name="ingles">English</string>
     <string name="modeText">Theme</string>
+    <string name="permisos">Permissions</string>
+    <string name="marcar">Mark tlf</string>
 </resources>
