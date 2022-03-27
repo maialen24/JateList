@@ -48,6 +48,7 @@ public class login extends AppCompatActivity implements DialogClass.Listener, se
     private SharedPreferences sharedpreferences;
     private Boolean spNight;
     private String spLanguage;
+    private Boolean firstTime;
 
 
 
@@ -56,33 +57,64 @@ public class login extends AppCompatActivity implements DialogClass.Listener, se
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
+        preferences();
+       /* if (firstTime) {
+            Locale locale = new Locale(spLanguage);
+            Locale.setDefault(locale);
+            Configuration config = new Configuration();
+            config.locale = locale;
+            getResources().updateConfiguration(config, getResources().getDisplayMetrics());
+        }*/
         super.onCreate(savedInstanceState);
         Log.i("CONTROL","ON CREATE");
 
-        preferences();
+        //get user preferences
+
         if (savedInstanceState!= null) {
 
             user = savedInstanceState.getString("user");
             language =savedInstanceState.getString("language");
             night=savedInstanceState.getBoolean("mode");
-            //changeLanguage();
-           // changeTheme();
+          //  firstTime=false;
+       /*     SharedPreferences.Editor myEdit = sharedpreferences.edit();
+
+            // Storing the key and its value as the data fetched from edittext
+            myEdit.putBoolean("firstTime", firstTime);
+
+            // Once the changes have been made,
+            // we need to commit to apply those changes made,
+            // otherwise, it will throw an error
+            myEdit.commit();*/
+
 
         }else{
 
             language=spLanguage;
             night=spNight;
+         //   onSaveInstanceState(savedInstanceState);
             changeTheme();
-            changeLanguage();
+         //   changeLanguage();
+      /*      SharedPreferences.Editor myEdit = sharedpreferences.edit();
+
+            // Storing the key and its value as the data fetched from edittext
+            myEdit.putBoolean("firstTime", firstTime);
+
+            // Once the changes have been made,
+            // we need to commit to apply those changes made,
+            // otherwise, it will throw an error
+            myEdit.commit();*/
+
+
 
         }
 
-         //get user preferences
+
 
 
 
 
         setContentView(R.layout.activity_login);
+
 
 
 
@@ -178,7 +210,6 @@ public class login extends AppCompatActivity implements DialogClass.Listener, se
                 language="en";
                 changeLanguage();
                 finish();
-
                 startActivity(getIntent());
                 //onStart();
             }
@@ -209,6 +240,9 @@ public class login extends AppCompatActivity implements DialogClass.Listener, se
 
             }
         });
+
+        db.close();
+        dbHelper.close();
     }
 
 
@@ -246,6 +280,8 @@ public class login extends AppCompatActivity implements DialogClass.Listener, se
                 .setVibrate(new long[]{0, 1000, 500, 1000})
                 .setAutoCancel(true);
         elManager.notify(1, elBuilder.build());
+
+        dbHelper.close();
 
 
 
@@ -328,30 +364,17 @@ public class login extends AppCompatActivity implements DialogClass.Listener, se
         myEdit.putBoolean("mode", pmode);
         myEdit.putString("language", planguage);
 
-        //this.language=language;
-        //this.night=mode;
-
         // Once the changes have been made,
         // we need to commit to apply those changes made,
         // otherwise, it will throw an error
         myEdit.commit();
-     //   this.language=planguage;
-     //   this.night=pmode;
-     //   preferences();
-     //   finish();
-     //   startActivity(getIntent());
-        //startActivity(this.getIntent());
-
-
-
-
 
     }
 
     // implements infoDialog interface positive button method, close dialog
     @Override
     public void alpulsarOK() {
-        //clos info dialog
+        //close info dialog
     }
 
     // metodo laguntzaile to save preferences
@@ -359,18 +382,8 @@ public class login extends AppCompatActivity implements DialogClass.Listener, se
         sharedpreferences = getSharedPreferences(MyPREFERENCES, Context.MODE_PRIVATE);
         spLanguage = sharedpreferences.getString("language", "es");
         spNight = sharedpreferences.getBoolean("mode",false);
-        //changeLanguage();
-        //changeTheme();
-
-        /*if(night){
-            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
-        }else{
-            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
-        }*/
-
-        //Loads Shared preferences
-
-
+        language=spLanguage;
+     //   firstTime = sharedpreferences.getBoolean("firstTime",true);
 
     }
 
