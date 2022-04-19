@@ -33,4 +33,7 @@
     <string name="modeText">Theme</string>
     <string name="permisos">Permissions</string>
     <string name="marcar">Mark tlf</string>
+    <string name="takePhoto">Take photo</string>
+    <string name="selectPhoto">Select from galery</string>
+    <string name="fotomssg">Load image</string>
 </resources>

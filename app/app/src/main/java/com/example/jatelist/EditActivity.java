@@ -17,6 +17,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.RatingBar;
 import android.widget.Toast;
 
@@ -44,6 +45,7 @@ public class EditActivity extends AppCompatActivity implements OnMapReadyCallbac
     String nameJatetxe;
     double lat=0;
     double lo=0;
+    int CODIGO_GALERIA=4;
 
 
     private static final  String MAPVIEW_BUNDLE_KEY="MapViewBundleKey";
@@ -211,6 +213,46 @@ public class EditActivity extends AppCompatActivity implements OnMapReadyCallbac
             }
         });
 
+        // on click boton borrar (eliminar el restaurante de la db y volver a la main activity)
+        ImageButton foto= (ImageButton) findViewById(R.id.fotoButton);
+        foto.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Log.i("info","ADD JATETXEA");
+
+                //alerta de seguridad para borrar
+                AlertDialog.Builder builder = new AlertDialog.Builder(v.getContext());
+                builder.setTitle("IMAGE");
+                builder.setMessage(v.getContext().getString(R.string.fotomssg));
+
+                builder.setPositiveButton(v.getContext().getString(R.string.takePhoto), new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        //Jatetxea argazkia atera
+                        //dbHelper.deleteJatetxea(izena.getText().toString(),user);
+                        //pulsar button bueltatu
+                        //bueltatu.performClick();
+
+                    }
+                });
+                builder.setNeutralButton(v.getContext().getString(R.string.selectPhoto), new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        //Jatetxea argazkia aukeratu
+                        Intent elIntentGal = new Intent(Intent.ACTION_PICK, android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+                        startActivityForResult(elIntentGal, CODIGO_GALERIA);
+
+
+                    }
+                });
+
+
+                builder.show();
+
+
+            }
+        });
+
 
 
         //on click boton guardar (se inserta o actualiza los datos de la db)
@@ -361,6 +403,7 @@ public class EditActivity extends AppCompatActivity implements OnMapReadyCallbac
         map.onLowMemory();
         Log.i("CONTROL", "EDIT ON LOW MEMORY");
     }
+
 
 
 

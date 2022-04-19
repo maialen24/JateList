@@ -6,11 +6,14 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
 import android.database.sqlite.SQLiteDatabase;
+import android.graphics.Bitmap;
+import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.Toast;
 
 import java.util.ArrayList;
@@ -26,6 +29,7 @@ public class MainActivity extends AppCompatActivity {
     private ArrayList<Jatetxea> data=new ArrayList<Jatetxea>();
     private String user;
     private boolean update=true;
+    private int CODIGO_GALERIA=4;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -60,7 +64,8 @@ public class MainActivity extends AppCompatActivity {
             for (int i = 0; i < jatetxeList.size(); i++) {
                 ArrayList<String> a = (ArrayList<String>) jatetxeList.get(i);
                 Log.i("data",a.get(0)+a.get(1)+a.get(2));
-                data.add(new Jatetxea(a.get(0), a.get(1), a.get(2), a.get(3), a.get(4)));
+                Bitmap img=dbHelper.getImage(user,a.get(5));
+                data.add(new Jatetxea(a.get(0), a.get(1), a.get(2), a.get(3), a.get(4),img));
 
             }
 
@@ -153,6 +158,17 @@ public class MainActivity extends AppCompatActivity {
     protected void onDestroy() {
         super.onDestroy();
         Log.i("CONTROL","main ON DESTROY");
+    }
 
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == CODIGO_GALERIA && resultCode == RESULT_OK) {
+            Uri imagenSeleccionada = data.getData();
+            ImageView foto = (ImageView) findViewById(R.id.foto);
+            foto.setImageURI(imagenSeleccionada);
+            //gorde image uri in db
+
+        }
     }
 }

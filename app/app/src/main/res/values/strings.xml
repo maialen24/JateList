@@ -32,4 +32,7 @@
     <string name="modeText">Modo</string>
     <string name="permisos">Permisos</string>
     <string name="marcar">Marcar tlf</string>
+    <string name="takePhoto">Sacar foto</string>
+    <string name="selectPhoto">Seleccionar desde galeria</string>
+    <string name="fotomssg">Cargar imagen</string>
 </resources>

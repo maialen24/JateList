@@ -1,6 +1,7 @@
 package com.example.jatelist;
 
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -46,6 +47,7 @@ public class JatetxeaAdapter extends RecyclerView.Adapter<JatetxeaAdapter.Jatetx
         holder.rbValoracion.setRating(Float.parseFloat(jatetxea.getValoracion()));
         holder.comentarios= jatetxea.getComentarios();
         holder.tlf_number=jatetxea.getTlf();
+        holder.ivfoto.setImageBitmap(jatetxea.getImage());
 
     }
 
@@ -64,6 +66,7 @@ public class JatetxeaAdapter extends RecyclerView.Adapter<JatetxeaAdapter.Jatetx
         String user;
         String comentarios;
         String tlf_number;
+        ImageView ivfoto;
 
         public boolean[] select;
 
@@ -73,6 +76,7 @@ public class JatetxeaAdapter extends RecyclerView.Adapter<JatetxeaAdapter.Jatetx
             tvNombre = (TextView) itemView.findViewById(R.id.tv_nombre);
             rbValoracion = (RatingBar) itemView.findViewById(R.id.rating);
             user=username;
+            ivfoto = (ImageView) itemView.findViewById(R.id.foto);
 
 
 

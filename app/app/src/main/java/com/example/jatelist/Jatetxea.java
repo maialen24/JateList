@@ -1,5 +1,8 @@
 package com.example.jatelist;
 
+import android.graphics.Bitmap;
+import android.net.Uri;
+
 public class Jatetxea {
 
         /*  This class define Jatetxea object */
@@ -8,18 +11,24 @@ public class Jatetxea {
         private String valoracion;
         private String comentarios;
         private String tlf;
+        private Bitmap image;
 
 
 
-        public Jatetxea(String nombre, String ubicacion,String valoracion, String comentarios,String tlf_number) {
+        public Jatetxea(String nombre, String ubicacion,String valoracion, String comentarios,String tlf_number, Bitmap image) {
             this.nombre = nombre;
             this.ubicacion = ubicacion;
             this.valoracion = valoracion;
             this.comentarios= comentarios;
             this.tlf=tlf_number;
+            this.image=image;
         }
 
-        public String getNombre() {
+    public Bitmap getImage() { return image; }
+
+    public void setImage(Bitmap image) { this.image = image; }
+
+    public String getNombre() {
             return nombre;
         }
 

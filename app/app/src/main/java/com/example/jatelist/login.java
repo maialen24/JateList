@@ -34,6 +34,8 @@ import android.widget.ImageButton;
 import android.widget.Switch;
 import android.widget.TextView;
 
+import java.net.HttpURLConnection;
+import java.net.URL;
 import java.util.Locale;
 
 public class login extends AppCompatActivity implements DialogClass.Listener, settingsDialog.Listener,infoDialog.Listener{
@@ -57,7 +59,8 @@ public class login extends AppCompatActivity implements DialogClass.Listener, se
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
-        preferences();
+
+
        /* if (firstTime) {
             Locale locale = new Locale(spLanguage);
             Locale.setDefault(locale);
@@ -70,6 +73,7 @@ public class login extends AppCompatActivity implements DialogClass.Listener, se
 
         //get user preferences
 
+        preferences();
         if (savedInstanceState!= null) {
 
             user = savedInstanceState.getString("user");
@@ -87,13 +91,14 @@ public class login extends AppCompatActivity implements DialogClass.Listener, se
             myEdit.commit();*/
 
 
+
         }else{
 
             language=spLanguage;
             night=spNight;
          //   onSaveInstanceState(savedInstanceState);
             changeTheme();
-         //   changeLanguage();
+          //  changeLanguage();
       /*      SharedPreferences.Editor myEdit = sharedpreferences.edit();
 
             // Storing the key and its value as the data fetched from edittext
@@ -185,7 +190,10 @@ public class login extends AppCompatActivity implements DialogClass.Listener, se
                 // do something, the isChecked will be
                 // true if the switch is in the On position
                 night=isChecked;
+                spLanguage=language;
+
                 changeTheme();
+
 
             }
         });
@@ -196,7 +204,9 @@ public class login extends AppCompatActivity implements DialogClass.Listener, se
             public void onClick(View v) {
                 Log.i("info-paso","Euskera");
                 language="eu";
+                spNight=night;
                 changeLanguage();
+                changeTheme();
                 finish();
                 startActivity(getIntent());
             }
@@ -208,7 +218,9 @@ public class login extends AppCompatActivity implements DialogClass.Listener, se
             public void onClick(View v) {
                 Log.i("info-paso","Ingelesa");
                 language="en";
+                spNight=night;
                 changeLanguage();
+                changeTheme();
                 finish();
                 startActivity(getIntent());
                 //onStart();
@@ -221,7 +233,9 @@ public class login extends AppCompatActivity implements DialogClass.Listener, se
             public void onClick(View v) {
                 Log.i("info-paso","Castellano");
                 language="es";
+                spNight=night;
                 changeLanguage();
+                changeTheme();
                 finish();
                 startActivity(getIntent());
                // onStart();
@@ -389,6 +403,7 @@ public class login extends AppCompatActivity implements DialogClass.Listener, se
 
     //metodo laguntzaile to change language
     private void changeLanguage(){
+
         Locale nuevaloc = new Locale(language);
         Locale.setDefault(nuevaloc);
         Configuration configuration = getBaseContext().getResources().getConfiguration();
