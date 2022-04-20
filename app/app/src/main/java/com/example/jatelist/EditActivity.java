@@ -3,21 +3,29 @@ package com.example.jatelist;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 import androidx.lifecycle.Observer;
 import androidx.work.Data;
 import androidx.work.OneTimeWorkRequest;
 import androidx.work.WorkInfo;
 import androidx.work.WorkManager;
 
+import android.Manifest;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.database.sqlite.SQLiteDatabase;
+import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.location.Address;
 import android.location.Geocoder;
+import android.location.Location;
 import android.net.Uri;
 import android.os.Bundle;
+import android.provider.MediaStore;
 import android.text.method.KeyListener;
+import android.util.Base64;
 import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
@@ -26,6 +34,8 @@ import android.widget.ImageView;
 import android.widget.RatingBar;
 import android.widget.Toast;
 
+import com.google.android.gms.location.FusedLocationProviderClient;
+import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapView;
@@ -33,12 +43,17 @@ import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
 public class EditActivity extends AppCompatActivity implements OnMapReadyCallback {
+    private static final int CAMERA_REQUEST = 2;
 
     /* This class implements edit activity that is going to be used to add or update restaurants and to show more info about them */
 
@@ -50,7 +65,10 @@ public class EditActivity extends AppCompatActivity implements OnMapReadyCallbac
     String nameJatetxe;
     double lat=0;
     double lo=0;
+    double userlat=0;
+    double userlo=0;
     int CODIGO_GALERIA=4;
+
 
 
     private static final  String MAPVIEW_BUNDLE_KEY="MapViewBundleKey";
@@ -138,6 +156,12 @@ public class EditActivity extends AppCompatActivity implements OnMapReadyCallbac
         map.getMapAsync(  this);
         map.onResume();
 
+
+
+
+
+
+
         //habilitar o deshabilitar dependiendo si es update o new restaurant
         ImageButton editButton=(ImageButton) findViewById(R.id.editButton);
         if (!update){
@@ -218,14 +242,14 @@ public class EditActivity extends AppCompatActivity implements OnMapReadyCallbac
             }
         });
 
-        // on click boton borrar (eliminar el restaurante de la db y volver a la main activity)
+        // on click boton FOTO
         ImageButton foto= (ImageButton) findViewById(R.id.fotoButton);
         foto.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Log.i("info","ADD JATETXEA");
+                Log.i("info","ADD FOTO JATETXEA");
 
-                //alerta de seguridad para borrar
+                //alerta FOTO
                 AlertDialog.Builder builder = new AlertDialog.Builder(v.getContext());
                 builder.setTitle("IMAGE");
                 builder.setMessage(v.getContext().getString(R.string.fotomssg));
@@ -234,9 +258,13 @@ public class EditActivity extends AppCompatActivity implements OnMapReadyCallbac
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
                         //Jatetxea argazkia atera
-                        //dbHelper.deleteJatetxea(izena.getText().toString(),user);
-                        //pulsar button bueltatu
-                        //bueltatu.performClick();
+                        Intent camaraIntent = new Intent(android.provider.MediaStore.ACTION_IMAGE_CAPTURE);
+                        camaraIntent.putExtra("user",user);
+                        camaraIntent.putExtra("izena",izena.getText().toString());
+                        startActivityForResult(camaraIntent,CAMERA_REQUEST);
+
+
+
 
                     }
                 });
@@ -245,6 +273,10 @@ public class EditActivity extends AppCompatActivity implements OnMapReadyCallbac
                     public void onClick(DialogInterface dialogInterface, int i) {
                         //Jatetxea argazkia aukeratu
                         Intent elIntentGal = new Intent(Intent.ACTION_PICK, android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+
+                        elIntentGal.putExtra("user",user);
+                        elIntentGal.putExtra("izena",izena.getText().toString());
+
                         startActivityForResult(elIntentGal, CODIGO_GALERIA);
 
 
@@ -484,4 +516,69 @@ public Boolean insert(String izena, String ubi,String rating,String comments,Str
     return emaitza[0];
 }
 
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == CODIGO_GALERIA && resultCode == RESULT_OK) {
+            Uri imagenSeleccionada = data.getData();
+            Bitmap img= null;
+            try {
+                img = MediaStore.Images.Media.getBitmap(this.getContentResolver(), imagenSeleccionada);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            // Bitmap img = (Bitmap) data.getExtras().get("data");
+            //guardar foto en server
+            String img64=getEncodedString(img);
+            insertargazkia(data.getStringExtra("user"),data.getStringExtra("izena"),img64);
+        }
+        if (requestCode == CAMERA_REQUEST && resultCode == RESULT_OK) {
+            Bitmap img = (Bitmap) data.getExtras().get("data");
+            insertargazkia(data.getStringExtra("user"),data.getStringExtra("izena"),getEncodedString(img));
+        }
+
+    }
+    private String getEncodedString(Bitmap foto){
+        ByteArrayOutputStream stream = new ByteArrayOutputStream();
+        foto.compress(Bitmap.CompressFormat.JPEG, 45, stream);
+        byte[] fototransformada = stream.toByteArray();
+        String fotoen64 = Base64.encodeToString(fototransformada,Base64.DEFAULT);
+        return fotoen64;
+    }
+
+    public void insertargazkia(String user, String izena, String foto){
+        final Boolean[] emaitza = {false};
+        Data.Builder data = new Data.Builder();
+
+        data.putString("user",user);
+        data.putString("izena",izena);
+        data.putString("foto", foto);
+
+       // data.putByteArray("foto",foto);
+        data.putString("funcion","insert");
+
+        OneTimeWorkRequest otwr = new OneTimeWorkRequest.Builder(argazkiakPHPconnect.class).setInputData(data.build()).build();
+        WorkManager.getInstance(this).getWorkInfoByIdLiveData(otwr.getId())
+                .observe(this, new Observer<WorkInfo>() {
+                    @Override
+                    public void onChanged(WorkInfo workInfo)
+                    {
+                        //Si se puede iniciar sesión porque devulve true se cambiará la actividad cerrando en la que se encuentra. Si la devolución es null o no es true se mostrará un toast en la interfaz actual.
+                        if(workInfo != null && workInfo.getState().isFinished())
+                        {
+                            String emaitza = workInfo.getOutputData().getString("result");
+                            if (emaitza!=null) {
+                                if (emaitza.equals("true")) {
+                                    //GO TO MAIN ACTIVITY
+                                    Log.i("argazkia ","sartu");
+
+                                }
+
+                            }
+                        }
+                    }
+                });
+        WorkManager.getInstance(this).enqueue(otwr);
+    }
 }

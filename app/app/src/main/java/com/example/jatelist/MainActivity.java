@@ -13,6 +13,7 @@ import androidx.work.WorkManager;
 import android.content.Intent;
 import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
@@ -23,6 +24,7 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.Toast;
 
+import java.io.ByteArrayInputStream;
 import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity {
@@ -74,7 +76,14 @@ public class MainActivity extends AppCompatActivity {
                 Log.i("data",a.get(0)+a.get(1)+a.get(2));
                 Bitmap img=dbHelper.getImage(user,a.get(5));
                 //Bitmap img=null;
-                data.add(new Jatetxea(a.get(0), a.get(1), a.get(2), a.get(3), a.get(4),img));
+                byte[] image = getimage(user,a.get(0));
+                Bitmap laimg=null;
+                if (image!=null){
+                    ByteArrayInputStream imageStream = new ByteArrayInputStream(image);
+                    laimg = BitmapFactory.decodeStream(imageStream);
+                }
+
+                data.add(new Jatetxea(a.get(0), a.get(1), a.get(2), a.get(3), a.get(4),laimg));
 
             }
 
@@ -199,6 +208,38 @@ public class MainActivity extends AppCompatActivity {
                         //Si se puede iniciar sesión porque devulve true se cambiará la actividad cerrando en la que se encuentra. Si la devolución es null o no es true se mostrará un toast en la interfaz actual.
                         if(workInfo != null && workInfo.getState().isFinished())
                         {
+                            String emaitza = workInfo.getOutputData().getString("arrayresultados");
+                            if (emaitza!=null) {
+                                if (emaitza.equals("true")) {
+                                    //GO TO MAIN ACTIVITY
+                                    Log.i("jatetxeak","lortu");
+
+                                }
+
+                            }
+                        }
+                    }
+                });
+        WorkManager.getInstance(this).enqueue(otwr);
+    }
+
+    public byte[] getimage(String user, String izena){
+        final Boolean[] emaitza = {false};
+        Data.Builder data = new Data.Builder();
+
+        data.putString("user",user);
+        data.putString("izena",izena);
+        data.putString("funcion","get");
+
+        OneTimeWorkRequest otwr = new OneTimeWorkRequest.Builder(argazkiakPHPconnect.class).setInputData(data.build()).build();
+        WorkManager.getInstance(this).getWorkInfoByIdLiveData(otwr.getId())
+                .observe(this, new Observer<WorkInfo>() {
+                    @Override
+                    public void onChanged(WorkInfo workInfo)
+                    {
+                        //Si se puede iniciar sesión porque devulve true se cambiará la actividad cerrando en la que se encuentra. Si la devolución es null o no es true se mostrará un toast en la interfaz actual.
+                        if(workInfo != null && workInfo.getState().isFinished())
+                        {
                             String emaitza = workInfo.getOutputData().getString("result");
                             if (emaitza!=null) {
                                 if (emaitza.equals("true")) {
@@ -212,5 +253,8 @@ public class MainActivity extends AppCompatActivity {
                     }
                 });
         WorkManager.getInstance(this).enqueue(otwr);
+        byte[] a=null;
+
+        return a;
     }
 }

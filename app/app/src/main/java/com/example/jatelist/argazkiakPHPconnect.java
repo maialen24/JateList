@@ -1,6 +1,8 @@
 package com.example.jatelist;
 
 import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.util.Log;
 
 import androidx.annotation.NonNull;
@@ -32,22 +34,22 @@ public class argazkiakPHPconnect extends Worker {
     public ListenableWorker.Result doWork() {
         String funcion=getInputData().getString("funcion");
         String user = getInputData().getString("user");
-        String argazkia = getInputData().getString("password");
-        String jatetxeaid = getInputData().getString("jatetxeaid");
+        byte[] argazkia = getInputData().getByteArray("foto");
+        String izena = getInputData().getString("izena");
         if(funcion.equals("insert")){
-            return insert(user,argazkia,jatetxeaid);
+            return insert(user,argazkia,izena);
         }else{
-            return get(user,jatetxeaid);
+            return get(user,izena);
         }
 
 
     }
 
-    public ListenableWorker.Result insert(String user, String jatetxeaid, String image ){
+    public ListenableWorker.Result insert(String user, byte[] image, String izena ){
         //String user = getInputData().getString("user");
         //String password = getInputData().getString("password");
         String funcion= "insert";
-        String direccion = "http://ec2-18-132-60-229.eu-west-2.compute.amazonaws.com/mruiz142/WEB/argazkiak.php";
+        String direccion = "http://ec2-52-56-170-196.eu-west-2.compute.amazonaws.com/mruiz142/WEB/argazkiak.php";
         HttpURLConnection urlConnection = null;
         try
         {
@@ -58,7 +60,7 @@ public class argazkiakPHPconnect extends Worker {
             urlConnection.setRequestMethod("POST");
             urlConnection.setDoOutput(true);
             urlConnection.setRequestProperty("Content-Type", "application/x-www-form-urlencoded");
-            String parametros = "funcion="+funcion+"user="+user+"&jatetxeaid="+jatetxeaid+"&foto="+image;
+            String parametros = "funcion="+funcion+"user="+user+"&izena="+izena+"&foto="+image;
             PrintWriter out = new PrintWriter(urlConnection.getOutputStream());
             out.print(parametros);
             out.close();
@@ -95,12 +97,12 @@ public class argazkiakPHPconnect extends Worker {
         return ListenableWorker.Result.failure();
     }
 
-    public ListenableWorker.Result get(String user, String jatetxeaid){
+    public ListenableWorker.Result get(String user, String izena){
         //String user = getInputData().getString("user");
         //String password = getInputData().getString("password");
         String funcion= "get";
 
-        String direccion = "http://ec2-18-132-60-229.eu-west-2.compute.amazonaws.com/mruiz142/WEB/argazkiak.php";
+        String direccion = "http://ec2-52-56-170-196.eu-west-2.compute.amazonaws.com/mruiz142/WEB/argazkiak.php";
         HttpURLConnection urlConnection = null;
         try
         {
@@ -111,7 +113,7 @@ public class argazkiakPHPconnect extends Worker {
             urlConnection.setRequestMethod("POST");
             urlConnection.setDoOutput(true);
             urlConnection.setRequestProperty("Content-Type", "application/x-www-form-urlencoded");
-            String parametros = "funcion="+funcion+"user="+user+"&jatetxeaid="+jatetxeaid;
+            String parametros = "funcion="+funcion+"user="+user+"&izena="+izena;
             PrintWriter out = new PrintWriter(urlConnection.getOutputStream());
             out.print(parametros);
             out.close();
@@ -120,6 +122,14 @@ public class argazkiakPHPconnect extends Worker {
             Log.i("STATUS PHP get image","statusCode: " + statusCode);
             if (statusCode == 200)
             {
+
+                try {
+
+                        Bitmap elBitmap = BitmapFactory.decodeStream(urlConnection.getInputStream());
+
+                } catch (IOException e) {
+
+                }
                 BufferedInputStream inputStream = new BufferedInputStream(urlConnection.getInputStream());
                 BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(inputStream, "UTF-8"));
                 String line, result = "";

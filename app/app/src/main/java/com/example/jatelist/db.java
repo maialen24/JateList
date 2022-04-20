@@ -183,8 +183,8 @@ public class db extends SQLiteOpenHelper {
 
     public Bitmap getImage(String user,String jatetxeid) {
         SQLiteDatabase db = this.getWritableDatabase();
-        String[] args = new String[]{user,jatetxeid};
-        Cursor cursor = db.rawQuery(" SELECT  * FROM argazkiak WHERE user=? and titulo=?", args);
+        String[] args = new String[]{jatetxeid};
+        Cursor cursor = db.rawQuery(" SELECT  * FROM argazkiak WHERE titulo=?", args);
         Log.i("info", "GET ALL IMAGES");
         cursor.moveToFirst();
         Bitmap laimg=null;

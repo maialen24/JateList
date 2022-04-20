@@ -61,7 +61,7 @@ public class jatetxeakPHPconnect extends Worker {
         String funcion= "insert";
         Log.i("insert jatetxe","jatetxe");
 
-        String direccion = "http://ec2-18-132-60-229.eu-west-2.compute.amazonaws.com/mruiz142/WEB/jatetxeak.php";
+        String direccion = "http://ec2-52-56-170-196.eu-west-2.compute.amazonaws.com/mruiz142/WEB/jatetxeak.php";
         HttpURLConnection urlConnection = null;
         try
         {
@@ -120,7 +120,7 @@ public class jatetxeakPHPconnect extends Worker {
         String tlf = getInputData().getString("tlf");
         String ubi = getInputData().getString("ubi");
 
-        String direccion = "http://ec2-18-132-60-229.eu-west-2.compute.amazonaws.com/mruiz142/WEB/jatetxeak.php";
+        String direccion = "http://ec2-52-56-170-196.eu-west-2.compute.amazonaws.com/mruiz142/WEB/jatetxeak.php";
         HttpURLConnection urlConnection = null;
         try
         {
@@ -175,7 +175,7 @@ public class jatetxeakPHPconnect extends Worker {
         String user = getInputData().getString("user");
         String name = getInputData().getString("izena");
 
-        String direccion = "http://ec2-18-132-60-229.eu-west-2.compute.amazonaws.com/mruiz142/WEB/jatetxeak.php";
+        String direccion = "http://ec2-52-56-170-196.eu-west-2.compute.amazonaws.com/mruiz142/WEB/jatetxeak.php";
         HttpURLConnection urlConnection = null;
         try
         {
@@ -229,7 +229,7 @@ public class jatetxeakPHPconnect extends Worker {
         String funcion="get";
         String user = getInputData().getString("user");
 
-        String direccion = "http://ec2-18-132-60-229.eu-west-2.compute.amazonaws.com/mruiz142/WEB/jatetxeak.php";
+        String direccion = "http://ec2-52-56-170-196.eu-west-2.compute.amazonaws.com/mruiz142/WEB/jatetxeak.php";
         HttpURLConnection urlConnection = null;
         try
         {
