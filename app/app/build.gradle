@@ -42,8 +42,9 @@ dependencies {
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.4.0'
 
     implementation 'com.google.android.gms:play-services-location:18.0.0'
+    implementation 'androidx.work:work-runtime:2.7.1'
 
-
+    apply plugin: 'com.google.gms.google-services'
 
     implementation "androidx.recyclerview:recyclerview:1.2.1"
     // For control over item selection of both touch and mouse driven selection

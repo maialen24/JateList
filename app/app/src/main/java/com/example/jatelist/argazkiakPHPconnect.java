@@ -60,7 +60,7 @@ public class argazkiakPHPconnect extends Worker {
             urlConnection.setRequestMethod("POST");
             urlConnection.setDoOutput(true);
             urlConnection.setRequestProperty("Content-Type", "application/x-www-form-urlencoded");
-            String parametros = "funcion="+funcion+"user="+user+"&izena="+izena+"&foto="+image;
+            String parametros = "funcion="+funcion+"&user="+user+"&izena="+izena+"&foto="+image;
             PrintWriter out = new PrintWriter(urlConnection.getOutputStream());
             out.print(parametros);
             out.close();
@@ -113,7 +113,7 @@ public class argazkiakPHPconnect extends Worker {
             urlConnection.setRequestMethod("POST");
             urlConnection.setDoOutput(true);
             urlConnection.setRequestProperty("Content-Type", "application/x-www-form-urlencoded");
-            String parametros = "funcion="+funcion+"user="+user+"&izena="+izena;
+            String parametros = "funcion="+funcion+"&user="+user+"&izena="+izena;
             PrintWriter out = new PrintWriter(urlConnection.getOutputStream());
             out.print(parametros);
             out.close();

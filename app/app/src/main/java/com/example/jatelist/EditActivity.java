@@ -1,5 +1,7 @@
 package com.example.jatelist;
 
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
@@ -12,6 +14,7 @@ import androidx.work.WorkInfo;
 import androidx.work.WorkManager;
 
 import android.Manifest;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -35,6 +38,9 @@ import android.widget.RatingBar;
 import android.widget.Toast;
 
 import com.google.android.gms.location.FusedLocationProviderClient;
+import com.google.android.gms.location.LocationCallback;
+import com.google.android.gms.location.LocationRequest;
+import com.google.android.gms.location.LocationResult;
 import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -46,28 +52,36 @@ import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.messaging.FirebaseMessaging;
+
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-public class EditActivity extends AppCompatActivity implements OnMapReadyCallback {
+public class EditActivity extends AppCompatActivity implements OnMapReadyCallback,ActivityCompat.OnRequestPermissionsResultCallback {
     private static final int CAMERA_REQUEST = 2;
 
     /* This class implements edit activity that is going to be used to add or update restaurants and to show more info about them */
-
+    private static final int PERMISSIONS_REQUEST_ACCESS_FINE_LOCATION = 1;
+    private static final int REQUEST_FINE_LOCATION = 1;
+    private boolean locationPermissionGranted;
     private Boolean update = true;
     private db dbHelper = new db(this);
     private SQLiteDatabase db;
     private String user;
     private MapView map;
+    private GoogleMap googleMap;
     String nameJatetxe;
     double lat=0;
     double lo=0;
     double userlat=0;
     double userlo=0;
     int CODIGO_GALERIA=4;
+    String izena="";
+    LocationCallback actualizador;
 
 
 
@@ -76,6 +90,8 @@ public class EditActivity extends AppCompatActivity implements OnMapReadyCallbac
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        new utils().permisosCamara(EditActivity.this, EditActivity.this);
+        new utils().pedirpermisosLocalizar(EditActivity.this,EditActivity.this);
         super.onCreate(savedInstanceState);
 
         db=dbHelper.getWritableDatabase();
@@ -148,6 +164,8 @@ public class EditActivity extends AppCompatActivity implements OnMapReadyCallbac
                 e.printStackTrace();
             }
 
+
+
         }
 
         //crear mapa
@@ -155,6 +173,7 @@ public class EditActivity extends AppCompatActivity implements OnMapReadyCallbac
         map.onCreate(mapViewBundle);
         map.getMapAsync(  this);
         map.onResume();
+
 
 
 
@@ -259,8 +278,8 @@ public class EditActivity extends AppCompatActivity implements OnMapReadyCallbac
                     public void onClick(DialogInterface dialogInterface, int i) {
                         //Jatetxea argazkia atera
                         Intent camaraIntent = new Intent(android.provider.MediaStore.ACTION_IMAGE_CAPTURE);
-                        camaraIntent.putExtra("user",user);
-                        camaraIntent.putExtra("izena",izena.getText().toString());
+                        //camaraIntent.putExtra("user",user);
+                        //camaraIntent.putExtra("izena",izena.getText().toString());
                         startActivityForResult(camaraIntent,CAMERA_REQUEST);
 
 
@@ -392,6 +411,8 @@ public class EditActivity extends AppCompatActivity implements OnMapReadyCallbac
     //crear marker en el mapa
     @Override
     public void onMapReady(GoogleMap googleMap) {
+
+        this.googleMap=googleMap;
         if (update & lat!=0 & lo!=0) {
             LatLng jatetxea = new LatLng(lat, lo);
             googleMap.addMarker(new MarkerOptions()
@@ -403,6 +424,22 @@ public class EditActivity extends AppCompatActivity implements OnMapReadyCallbac
 
 
     }
+    private boolean checkPermissions() {
+        if (ContextCompat.checkSelfPermission(this,
+                Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
+            return true;
+        } else {
+            requestPermissions();
+            return false;
+        }
+    }
+
+    private void requestPermissions() {
+        ActivityCompat.requestPermissions(this,
+                new String[]{Manifest.permission.ACCESS_FINE_LOCATION},
+                REQUEST_FINE_LOCATION);
+    }
+
 
     @Override
     protected void onPause() {
@@ -535,7 +572,7 @@ public Boolean insert(String izena, String ubi,String rating,String comments,Str
         }
         if (requestCode == CAMERA_REQUEST && resultCode == RESULT_OK) {
             Bitmap img = (Bitmap) data.getExtras().get("data");
-            insertargazkia(data.getStringExtra("user"),data.getStringExtra("izena"),getEncodedString(img));
+            insertargazkia(user,nameJatetxe,getEncodedString(img));
         }
 
     }
@@ -581,4 +618,54 @@ public Boolean insert(String izena, String ubi,String rating,String comments,Str
                 });
         WorkManager.getInstance(this).enqueue(otwr);
     }
+
+    private void getLocationPermission() {
+        /*
+         * Request location permission, so that we can get the location of the
+         * device. The result of the permission request is handled by a callback,
+         * onRequestPermissionsResult.
+         */
+        if (ContextCompat.checkSelfPermission(this.getApplicationContext(),
+                android.Manifest.permission.ACCESS_FINE_LOCATION)
+                == PackageManager.PERMISSION_GRANTED) {
+            locationPermissionGranted = true;
+        } else {
+            ActivityCompat.requestPermissions(this,
+                    new String[]{android.Manifest.permission.ACCESS_FINE_LOCATION},
+                    PERMISSIONS_REQUEST_ACCESS_FINE_LOCATION);
+        }
+    }
+
+
+    //cuando cambie la loc enviar mensaje
+    public void send(){
+        ServicioFirebase firebase=new ServicioFirebase();
+        String token=firebase.generarToken();
+        String mssg="";
+        Log.i("Mensaje", mssg);
+        Data.Builder data = new Data.Builder();
+        //Se introducen los datos necesarios a pasar a ConexionPHP
+        data.putString("mssg",mssg);
+        data.putString("token",token);
+        OneTimeWorkRequest otwr = new OneTimeWorkRequest.Builder(sendMessagePHPconnect.class)
+                .setInputData(data.build())
+                .build();
+        WorkManager.getInstance(this).getWorkInfoByIdLiveData(otwr.getId())
+                .observe(this, new Observer<WorkInfo>() {
+                    @Override
+                    public void onChanged(WorkInfo workInfo)
+                    {
+
+                        if(workInfo != null && workInfo.getState().isFinished())
+                        {
+                            String result = workInfo.getOutputData().getString("result");
+                            Log.i("mssg", result);
+                        }
+                    }
+                });
+        WorkManager.getInstance(this).enqueue(otwr);
+    }
+
+
+
 }

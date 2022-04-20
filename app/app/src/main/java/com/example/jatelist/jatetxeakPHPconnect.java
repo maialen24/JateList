@@ -72,7 +72,7 @@ public class jatetxeakPHPconnect extends Worker {
             urlConnection.setRequestMethod("POST");
             urlConnection.setDoOutput(true);
             urlConnection.setRequestProperty("Content-Type", "application/x-www-form-urlencoded");
-            String parametros = "funcion="+funcion+"user="+user+"&name="+name+"&ubi="+ubi+"&valoracion="+valoracion+"&comentarios="+comentarios+"&tlf="+tlf;
+            String parametros = "funcion="+funcion+"&user="+user+"&name="+name+"&ubi="+ubi+"&valoracion="+valoracion+"&comentarios="+comentarios+"&tlf="+tlf;
             PrintWriter out = new PrintWriter(urlConnection.getOutputStream());
             out.print(parametros);
             out.close();
@@ -131,7 +131,7 @@ public class jatetxeakPHPconnect extends Worker {
             urlConnection.setRequestMethod("POST");
             urlConnection.setDoOutput(true);
             urlConnection.setRequestProperty("Content-Type", "application/x-www-form-urlencoded");
-            String parametros = "funcion="+funcion+"user="+user+"&name="+name+"&ubi="+ubi+"&valoracion="+valoracion+"&comentarios="+comentarios+"&tlf="+tlf;
+            String parametros = "funcion="+funcion+"&user="+user+"&name="+name+"&ubi="+ubi+"&valoracion="+valoracion+"&comentarios="+comentarios+"&tlf="+tlf;
             PrintWriter out = new PrintWriter(urlConnection.getOutputStream());
             out.print(parametros);
             out.close();
@@ -186,7 +186,7 @@ public class jatetxeakPHPconnect extends Worker {
             urlConnection.setRequestMethod("POST");
             urlConnection.setDoOutput(true);
             urlConnection.setRequestProperty("Content-Type", "application/x-www-form-urlencoded");
-            String parametros = "funcion="+funcion+"user="+user+"&name="+name;
+            String parametros = "funcion="+funcion+"&user="+user+"&name="+name;
             PrintWriter out = new PrintWriter(urlConnection.getOutputStream());
             out.print(parametros);
             out.close();
