@@ -10,6 +10,14 @@ import android.database.sqlite.SQLiteStatement;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.util.Log;
+import android.view.LayoutInflater;
+import android.view.View;
+
+import androidx.lifecycle.Observer;
+import androidx.work.Data;
+import androidx.work.OneTimeWorkRequest;
+import androidx.work.WorkInfo;
+import androidx.work.WorkManager;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
@@ -21,9 +29,9 @@ public class db extends SQLiteOpenHelper {
 
     private static final String users_TABLE_CREATE = "CREATE TABLE users(user TEXT PRIMARY KEY, password TEXT)";
     private static final String jatetxea_TABLE_CREATE = "CREATE TABLE jatetxea(_id INTEGER PRIMARY KEY AUTOINCREMENT, izena TEXT, ubicacion TEXT, valoracion INTERGER, comentarios TEXT, tlf TEXT,user TEXT)";
-    private static final String argazkiak_TABLE_CREATE = "CREATE TABLE argazkiak( identificador TEXT PRIMARY KEY not null,foto blob not null, titulo TEXT not null,  FOREIGN KEY (titutlo) REFERENCES jatetxea(_id))";
+    private static final String argazkiak_TABLE_CREATE = "CREATE TABLE argazkiak( identificador TEXT PRIMARY KEY not null,foto blob not null, titulo INTEGER not null,  FOREIGN KEY (titulo) REFERENCES jatetxea(_id))";
     private static final String DB_NAME = "JateList.sqlite";
-    private static final int DB_VERSION = 6;
+    private static final int DB_VERSION = 9;
 
     public db(Context context) {
         super(context, DB_NAME, null, DB_VERSION);
@@ -175,7 +183,7 @@ public class db extends SQLiteOpenHelper {
 
     public Bitmap getImage(String user,String jatetxeid) {
         SQLiteDatabase db = this.getWritableDatabase();
-        String[] args = new String[]{user,jatetxeid+'f'};
+        String[] args = new String[]{user,jatetxeid};
         Cursor cursor = db.rawQuery(" SELECT  * FROM argazkiak WHERE user=? and titulo=?", args);
         Log.i("info", "GET ALL IMAGES");
         cursor.moveToFirst();

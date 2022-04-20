@@ -1,8 +1,14 @@
 package com.example.jatelist;
 
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.lifecycle.Observer;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.work.Data;
+import androidx.work.OneTimeWorkRequest;
+import androidx.work.WorkInfo;
+import androidx.work.WorkManager;
 
 import android.content.Intent;
 import android.database.sqlite.SQLiteDatabase;
@@ -12,6 +18,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.Toast;
@@ -55,6 +62,7 @@ public class MainActivity extends AppCompatActivity {
         update=false;
 
         //get all restaurants register of the user
+       // getUserRestaurants();
         db dbHelper = new db(this);
         SQLiteDatabase db = dbHelper.getWritableDatabase();
         if (db != null) {
@@ -65,6 +73,7 @@ public class MainActivity extends AppCompatActivity {
                 ArrayList<String> a = (ArrayList<String>) jatetxeList.get(i);
                 Log.i("data",a.get(0)+a.get(1)+a.get(2));
                 Bitmap img=dbHelper.getImage(user,a.get(5));
+                //Bitmap img=null;
                 data.add(new Jatetxea(a.get(0), a.get(1), a.get(2), a.get(3), a.get(4),img));
 
             }
@@ -170,5 +179,38 @@ public class MainActivity extends AppCompatActivity {
             //gorde image uri in db
 
         }
+    }
+
+
+    public void getUserRestaurants(){
+        final Boolean[] emaitza = {false};
+        Data.Builder data = new Data.Builder();
+
+        data.putString("user",user);
+
+        data.putString("funcion","get");
+
+        OneTimeWorkRequest otwr = new OneTimeWorkRequest.Builder(jatetxeakPHPconnect.class).setInputData(data.build()).build();
+        WorkManager.getInstance(this).getWorkInfoByIdLiveData(otwr.getId())
+                .observe(this, new Observer<WorkInfo>() {
+                    @Override
+                    public void onChanged(WorkInfo workInfo)
+                    {
+                        //Si se puede iniciar sesión porque devulve true se cambiará la actividad cerrando en la que se encuentra. Si la devolución es null o no es true se mostrará un toast en la interfaz actual.
+                        if(workInfo != null && workInfo.getState().isFinished())
+                        {
+                            String emaitza = workInfo.getOutputData().getString("result");
+                            if (emaitza!=null) {
+                                if (emaitza.equals("true")) {
+                                    //GO TO MAIN ACTIVITY
+                                    Log.i("jatetxeak","lortu");
+
+                                }
+
+                            }
+                        }
+                    }
+                });
+        WorkManager.getInstance(this).enqueue(otwr);
     }
 }

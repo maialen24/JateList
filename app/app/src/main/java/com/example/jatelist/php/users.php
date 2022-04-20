@@ -13,16 +13,17 @@ exit();
 }
 
 $funcion = $_POST["funcion"];
+
 if ($funcion=='insertUser'){
-    insertUser($_POST["user"],$_POST["password"])
+    insertUser($_POST["user"],$_POST["password"],$con);
 }else{
-    checkCredentials($_POST["user"],$_POST["password"])
+    checkCredentials($_POST["user"],$_POST["password"]);
 }
 
 //insert new user into db
-function insertUser($user,$password) {
-    $hash=password_hash($password, PASSWORD_DEFAULT)
-    $resultado = mysqli_query($con," INSERT into users (user,password) VALUES ('$user','$hash') ");
+function insertUser($user,$password,$con) {
+    $hash=password_hash($password, PASSWORD_DEFAULT);
+    $resultado = mysqli_query($con,"INSERT INTO users (user,password) values ('$user','$password')");
 
     if (!$resultado) {
         echo 'Ha ocurrido algún error: ' . mysqli_error($con);
@@ -32,12 +33,12 @@ function insertUser($user,$password) {
     }
 
 mysqli_close($con);
-echo json_encode($result)
+echo json_encode($result);
 }
 
 
  //check login user credentials
-function checkCredentials($user, $password) {
+function checkCredentials($user, $password,$con) {
 
      $resultado = mysqli_query($con," SELECT password FROM users WHERE user='$user'");
 
@@ -46,7 +47,7 @@ function checkCredentials($user, $password) {
      $result[] = array('resultado' => false);
      }else{
         $fila = mysqli_fetch_row($resultado);
-        $hash=$fila[1]
+        $hash=$fila[0];
          if(password_verify($password,$hash)){
              $result[] = array('resultado' => true);
          }

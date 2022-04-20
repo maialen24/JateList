@@ -3,6 +3,11 @@ package com.example.jatelist;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.lifecycle.Observer;
+import androidx.work.Data;
+import androidx.work.OneTimeWorkRequest;
+import androidx.work.WorkInfo;
+import androidx.work.WorkManager;
 
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -264,8 +269,10 @@ public class EditActivity extends AppCompatActivity implements OnMapReadyCallbac
                 Log.i("info","SAVE RESTAURANT AND DISABLE EDITABLE");
                 Boolean succes;
                 if (update){
+                    //update(izena.getText().toString(),ubi.getText().toString(),String.valueOf(valoracion.getRating()),comments.getText().toString(),tlf_number.getText().toString(),user);
                     succes=dbHelper.updateJatetxe(izena.getText().toString(),ubi.getText().toString(),String.valueOf(valoracion.getRating()),comments.getText().toString(),tlf_number.getText().toString(),user);
                 }else{
+                    //insert(izena.getText().toString(),ubi.getText().toString(),String.valueOf(valoracion.getRating()),comments.getText().toString(),tlf_number.getText().toString(),user);
                    succes=dbHelper.insertJatetxe(izena.getText().toString(),ubi.getText().toString(),String.valueOf(valoracion.getRating()),comments.getText().toString(),tlf_number.getText().toString(),user);
                 }
                 //deshabilitar la ediccion
@@ -405,7 +412,76 @@ public class EditActivity extends AppCompatActivity implements OnMapReadyCallbac
     }
 
 
+public boolean update(String izena, String ubi,String rating,String comments,String tlf,String user){
+    final Boolean[] emaitza = {false};
+    Data.Builder data = new Data.Builder();
+
+    data.putString("user",user);
+
+    data.putString("izena",izena);
+    data.putString("ubi",ubi);
+    data.putString("valoracion",rating);
+    data.putString("tlf",tlf);
+    data.putString("comentarios",comments);
 
 
+    data.putString("funcion","get");
+
+    OneTimeWorkRequest otwr = new OneTimeWorkRequest.Builder(jatetxeakPHPconnect.class).setInputData(data.build()).build();
+    WorkManager.getInstance(this).getWorkInfoByIdLiveData(otwr.getId())
+            .observe(this, new Observer<WorkInfo>() {
+                @Override
+                public void onChanged(WorkInfo workInfo)
+                {
+                    //Si se puede iniciar sesión porque devulve true se cambiará la actividad cerrando en la que se encuentra. Si la devolución es null o no es true se mostrará un toast en la interfaz actual.
+                    if(workInfo != null && workInfo.getState().isFinished())
+                    {
+                        String emaitza = workInfo.getOutputData().getString("result");
+                        if (emaitza!=null) {
+                            if (emaitza.equals("true")) {
+                                //GO TO MAIN ACTIVITY
+                                Log.i("jatetxeak","lortu");
+
+                            }
+
+                        }
+                    }
+                }
+            });
+    WorkManager.getInstance(this).enqueue(otwr);
+    return emaitza[0];
+}
+public Boolean insert(String izena, String ubi,String rating,String comments,String tlf,String user){
+    final Boolean[] emaitza = {false};
+    Data.Builder data = new Data.Builder();
+
+    data.putString("user",user);
+
+    data.putString("funcion","get");
+
+    OneTimeWorkRequest otwr = new OneTimeWorkRequest.Builder(jatetxeakPHPconnect.class).setInputData(data.build()).build();
+    WorkManager.getInstance(this).getWorkInfoByIdLiveData(otwr.getId())
+            .observe(this, new Observer<WorkInfo>() {
+                @Override
+                public void onChanged(WorkInfo workInfo)
+                {
+                    //Si se puede iniciar sesión porque devulve true se cambiará la actividad cerrando en la que se encuentra. Si la devolución es null o no es true se mostrará un toast en la interfaz actual.
+                    if(workInfo != null && workInfo.getState().isFinished())
+                    {
+                        String emaitza = workInfo.getOutputData().getString("result");
+                        if (emaitza!=null) {
+                            if (emaitza.equals("true")) {
+                                //GO TO MAIN ACTIVITY
+                                Log.i("jatetxeak","lortu");
+
+                            }
+
+                        }
+                    }
+                }
+            });
+    WorkManager.getInstance(this).enqueue(otwr);
+    return emaitza[0];
+}
 
 }

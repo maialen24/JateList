@@ -20,8 +20,8 @@ import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
 
-public class connectServer  extends Worker {
-    public connectServer(@NonNull Context context, @NonNull WorkerParameters workerParams)
+public class usersPHPconnect extends Worker {
+    public usersPHPconnect(@NonNull Context context, @NonNull WorkerParameters workerParams)
     {
         super(context, workerParams);
     }
@@ -47,7 +47,7 @@ public class connectServer  extends Worker {
         String funcion= "insertUser";
         Log.i("insert", "user: "+user);
         Log.i("insert", "password: "+password);
-        String direccion = "http://ec2-18-132-60-229.eu-west-2.compute.amazonaws.com/mruiz142/WEB/users.phpp";
+        String direccion = "http://ec2-18-132-60-229.eu-west-2.compute.amazonaws.com/mruiz142/WEB/users.php";
         HttpURLConnection urlConnection = null;
         try
         {
@@ -58,7 +58,7 @@ public class connectServer  extends Worker {
             urlConnection.setRequestMethod("POST");
             urlConnection.setDoOutput(true);
             urlConnection.setRequestProperty("Content-Type", "application/x-www-form-urlencoded");
-            String parametros = "funcion="+funcion+"user="+user+"&password="+password;
+            String parametros = "funcion="+funcion+"&user="+user+"&password="+password;
             PrintWriter out = new PrintWriter(urlConnection.getOutputStream());
             out.print(parametros);
             out.close();
@@ -101,7 +101,7 @@ public class connectServer  extends Worker {
         String funcion= "checkCredentials";
         Log.i("check", "user: "+user);
         Log.i("check", "password: "+password);
-        String direccion = "http://ec2-18-132-60-229.eu-west-2.compute.amazonaws.com/mruiz142/WEB/users.phpp";
+        String direccion = "http://ec2-18-132-60-229.eu-west-2.compute.amazonaws.com/mruiz142/WEB/users.php";
         HttpURLConnection urlConnection = null;
         try
         {
@@ -112,7 +112,7 @@ public class connectServer  extends Worker {
             urlConnection.setRequestMethod("POST");
             urlConnection.setDoOutput(true);
             urlConnection.setRequestProperty("Content-Type", "application/x-www-form-urlencoded");
-            String parametros = "funcion="+funcion+"user="+user+"&password="+password;
+            String parametros = "funcion="+funcion+"&user="+user+"&password="+password;
             PrintWriter out = new PrintWriter(urlConnection.getOutputStream());
             out.print(parametros);
             out.close();

@@ -6,6 +6,11 @@ import androidx.appcompat.app.AppCompatDelegate;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.app.NotificationCompat;
 import androidx.fragment.app.DialogFragment;
+import androidx.lifecycle.Observer;
+import androidx.work.Data;
+import androidx.work.OneTimeWorkRequest;
+import androidx.work.WorkInfo;
+import androidx.work.WorkManager;
 
 import android.app.Dialog;
 import android.app.NotificationChannel;
@@ -165,7 +170,7 @@ public class login extends AppCompatActivity implements DialogClass.Listener, se
                 Log.i("info","CHECK USERNAME AND PASSWORD");
                 Log.i("info",userEditText.getText().toString());
                 Log.i("info",password.getText().toString());
-                if (dbHelper.checkCredentials(userEditText.getText().toString(), password.getText().toString())){
+               /* if (dbHelper.checkCredentials(userEditText.getText().toString(), password.getText().toString())){
                     //GO TO MAIN ACTIVITY
                     user=userEditText.getText().toString();
                     Log.i("info","LOGIN SUCCESS");
@@ -180,7 +185,10 @@ public class login extends AppCompatActivity implements DialogClass.Listener, se
                     builder.setMessage(v.getContext().getString(R.string.login_mssg));
                     builder.setPositiveButton("OK", null);
                     builder.show();
-                }
+                }*/
+                check();
+
+
             }
         });
 
@@ -272,7 +280,8 @@ public class login extends AppCompatActivity implements DialogClass.Listener, se
         //insert new user in db
         db dbHelper = new db(this);
         //SQLiteDatabase db = dbHelper.getWritableDatabase();
-        dbHelper.insertUser(user, password);
+        //dbHelper.insertUser(user, password);
+        insert(user,password);
 
         // Sends local notification with user ok created message
         NotificationManager elManager = (NotificationManager)getSystemService(Context.NOTIFICATION_SERVICE);
@@ -467,4 +476,90 @@ public class login extends AppCompatActivity implements DialogClass.Listener, se
     }
 
 
+public void check(){
+    final Boolean[] emaitza = {false};
+    Data.Builder data = new Data.Builder();
+    //Se introducen los datos necesarios a pasar a ConexionPHP
+    EditText userEditText=(EditText) findViewById(R.id.username);
+    EditText password=(EditText) findViewById(R.id.password);
+    data.putString("user",userEditText.getText().toString());
+    data.putString("password",password.getText().toString());
+    data.putString("funcion","check");
+
+    OneTimeWorkRequest otwr = new OneTimeWorkRequest.Builder(usersPHPconnect.class).setInputData(data.build()).build();
+    WorkManager.getInstance(this).getWorkInfoByIdLiveData(otwr.getId())
+            .observe(this, new Observer<WorkInfo>() {
+                @Override
+                public void onChanged(WorkInfo workInfo)
+                {
+                    //Si se puede iniciar sesión porque devulve true se cambiará la actividad cerrando en la que se encuentra. Si la devolución es null o no es true se mostrará un toast en la interfaz actual.
+                    if(workInfo != null && workInfo.getState().isFinished())
+                    {
+                        String emaitza = workInfo.getOutputData().getString("result");
+                        if (emaitza!=null) {
+                            if (emaitza.equals("true")) {
+                                //GO TO MAIN ACTIVITY
+                                user=userEditText.getText().toString();
+                                Log.i("info","LOGIN SUCCESS");
+                                Intent i = new Intent (login.this, MainActivity.class);
+                                i.putExtra("user",user);
+                                startActivity(i);
+                            } else {
+                                //SHOW A INCORRET CREDENTIALS ALERT
+                                Log.i("info","LOGIN INCORRECT");
+                                AlertDialog.Builder builder = new AlertDialog.Builder(login.this);
+                                builder.setTitle("Error");
+                                builder.setMessage(getString(R.string.login_mssg));
+                                builder.setPositiveButton("OK", null);
+                                builder.show();
+                            }
+                        }
+                        else {
+                            //SHOW A INCORRET CREDENTIALS ALERT
+                            Log.i("info","LOGIN INCORRECT");
+                            AlertDialog.Builder builder = new AlertDialog.Builder(login.this);
+                            builder.setTitle("Error");
+                            builder.setMessage(getString(R.string.login_mssg));
+                            builder.setPositiveButton("OK", null);
+                            builder.show();
+                        }
+                    }
+                }
+            });
+    WorkManager.getInstance(this).enqueue(otwr);
+
+
 }
+
+public void insert(String user, String password){
+    final Boolean[] emaitza = {false};
+    Data.Builder data = new Data.Builder();
+    //Se introducen los datos necesarios a pasar a ConexionPHP
+
+    data.putString("user",user);
+    data.putString("password",password);
+    data.putString("funcion","insert");
+
+    OneTimeWorkRequest otwr = new OneTimeWorkRequest.Builder(usersPHPconnect.class).setInputData(data.build()).build();
+    WorkManager.getInstance(this).getWorkInfoByIdLiveData(otwr.getId())
+            .observe(this, new Observer<WorkInfo>() {
+                @Override
+                public void onChanged(WorkInfo workInfo)
+                {
+                    //Si se puede iniciar sesión porque devulve true se cambiará la actividad cerrando en la que se encuentra. Si la devolución es null o no es true se mostrará un toast en la interfaz actual.
+                    if(workInfo != null && workInfo.getState().isFinished())
+                    {
+                        String emaitza = workInfo.getOutputData().getString("result");
+                        if (emaitza!=null) {
+                            if (emaitza.equals("true")) {
+                                Log.i("user","created");
+                            }
+                        }
+                    }
+                }
+            });
+    WorkManager.getInstance(this).enqueue(otwr);
+}
+}
+
+

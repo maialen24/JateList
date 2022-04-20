@@ -226,7 +226,7 @@ public class jatetxeakPHPconnect extends Worker {
     public ListenableWorker.Result get(){
         //String user = getInputData().getString("user");
         //String password = getInputData().getString("password");
-        String funcion= "getAllfromUser";
+        String funcion="get";
         String user = getInputData().getString("user");
 
         String direccion = "http://ec2-18-132-60-229.eu-west-2.compute.amazonaws.com/mruiz142/WEB/jatetxeak.php";
