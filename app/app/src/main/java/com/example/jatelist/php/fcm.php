@@ -4,11 +4,12 @@ $cabecera= array(
 'Authorization: key=AAAAzS4ko6Q:APA91bGumFCGdtq7vc0ohfNDQCue1q09DnJHxl__RzoHfFzOq3Dwa8L8pEgbUvzH42glkCW1HGPWY8yv57mYhWA5LHbcMu7DamY2W7h8iWixtrMSmOvtfB_TB-Z6UP9kYhlmUQagfnD4',
 'Content-Type: application/json'
 );
-
+$token=$_POST['token']
+$message=$_POST['mssg']
 $msg= array(
 'to'=> $token,
 'data' => array (
-"mensaje" => "Este es mi mensaje",
+"mensaje" => $message,
 "fecha" => "31/03/2020"),
 
 'notification' => array (

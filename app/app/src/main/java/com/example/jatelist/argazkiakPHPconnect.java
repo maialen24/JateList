@@ -34,7 +34,7 @@ public class argazkiakPHPconnect extends Worker {
     public ListenableWorker.Result doWork() {
         String funcion=getInputData().getString("funcion");
         String user = getInputData().getString("user");
-        byte[] argazkia = getInputData().getByteArray("foto");
+        String argazkia = getInputData().getString("foto");
         String izena = getInputData().getString("izena");
         if(funcion.equals("insert")){
             return insert(user,argazkia,izena);
@@ -45,7 +45,7 @@ public class argazkiakPHPconnect extends Worker {
 
     }
 
-    public ListenableWorker.Result insert(String user, byte[] image, String izena ){
+    public ListenableWorker.Result insert(String user,  String  image, String izena ){
         //String user = getInputData().getString("user");
         //String password = getInputData().getString("password");
         String funcion= "insert";
@@ -123,34 +123,29 @@ public class argazkiakPHPconnect extends Worker {
             if (statusCode == 200)
             {
 
-                try {
-
-                        Bitmap elBitmap = BitmapFactory.decodeStream(urlConnection.getInputStream());
-
-                } catch (IOException e) {
-
-                }
                 BufferedInputStream inputStream = new BufferedInputStream(urlConnection.getInputStream());
                 BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(inputStream, "UTF-8"));
                 String line, result = "";
+
                 while ((line = bufferedReader.readLine()) != null) {
                     result += line;
                 }
+
                 inputStream.close();
                 JSONArray jsonArray = new JSONArray(result);
                 String resultado="";
                 for(int i = 0; i < jsonArray.length(); i++)
                 {
-                    Log.i("check", "doWork: "+jsonArray.getJSONObject(i));
+                    Log.i("JSONImagenes", "doWork: "+jsonArray.getJSONObject(i));
                     resultado = jsonArray.getJSONObject(i).getString("resultado");
+                    Log.i("JSONImagenes", "doWork: "+resultado);
                 }
                 Data json = new Data.Builder()
-                        .putString("result",resultado)
+                        .putString("foto",resultado)
                         .build();
-                Log.i("php","json: " + json);
-                return ListenableWorker.Result.success(json);
+                return Result.success(json);
             }
-            return ListenableWorker.Result.failure();
+            return Result.failure();
         }
         catch (MalformedURLException e) {e.printStackTrace();}
         catch (IOException e) {e.printStackTrace();}

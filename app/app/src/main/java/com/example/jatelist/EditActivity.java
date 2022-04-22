@@ -207,6 +207,7 @@ public class EditActivity extends AppCompatActivity implements OnMapReadyCallbac
                 enableEditText(tlf_number,tlfListener);
                 //enableEditText(valoracion,valListener);
                 enableEditText(comments,comListener);
+                send();
 
             }
         });

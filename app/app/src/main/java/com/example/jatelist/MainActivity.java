@@ -16,6 +16,7 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
+import android.util.Base64;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -39,6 +40,8 @@ public class MainActivity extends AppCompatActivity {
     private String user;
     private boolean update=true;
     private int CODIGO_GALERIA=4;
+    private  Bitmap[] images;
+    private Bitmap imageBitmap;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -74,16 +77,18 @@ public class MainActivity extends AppCompatActivity {
             for (int i = 0; i < jatetxeList.size(); i++) {
                 ArrayList<String> a = (ArrayList<String>) jatetxeList.get(i);
                 Log.i("data",a.get(0)+a.get(1)+a.get(2));
-                Bitmap img=dbHelper.getImage(user,a.get(5));
+                //Bitmap img=dbHelper.getImage(user,a.get(5));
                 //Bitmap img=null;
-                byte[] image = getimage(user,a.get(0));
-                Bitmap laimg=null;
-                if (image!=null){
+                //images[i]=
+                getimage(user,a.get(0));
+
+                /*
+                if (images[i]!=null){
                     ByteArrayInputStream imageStream = new ByteArrayInputStream(image);
                     laimg = BitmapFactory.decodeStream(imageStream);
-                }
+                }*/
 
-                data.add(new Jatetxea(a.get(0), a.get(1), a.get(2), a.get(3), a.get(4),laimg));
+                data.add(new Jatetxea(a.get(0), a.get(1), a.get(2), a.get(3), a.get(4),imageBitmap));
 
             }
 
@@ -221,9 +226,10 @@ public class MainActivity extends AppCompatActivity {
                     }
                 });
         WorkManager.getInstance(this).enqueue(otwr);
+
     }
 
-    public byte[] getimage(String user, String izena){
+    public void getimage(String user, String izena){
         final Boolean[] emaitza = {false};
         Data.Builder data = new Data.Builder();
 
@@ -240,21 +246,33 @@ public class MainActivity extends AppCompatActivity {
                         //Si se puede iniciar sesión porque devulve true se cambiará la actividad cerrando en la que se encuentra. Si la devolución es null o no es true se mostrará un toast en la interfaz actual.
                         if(workInfo != null && workInfo.getState().isFinished())
                         {
-                            String emaitza = workInfo.getOutputData().getString("result");
+
+                            String emaitza = workInfo.getOutputData().getString("foto");
                             if (emaitza!=null) {
-                                if (emaitza.equals("true")) {
+
                                     //GO TO MAIN ACTIVITY
                                     Log.i("jatetxeak","lortu");
+                                    imageBitmap = toBitmap(emaitza);
+                                    //images[images.length+1]=elBitmap;
 
-                                }
 
                             }
                         }
                     }
                 });
         WorkManager.getInstance(this).enqueue(otwr);
-        byte[] a=null;
 
-        return a;
+    }
+
+    public Bitmap toBitmap(String encodedString){
+        try{
+            byte [] encodeByte = Base64.decode(encodedString,Base64.DEFAULT);
+            Bitmap bitmap = BitmapFactory.decodeByteArray(encodeByte, 0, encodeByte.length);
+            return bitmap;
+        }
+        catch(Exception e){
+            e.getMessage();
+            return null;
+        }
     }
 }
