@@ -87,42 +87,26 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/password" />
 
-    <Switch
-        android:id="@+id/nightMode"
-        android:layout_width="103dp"
-        android:layout_height="50dp"
-        android:layout_marginStart="62dp"
-        android:layout_marginTop="25dp"
-        android:layout_marginEnd="582dp"
-        android:layout_marginBottom="83dp"
-        android:minHeight="48dp"
-        android:text="@string/mode"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/imageView" />
-
     <TextView
         android:id="@+id/euskera"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="54dp"
-        android:layout_marginTop="22dp"
+        android:layout_marginTop="95dp"
         android:layout_marginEnd="33dp"
         android:layout_marginBottom="42dp"
         android:text="eu"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/español"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/nightMode"
-        app:layout_constraintVertical_bias="0.0" />
+        app:layout_constraintTop_toBottomOf="@+id/imageView" />
 
     <TextView
         android:id="@+id/ingles"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="33dp"
-        android:layout_marginTop="22dp"
+        android:layout_marginTop="95dp"
         android:layout_marginEnd="33dp"
         android:layout_marginBottom="42dp"
         android:text="en"
@@ -130,8 +114,7 @@
         app:layout_constraintEnd_toStartOf="@+id/español"
         app:layout_constraintHorizontal_bias="0.523"
         app:layout_constraintStart_toEndOf="@+id/euskera"
-        app:layout_constraintTop_toBottomOf="@+id/nightMode"
-        app:layout_constraintVertical_bias="0.0" />
+        app:layout_constraintTop_toBottomOf="@+id/imageView" />
 
     <ImageView
         android:id="@+id/imageView"
@@ -154,14 +137,13 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="24dp"
-        android:layout_marginTop="22dp"
+        android:layout_marginTop="95dp"
         android:layout_marginEnd="215dp"
         android:layout_marginBottom="42dp"
         android:text="es"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/loginButton"
         app:layout_constraintStart_toEndOf="@+id/euskera"
-        app:layout_constraintTop_toBottomOf="@+id/nightMode"
-        app:layout_constraintVertical_bias="0.0" />
+        app:layout_constraintTop_toBottomOf="@+id/imageView" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -55,24 +55,12 @@ public class login extends AppCompatActivity implements DialogClass.Listener, se
     private SharedPreferences sharedpreferences;
     private Boolean spNight;
     private String spLanguage;
-    private Boolean firstTime;
-
-
-
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
 
-
-       /* if (firstTime) {
-            Locale locale = new Locale(spLanguage);
-            Locale.setDefault(locale);
-            Configuration config = new Configuration();
-            config.locale = locale;
-            getResources().updateConfiguration(config, getResources().getDisplayMetrics());
-        }*/
         super.onCreate(savedInstanceState);
         Log.i("CONTROL","ON CREATE");
 
@@ -84,18 +72,6 @@ public class login extends AppCompatActivity implements DialogClass.Listener, se
             user = savedInstanceState.getString("user");
             language =savedInstanceState.getString("language");
             night=savedInstanceState.getBoolean("mode");
-          //  firstTime=false;
-       /*     SharedPreferences.Editor myEdit = sharedpreferences.edit();
-
-            // Storing the key and its value as the data fetched from edittext
-            myEdit.putBoolean("firstTime", firstTime);
-
-            // Once the changes have been made,
-            // we need to commit to apply those changes made,
-            // otherwise, it will throw an error
-            myEdit.commit();*/
-
-
 
         }else{
 
@@ -125,9 +101,6 @@ public class login extends AppCompatActivity implements DialogClass.Listener, se
 
         setContentView(R.layout.activity_login);
 
-
-
-
         //get elements
         Toolbar myToolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(myToolbar);
@@ -138,17 +111,6 @@ public class login extends AppCompatActivity implements DialogClass.Listener, se
 
         EditText userEditText=findViewById((R.id.username));
         EditText password=findViewById((R.id.password));
-
-        Switch mode=(Switch) findViewById(R.id.nightMode);
-        //set theme mode
-        mode.setChecked(night);
-
-
-
-
-
-
-
 
 
 
@@ -192,19 +154,7 @@ public class login extends AppCompatActivity implements DialogClass.Listener, se
             }
         });
 
-        // theme mode switch control
-        mode.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                // do something, the isChecked will be
-                // true if the switch is in the On position
-                night=isChecked;
-                spLanguage=language;
 
-                changeTheme();
-
-
-            }
-        });
 
         //euskera button (textView) clicked, change language
         eu.setOnClickListener(new View.OnClickListener() {
@@ -385,7 +335,9 @@ public class login extends AppCompatActivity implements DialogClass.Listener, se
 
         // Storing the key and its value as the data fetched from edittext
         myEdit.putBoolean("mode", pmode);
-        myEdit.putString("language", planguage);
+
+        night=pmode;
+        changeTheme();
 
         // Once the changes have been made,
         // we need to commit to apply those changes made,
@@ -403,7 +355,7 @@ public class login extends AppCompatActivity implements DialogClass.Listener, se
     // metodo laguntzaile to save preferences
     private void preferences(){
         sharedpreferences = getSharedPreferences(MyPREFERENCES, Context.MODE_PRIVATE);
-        spLanguage = sharedpreferences.getString("language", "es");
+
         spNight = sharedpreferences.getBoolean("mode",false);
         language=spLanguage;
      //   firstTime = sharedpreferences.getBoolean("firstTime",true);
