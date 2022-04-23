@@ -2,6 +2,7 @@ package com.example.jatelist;
 
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -14,6 +15,9 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import java.io.IOException;
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.util.ArrayList;
 
 public class JatetxeaAdapter extends RecyclerView.Adapter<JatetxeaAdapter.JatetxeaViewHolder>{
@@ -48,11 +52,10 @@ public class JatetxeaAdapter extends RecyclerView.Adapter<JatetxeaAdapter.Jatetx
         holder.comentarios= jatetxea.getComentarios();
         holder.tlf_number=jatetxea.getTlf();
         Bitmap img=jatetxea.getImage();
+
         if(img!=null){
             holder.ivfoto.setImageBitmap(jatetxea.getImage());
         }
-
-
     }
 
     @Override

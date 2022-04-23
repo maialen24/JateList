@@ -98,8 +98,7 @@ public class argazkiakPHPconnect extends Worker {
     }
 
     public ListenableWorker.Result get(String user, String izena){
-        //String user = getInputData().getString("user");
-        //String password = getInputData().getString("password");
+
         String funcion= "get";
 
         String direccion = "http://ec2-52-56-170-196.eu-west-2.compute.amazonaws.com/mruiz142/WEB/argazkiak.php";

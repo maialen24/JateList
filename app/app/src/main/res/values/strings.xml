@@ -39,4 +39,5 @@
     <string name="msg_subscribe_failed">Error suscripcion</string>
     <string name="msg_unsubscribed">Desubscrito de novedades</string>
     <string name="msg_unsubscribe_failed">Desubscripcion fallida</string>
+
 </resources>

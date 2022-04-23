@@ -68,6 +68,7 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
+
 import com.google.firebase.messaging.FirebaseMessaging;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
@@ -76,7 +77,9 @@ import com.google.firebase.storage.UploadTask;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Locale;
 
@@ -85,15 +88,9 @@ public class EditActivity extends AppCompatActivity implements OnMapReadyCallbac
     private static final int CAMERA_REQUEST = 2;
 
      // instance for firebase storage and StorageReference
-     FirebaseStorage storage;
-     StorageReference storageReference;
+     private FirebaseStorage storage;
+     private StorageReference storageReference;
 
-     private static final int LOCATION_PERMISSION_ID = 1001;
-    /* This class implements edit activity that is going to be used to add or update restaurants and to show more info about them */
-    private static final int PERMISSION_REQUEST_FINE_LOCATION = 1;
-
-
-             private boolean locationPermissionGranted;
     private Boolean update = true;
     private db dbHelper = new db(this);
     private SQLiteDatabase db;
@@ -107,8 +104,9 @@ public class EditActivity extends AppCompatActivity implements OnMapReadyCallbac
     double userlo=0;
     int CODIGO_GALERIA=4;
     String izena="";
-    FusedLocationProviderClient fusedLocationProviderClient;
-    LocationCallback actualizar;
+    private FusedLocationProviderClient fusedLocationProviderClient;
+
+
 
 
     private static final  String MAPVIEW_BUNDLE_KEY="MapViewBundleKey";
@@ -136,9 +134,6 @@ public class EditActivity extends AppCompatActivity implements OnMapReadyCallbac
         }
 
         setContentView(R.layout.activity_edit);
-
-        //storage = FirebaseStorage.getInstance();
-        //storageReference = storage.getReference();
 
         //crear instancia de la base de datos
         dbHelper = new db(this);
@@ -196,8 +191,8 @@ public class EditActivity extends AppCompatActivity implements OnMapReadyCallbac
             }
         }
 
-
-
+        // Construct a FusedLocationProviderClient.
+        fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(this);
         //crear mapa
         map = (MapView) findViewById(R.id.mapview);
         map.onCreate(mapViewBundle);
@@ -308,30 +303,18 @@ public class EditActivity extends AppCompatActivity implements OnMapReadyCallbac
                         //camaraIntent.putExtra("izena",izena.getText().toString());
                         startActivityForResult(camaraIntent,CAMERA_REQUEST);
 
-
-
-
                     }
                 });
                 builder.setNeutralButton(v.getContext().getString(R.string.selectPhoto), new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
                         //Jatetxea argazkia aukeratu
-                        Intent elIntentGal = new Intent(Intent.ACTION_PICK, android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
-
-                        elIntentGal.putExtra("user",user);
-                        elIntentGal.putExtra("izena",izena.getText().toString());
-
+                       // Intent elIntentGal = new Intent(Intent.ACTION_PICK, android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+                        Intent elIntentGal=new Intent(Intent.ACTION_GET_CONTENT,android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
                         startActivityForResult(elIntentGal, CODIGO_GALERIA);
-
-
                     }
                 });
-
-
                 builder.show();
-
-
             }
         });
 
@@ -377,8 +360,6 @@ public class EditActivity extends AppCompatActivity implements OnMapReadyCallbac
                 Log.i("info","MARK RESTAURANT NUMBER");
                 Intent i = new Intent(Intent.ACTION_DIAL, Uri.parse("tel:"+tlf_number.getText()));
                 startActivity(i);
-
-
             }
         });
 
@@ -420,11 +401,8 @@ public class EditActivity extends AppCompatActivity implements OnMapReadyCallbac
         savedInstanceState.putDouble("latitude",lat);
         savedInstanceState.putDouble("longitud",lo);
         savedInstanceState.putString("jatetxeName",nameJatetxe);
-
-
-
-
     }
+
     //conseguir info
     protected void onRestoreInstanceState(Bundle savedInstanceState) {
         super.onRestoreInstanceState(savedInstanceState);
@@ -433,8 +411,6 @@ public class EditActivity extends AppCompatActivity implements OnMapReadyCallbac
         lat=savedInstanceState.getDouble("latitude");
         lo=savedInstanceState.getDouble("longitud");
         nameJatetxe=savedInstanceState.getString("jatetxeName");
-
-        ;
     }
 
     //crear marker en el mapa
@@ -449,17 +425,8 @@ public class EditActivity extends AppCompatActivity implements OnMapReadyCallbac
                     .title(nameJatetxe));
             // [START_EXCLUDE silent]
             googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(jatetxea, 15));
-           // getlocation();
-
-            //getUserLocation();
-            getLocationRequest();
-            Log.i("map", String.valueOf(userlat));
-            Log.i("map", String.valueOf(userlo));
         }
-
     }
-
-
 
 
     @Override
@@ -565,7 +532,6 @@ public Boolean insert(String izena,String rating){
                                 Log.i("jatetxeak","lortu");
 
                             }
-
                         }
                     }
                 }
@@ -595,9 +561,7 @@ public Boolean insert(String izena,String rating){
                                  if (emaitza.equals("true")) {
                                      //GO TO MAIN ACTIVITY
                                      Log.i("jatetxeak","lortu");
-
                                  }
-
                              }
                          }
                      }
@@ -612,37 +576,36 @@ public Boolean insert(String izena,String rating){
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == CODIGO_GALERIA && resultCode == RESULT_OK) {
             Uri imagenSeleccionada = data.getData();
+
             uploadImage(imagenSeleccionada);
             Bitmap img= null;
             try {
-                img = MediaStore.Images.Media.getBitmap(this.getContentResolver(), imagenSeleccionada);
+                InputStream inputStream=getContentResolver().openInputStream(data.getData());
+                img=BitmapFactory.decodeStream(inputStream);
+                //img = MediaStore.Images.Media.getBitmap(this.getContentResolver(), imagenSeleccionada);
+                insertargazkia(user,nameJatetxe,encode(img));
             } catch (IOException e) {
                 e.printStackTrace();
             }
-            // Bitmap img = (Bitmap) data.getExtras().get("data");
-            //guardar foto en server//
-
-           // String img64=getEncodedString(img);
-
-            //insertargazkia(user,nameJatetxe,imagenSeleccionada.toString());
 
         }
         if (requestCode == CAMERA_REQUEST && resultCode == RESULT_OK) {
             Bitmap img = (Bitmap) data.getExtras().get("data");
-            insertargazkia(user,nameJatetxe,getEncodedString(img));
-            uploadcameraImage(img);
+           // uploadcameraImage(img);
+            insertargazkia(user,nameJatetxe,encode(img));
         }
 
     }
-    private String getEncodedString(Bitmap foto){
 
-        ByteArrayOutputStream stream = new ByteArrayOutputStream();
-        foto.compress(Bitmap.CompressFormat.JPEG, 45, stream);
-        byte[] fototransformada = stream.toByteArray();
-        String fotoen64 = Base64.encodeToString(fototransformada,Base64.URL_SAFE);
-        Log.i("proba",fotoen64);
-        return fotoen64;
+    private String encode(Bitmap img){
+
+        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        img.compress(Bitmap.CompressFormat.JPEG, 50, baos); //bm is the bitmap object
+        byte[] b = baos.toByteArray();
+        String encodedImage = Base64.encodeToString(b , Base64.URL_SAFE);
+        return encodedImage;
     }
+
 
     public void insertargazkia(String user, String izena, String foto){
         final Boolean[] emaitza = {false};
@@ -713,25 +676,6 @@ public Boolean insert(String izena,String rating){
         WorkManager.getInstance(this).enqueue(otwr);
     }
 
-/*
-             private Boolean permissionsGranted() {
-                 return ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED;
-             }*/
-/*
-             @Override
-             public void onRequestPermissionsResult(final int requestCode, @NonNull final String[] permissions, @NonNull final int[] grantResults) {
-                 super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-                 if (requestCode == 123) {
-                     if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                         // Permission granted.
-                         //getlocation();
-                     } else {
-                         // User refused to grant permission. You can add AlertDialog here
-                         Toast.makeText(this, "You didn't give permission to access device location", Toast.LENGTH_LONG).show();
-                         startInstalledAppDetailsActivity();
-                     }
-                 }
-             }*/
 
              private void startInstalledAppDetailsActivity() {
                  Intent i = new Intent();
@@ -741,70 +685,7 @@ public Boolean insert(String izena,String rating){
                  i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                  startActivity(i);
              }
-/*
-    private void getlocation(){
-        FusedLocationProviderClient proveedordelocalizacion =
-                LocationServices.getFusedLocationProviderClient(this);
 
-        fusedLocationProviderClient.getLastLocation()
-                .addOnSuccessListener(this, new OnSuccessListener<Location>() {
-                    @Override
-                    public void onSuccess(Location location) {
-                        userlo=location.getLongitude();
-                        userlat=location.getLatitude();
-
-                    }
-                })
-                .addOnFailureListener(this, new OnFailureListener() {
-                    @Override
-                    public void onFailure(@NonNull Exception e) {
-                        Log.i("map","error");
-                    }
-                });
-    }
-
-    */
-
-/*
-
-             public void getUserLocation(){
-
-                     if (ContextCompat.checkSelfPermission(EditActivity.this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-                         ActivityCompat.requestPermissions(EditActivity.this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, 1);
-                     }
-                     else if (ContextCompat.checkSelfPermission(EditActivity.this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-                         ActivityCompat.requestPermissions(EditActivity.this, new String[]{Manifest.permission.ACCESS_COARSE_LOCATION}, 1);
-                     }
-                     if (ContextCompat.checkSelfPermission(EditActivity.this, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED||ContextCompat.checkSelfPermission(EditActivity.this, Manifest.permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
-                         fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(this);
-                         fusedLocationProviderClient.getLastLocation().addOnSuccessListener(this, new OnSuccessListener<Location>(){
-                             @Override
-                             public void onSuccess(Location location) {
-
-                                 if (location != null) {
-                                         userlat=location.getLatitude();
-                                         userlo=location.getLongitude();
-                                 }
-                             }
-                         });
-
-                         LocationRequest peticion = LocationRequest.create();
-                         peticion.setInterval(5000);
-                         peticion.setFastestInterval(1000);
-                         peticion.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
-                         actualizar = new LocationCallback() {
-                             @Override
-                             public void onLocationResult(LocationResult locationResult) {
-                                 super.onLocationResult(locationResult);
-                                 if(locationResult !=null) {
-                                     userlat = locationResult.getLastLocation().getLatitude();
-                                     userlo = locationResult.getLastLocation().getLongitude();
-                                 }
-                             }
-                         };
-                         fusedLocationProviderClient.requestLocationUpdates(peticion,actualizar, Looper.getMainLooper());
-                     }
-             }*/
 
      public void sendtoNovedadesTopic(String jatetxeIzena){
              ServicioFirebase firebase=new ServicioFirebase();
@@ -835,76 +716,22 @@ public Boolean insert(String izena,String rating){
          }
 
 
-             private boolean comprobarPlayServices(){
-                 GoogleApiAvailability api = GoogleApiAvailability.getInstance();
-                 int code = api.isGooglePlayServicesAvailable(this);
-                 if (code == ConnectionResult.SUCCESS) {
-                     return true;
-                 }
-                 else {
-                     if (api.isUserResolvableError(code)){
-                         api.getErrorDialog(this, code, 58).show();
-                     }
-                     return false;
-                 }
+     private boolean comprobarPlayServices(){
+         GoogleApiAvailability api = GoogleApiAvailability.getInstance();
+         int code = api.isGooglePlayServicesAvailable(this);
+         if (code == ConnectionResult.SUCCESS) {
+             return true;
+         }
+         else {
+             if (api.isUserResolvableError(code)){
+                 api.getErrorDialog(this, code, 58).show();
              }
-
-
-             @SuppressLint("MissingPermission")
-             private void getLocationRequest() {
-                 FusedLocationProviderClient client = LocationServices.getFusedLocationProviderClient(this);
-                 if (!checkPermission()) {
-                     getLocationPermissions();
-                     return;
-                 }
-                 client.getLastLocation()
-                         .addOnSuccessListener(this, new OnSuccessListener<Location>() {
-                             @Override
-                             public void onSuccess(Location location) {
-                                 // Got last known location. In some rare situations this can be null.
-                                 if (location != null) {
-                                     // Logic to handle location object
-                                     Log.e("TAG", "location = " + location);
-                                 } else {
-                                     Log.e("TAG", "not successful");
-                                 }
-                             }
-                         });
-             }
-
-             private boolean checkPermission() {
-                 return isGranted(ActivityCompat.checkSelfPermission(this, ACCESS_FINE_LOCATION)) &&
-                         isGranted(ActivityCompat.checkSelfPermission(this, ACCESS_COARSE_LOCATION));
-             }
-
-             @TargetApi(Build.VERSION_CODES.M)
-             private void getLocationPermissions() {
-                 requestPermissions(new String[] {ACCESS_FINE_LOCATION},
-                         PERMISSION_REQUEST_FINE_LOCATION);
-             }
-
-             @Override
-             public void onRequestPermissionsResult(int code, @Nullable String permissions[], @Nullable int[] results) {
-                 super.onRequestPermissionsResult(code, permissions, results);
-                 switch (code) {
-                     case PERMISSION_REQUEST_FINE_LOCATION:
-                         if (isPermissionGranted(results)) {
-                             getLocationRequest();
-                         }
-                 }
-             }
-
-             private boolean isPermissionGranted(int[] results) {
-                 return results != null && results.length > 0 && isGranted(results[0]);
-             }
-
-             private boolean isGranted(int permission) {
-                 return permission == PackageManager.PERMISSION_GRANTED;
-             }
+             return false;
+         }
+     }
 
      // UploadImage method
      public void uploadImage(Uri uri){
-
          String izena=nameJatetxe.replace(" ","");
          String fileName=user+izena;
          storageReference = FirebaseStorage.getInstance().getReference("images/"+fileName);
@@ -944,6 +771,14 @@ public Boolean insert(String izena,String rating){
              }
          });
      }
+
+
+
+
+
+
+
+
 
 
 }

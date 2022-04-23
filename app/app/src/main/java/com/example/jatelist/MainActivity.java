@@ -71,6 +71,7 @@ public class MainActivity extends AppCompatActivity {
     StorageReference storageReference;
 
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -78,6 +79,7 @@ public class MainActivity extends AppCompatActivity {
         if (savedInstanceState!= null) {
             user = savedInstanceState.getString("user");
         }
+
 
         setContentView(R.layout.activity_main);
 
@@ -100,19 +102,8 @@ public class MainActivity extends AppCompatActivity {
             for (int i = 0; i < jatetxeList.size(); i++) {
                 ArrayList<String> a = (ArrayList<String>) jatetxeList.get(i);
                 Log.i("data",a.get(0)+a.get(1)+a.get(2));
-                //Bitmap img=dbHelper.getImage(user,a.get(5));
-                //Bitmap img=null;
-                //images[i]=
-           /*     getimage(user,a.get(0));
-                while(eginda){
 
-                }*/
-                downloadImage(user,a.get(0));
-                /*
-                if (images[i]!=null){
-                    ByteArrayInputStream imageStream = new ByteArrayInputStream(image);
-                    laimg = BitmapFactory.decodeStream(imageStream);
-                }*/
+                getImage(user,a.get(0),i);
 
                 data.add(new Jatetxea(a.get(0), a.get(1), a.get(2), a.get(3), a.get(4),imageBitmap));
 
@@ -129,13 +120,10 @@ public class MainActivity extends AppCompatActivity {
             public void onTabSelected(TabLayout.Tab tab) {
                 tab.getText();
                 int i= tablayout.getSelectedTabPosition();
-
                 if (i==0){
                     tabYourList();
-
                 }else{
                     tabSearch();
-
                 }
             }
             @Override
@@ -247,17 +235,6 @@ public class MainActivity extends AppCompatActivity {
         Log.i("CONTROL","main ON DESTROY");
     }
 
-    /*@Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == CODIGO_GALERIA && resultCode == RESULT_OK) {
-            Uri imagenSeleccionada = data.getData();
-            ImageView foto = (ImageView) findViewById(R.id.foto);
-            foto.setImageURI(imagenSeleccionada);
-            //gorde image uri in db
-
-        }
-    }*/
 
 
     public void getRestaurants(){
@@ -290,13 +267,22 @@ public class MainActivity extends AppCompatActivity {
         WorkManager.getInstance(this).enqueue(otwr);
     }
 
-    public void getimage(String user, String izena){
+private Bitmap decode(String encodedimg){
+    byte[] b = Base64.decode(encodedimg,Base64.URL_SAFE);
+    Bitmap bitmap = BitmapFactory.decodeByteArray(b,0,b.length);
+    return bitmap;
+
+}
+
+
+    private void getImage(String user,String izena, int index){
+        eginda=false;
         final Boolean[] emaitza = {false};
         Data.Builder data = new Data.Builder();
-        eginda=false;
+
+        data.putString("funcion","get");
         data.putString("user",user);
         data.putString("izena",izena);
-        data.putString("funcion","get");
 
         OneTimeWorkRequest otwr = new OneTimeWorkRequest.Builder(argazkiakPHPconnect.class).setInputData(data.build()).build();
         WorkManager.getInstance(this).getWorkInfoByIdLiveData(otwr.getId())
@@ -307,102 +293,23 @@ public class MainActivity extends AppCompatActivity {
                         //Si se puede iniciar sesión porque devulve true se cambiará la actividad cerrando en la que se encuentra. Si la devolución es null o no es true se mostrará un toast en la interfaz actual.
                         if(workInfo != null && workInfo.getState().isFinished())
                         {
-
-                            Log.i("f","terminado");
-
                             String emaitza = workInfo.getOutputData().getString("foto");
-                            //String tipo = workInfo.getOutputData().getString("tipo");
                             if (emaitza!=null) {
-                                imageBitmap = toBitmap(emaitza);
-
-                                eginda=true;
-
-                              /*  if (emaitza.contains("content")){
-
-                                        String path=getPathFromURI(Uri.parse(emaitza));
-                                      //  imageBitmap = MediaStore.Images.Media.getBitmap(getContentResolver(), getgaleryImage(emaitza));
-
-                                    if (path != null) {
-                                        File f = new File(path);
-                                        Uri selectedImageUri = Uri.fromFile(f);
-                                        try {
-                                            Bitmap vBitmap = MediaStore.Images.Media.getBitmap( MainActivity.this.getContentResolver(), selectedImageUri); // get bitmap
-                                        } catch (IOException e) {
-                                            e.printStackTrace();
-                                        }
-                                    }
-                                }else{
-                                    imageBitmap = toBitmap(emaitza);
-                                    //images[images.length+1]=elBitmap;
-                                }*/
+                                imageBitmap=decode(emaitza);
+                                updateData(user,imageBitmap,index);
 
                             }
+                            eginda=true;
                         }
                     }
                 });
         WorkManager.getInstance(this).enqueue(otwr);
 
+
     }
 
-    public Bitmap toBitmap(String encodedString){
-        try{
-            byte [] encodeByte = Base64.decode(encodedString,Base64.URL_SAFE);
-            Bitmap bitmap = BitmapFactory.decodeByteArray(encodeByte, 0, encodeByte.length);
-            return bitmap;
-        }
-        catch(Exception e){
-            e.getMessage();
-            Log.i("foto",e.getMessage());
-            return null;
-        }
-    }
-
-
-
-    public String getPathFromURI(Uri contentUri) {
-        String res = null;
-        String[] proj = {MediaStore.Images.Media.DATA};
-        Cursor cursor = getContentResolver().query(contentUri, proj, null, null, null);
-        if (cursor.moveToFirst()) {
-            int column_index = cursor.getColumnIndexOrThrow(MediaStore.Images.Media.DATA);
-            res = cursor.getString(column_index);
-        }
-        cursor.close();
-        return res;
-    }
-
-
-    public void downloadImage(String user,String izena){
-        storageReference = FirebaseStorage.getInstance().getReference("images/");
-        StorageReference pathReference = storageReference.child("space.jpg");
-        pathReference.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
-            @Override
-            public void onSuccess(Uri uri) {
-                ImageView elImageView= findViewById(R.id.imageView);
-               // Glide.with(getApplicationContext()).load(uri).into(elImageView);
-                BitmapDrawable drawable = (BitmapDrawable) elImageView.getDrawable();
-                imageBitmap = drawable.getBitmap();
-            }
-        });
-
-   /*     storageReference = FirebaseStorage.getInstance().getReference("images/"+user+izena.replace(" ","")+".jpg");
-
-       // storageReference.getStream();
-        try {
-            File localfile=File.createTempFile("tempfile",".jpeg");
-            Task<Uri> u=storageReference.getDownloadUrl();
-            storageReference.getFile(localfile).addOnSuccessListener(new OnSuccessListener<FileDownloadTask.TaskSnapshot>() {
-                @Override
-                public void onSuccess(FileDownloadTask.TaskSnapshot taskSnapshot) {
-                    imageBitmap=BitmapFactory.decodeFile(localfile.getAbsolutePath());
-                }
-            });{
-
-            }
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-
-*/
+    private void updateData(String user, Bitmap img,int index){
+        data.get(index).setImage(img);
+        tabYourList();
     }
 }
