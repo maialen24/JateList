@@ -1,11 +1,14 @@
 package com.example.jatelist;
 
+import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.app.Service;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
 import android.net.Uri;
+import android.os.Build;
 import android.util.Log;
 
 import android.widget.Toast;
@@ -48,13 +51,51 @@ public class ServicioFirebase extends FirebaseMessagingService {
 
     public void onMessageReceived(RemoteMessage remoteMessage) {
         if (remoteMessage.getData().size() > 0) {
-
+/*
             Log.i("fcm ",remoteMessage.getData().toString());
-          //  Toast.makeText(getApplicationContext(),"FCM message",Toast.LENGTH_SHORT).show();
+            NotificationManager elManager = (NotificationManager)getSystemService(Context.NOTIFICATION_SERVICE);
+            NotificationCompat.Builder elBuilder = new NotificationCompat.Builder(this, "2");
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                NotificationChannel elCanal = new NotificationChannel("2", "mssg",
+                        NotificationManager.IMPORTANCE_DEFAULT);
+                elManager.createNotificationChannel(elCanal);
+                elCanal.setDescription("Firebase messages");
+                elCanal.enableLights(true);
+                elCanal.setLightColor(Color.RED);
+                elCanal.setVibrationPattern(new long[]{0, 1000, 500, 1000});
+                elCanal.enableVibration(true);
+            }
+            elBuilder.setSmallIcon(android.R.drawable.stat_sys_warning)
+                    .setContentTitle("Notificacion")
+                    .setContentText(remoteMessage.getData().toString())
+                    .setSubText(remoteMessage.getData().toString())
+                    .setVibrate(new long[]{0, 1000, 500, 1000})
+                    .setAutoCancel(true);
+            elManager.notify(1, elBuilder.build());*/
+            //Toast.makeText(getApplicationContext(),remoteMessage.getData().toString(),Toast.LENGTH_SHORT).show();
         }
         if (remoteMessage.getNotification() != null) {
-
+            Log.i("fcm ","recived");
             //Toast.makeText(getApplicationContext(),"FCM message",Toast.LENGTH_SHORT).show();
+            NotificationManager elManager = (NotificationManager)getSystemService(Context.NOTIFICATION_SERVICE);
+            NotificationCompat.Builder elBuilder = new NotificationCompat.Builder(this, "2");
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                NotificationChannel elCanal = new NotificationChannel("2", "mssg",
+                        NotificationManager.IMPORTANCE_DEFAULT);
+                elManager.createNotificationChannel(elCanal);
+                elCanal.setDescription("Firebase messages");
+                elCanal.enableLights(true);
+                elCanal.setLightColor(Color.RED);
+                elCanal.setVibrationPattern(new long[]{0, 1000, 500, 1000});
+                elCanal.enableVibration(true);
+            }
+            elBuilder.setSmallIcon(android.R.drawable.stat_sys_warning)
+                    .setContentTitle("Notificacion")
+                    .setContentText(remoteMessage.getNotification().getBody().toString())
+                    .setSubText(remoteMessage.getNotification().getBody())
+                    .setVibrate(new long[]{0, 1000, 500, 1000})
+                    .setAutoCancel(true);
+            elManager.notify(1, elBuilder.build());
 
         }
     }

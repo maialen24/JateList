@@ -1,8 +1,12 @@
 package com.example.jatelist;
 
+import static android.Manifest.permission.ACCESS_COARSE_LOCATION;
+import static android.Manifest.permission.ACCESS_FINE_LOCATION;
+
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
@@ -15,6 +19,7 @@ import androidx.work.WorkManager;
 
 import android.Manifest;
 import android.annotation.SuppressLint;
+import android.annotation.TargetApi;
 import android.app.Activity;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -57,11 +62,15 @@ import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.android.gms.tasks.Continuation;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.messaging.FirebaseMessaging;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
+import com.google.firebase.storage.UploadTask;
 
 
 import java.io.ByteArrayOutputStream;
@@ -70,13 +79,20 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 
-public class EditActivity extends AppCompatActivity implements  OnMapReadyCallback,ActivityCompat.OnRequestPermissionsResultCallback
+public class EditActivity extends AppCompatActivity implements OnMapReadyCallback,ActivityCompat.OnRequestPermissionsResultCallback
          {
     private static final int CAMERA_REQUEST = 2;
 
-    /* This class implements edit activity that is going to be used to add or update restaurants and to show more info about them */
+     // instance for firebase storage and StorageReference
+     FirebaseStorage storage;
+     StorageReference storageReference;
 
-    private boolean locationPermissionGranted;
+     private static final int LOCATION_PERMISSION_ID = 1001;
+    /* This class implements edit activity that is going to be used to add or update restaurants and to show more info about them */
+    private static final int PERMISSION_REQUEST_FINE_LOCATION = 1;
+
+
+             private boolean locationPermissionGranted;
     private Boolean update = true;
     private db dbHelper = new db(this);
     private SQLiteDatabase db;
@@ -120,6 +136,8 @@ public class EditActivity extends AppCompatActivity implements  OnMapReadyCallba
 
         setContentView(R.layout.activity_edit);
 
+        //storage = FirebaseStorage.getInstance();
+        //storageReference = storage.getReference();
 
         //crear instancia de la base de datos
         dbHelper = new db(this);
@@ -167,8 +185,11 @@ public class EditActivity extends AppCompatActivity implements  OnMapReadyCallba
 
             try {
                 address = geocoder.getFromLocationName(ubi.getText().toString(), 1);
-                lat = address.get(0).getLatitude();
-                lo = address.get(0).getLongitude();
+                if(address.size()>0){
+                    lat = address.get(0).getLatitude();
+                    lo = address.get(0).getLongitude();
+                }
+
             } catch (IOException e) {
                 e.printStackTrace();
             }
@@ -209,7 +230,7 @@ public class EditActivity extends AppCompatActivity implements  OnMapReadyCallba
                 enableEditText(tlf_number,tlfListener);
                 //enableEditText(valoracion,valListener);
                 enableEditText(comments,comListener);
-                send();
+              //  send();
 
             }
         });
@@ -429,7 +450,8 @@ public class EditActivity extends AppCompatActivity implements  OnMapReadyCallba
             googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(jatetxea, 15));
            // getlocation();
 
-            getUserLocation();
+            //getUserLocation();
+            getLocationRequest();
             Log.i("map", String.valueOf(userlat));
             Log.i("map", String.valueOf(userlo));
         }
@@ -589,6 +611,7 @@ public Boolean insert(String izena,String rating){
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == CODIGO_GALERIA && resultCode == RESULT_OK) {
             Uri imagenSeleccionada = data.getData();
+            uploadImage(imagenSeleccionada);
             Bitmap img= null;
             try {
                 img = MediaStore.Images.Media.getBitmap(this.getContentResolver(), imagenSeleccionada);
@@ -598,19 +621,24 @@ public Boolean insert(String izena,String rating){
             // Bitmap img = (Bitmap) data.getExtras().get("data");
             //guardar foto en server
             String img64=getEncodedString(img);
-            insertargazkia(data.getStringExtra("user"),data.getStringExtra("izena"),img64);
+
+           // insertargazkia(user,nameJatetxe,imagenSeleccionada.toString());
+
         }
         if (requestCode == CAMERA_REQUEST && resultCode == RESULT_OK) {
             Bitmap img = (Bitmap) data.getExtras().get("data");
             insertargazkia(user,nameJatetxe,getEncodedString(img));
+            uploadcameraImage(img);
         }
 
     }
     private String getEncodedString(Bitmap foto){
+
         ByteArrayOutputStream stream = new ByteArrayOutputStream();
         foto.compress(Bitmap.CompressFormat.JPEG, 45, stream);
         byte[] fototransformada = stream.toByteArray();
-        String fotoen64 = Base64.encodeToString(fototransformada,Base64.DEFAULT);
+        String fotoen64 = Base64.encodeToString(fototransformada,Base64.URL_SAFE);
+        Log.i("proba",fotoen64);
         return fotoen64;
     }
 
@@ -662,6 +690,8 @@ public Boolean insert(String izena,String rating){
         //Se introducen los datos necesarios a pasar a ConexionPHP
         data.putString("mssg",mssg);
         data.putString("token",token);
+        data.putString("jatetxe",nameJatetxe);
+
         OneTimeWorkRequest otwr = new OneTimeWorkRequest.Builder(sendMessagePHPconnect.class)
                 .setInputData(data.build())
                 .build();
@@ -685,7 +715,7 @@ public Boolean insert(String izena,String rating){
              private Boolean permissionsGranted() {
                  return ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED;
              }*/
-
+/*
              @Override
              public void onRequestPermissionsResult(final int requestCode, @NonNull final String[] permissions, @NonNull final int[] grantResults) {
                  super.onRequestPermissionsResult(requestCode, permissions, grantResults);
@@ -699,7 +729,7 @@ public Boolean insert(String izena,String rating){
                          startInstalledAppDetailsActivity();
                      }
                  }
-             }
+             }*/
 
              private void startInstalledAppDetailsActivity() {
                  Intent i = new Intent();
@@ -733,7 +763,7 @@ public Boolean insert(String izena,String rating){
 
     */
 
-
+/*
 
              public void getUserLocation(){
 
@@ -772,7 +802,7 @@ public Boolean insert(String izena,String rating){
                          };
                          fusedLocationProviderClient.requestLocationUpdates(peticion,actualizar, Looper.getMainLooper());
                      }
-             }
+             }*/
 
      public void sendtoNovedadesTopic(String jatetxeIzena){
              ServicioFirebase firebase=new ServicioFirebase();
@@ -782,6 +812,7 @@ public Boolean insert(String izena,String rating){
              Data.Builder data = new Data.Builder();
              //Se introducen los datos necesarios a pasar a ConexionPHP
              //data.putString("mssg",mssg);
+            data.putString("token",token);
              data.putString("jatetxe",jatetxeIzena);
              OneTimeWorkRequest otwr = new OneTimeWorkRequest.Builder(sendMessagePHPconnect.class)
                      .setInputData(data.build())
@@ -800,6 +831,117 @@ public Boolean insert(String izena,String rating){
                      });
              WorkManager.getInstance(this).enqueue(otwr);
          }
+
+
+             private boolean comprobarPlayServices(){
+                 GoogleApiAvailability api = GoogleApiAvailability.getInstance();
+                 int code = api.isGooglePlayServicesAvailable(this);
+                 if (code == ConnectionResult.SUCCESS) {
+                     return true;
+                 }
+                 else {
+                     if (api.isUserResolvableError(code)){
+                         api.getErrorDialog(this, code, 58).show();
+                     }
+                     return false;
+                 }
+             }
+
+
+             @SuppressLint("MissingPermission")
+             private void getLocationRequest() {
+                 FusedLocationProviderClient client = LocationServices.getFusedLocationProviderClient(this);
+                 if (!checkPermission()) {
+                     getLocationPermissions();
+                     return;
+                 }
+                 client.getLastLocation()
+                         .addOnSuccessListener(this, new OnSuccessListener<Location>() {
+                             @Override
+                             public void onSuccess(Location location) {
+                                 // Got last known location. In some rare situations this can be null.
+                                 if (location != null) {
+                                     // Logic to handle location object
+                                     Log.e("TAG", "location = " + location);
+                                 } else {
+                                     Log.e("TAG", "not successful");
+                                 }
+                             }
+                         });
+             }
+
+             private boolean checkPermission() {
+                 return isGranted(ActivityCompat.checkSelfPermission(this, ACCESS_FINE_LOCATION)) &&
+                         isGranted(ActivityCompat.checkSelfPermission(this, ACCESS_COARSE_LOCATION));
+             }
+
+             @TargetApi(Build.VERSION_CODES.M)
+             private void getLocationPermissions() {
+                 requestPermissions(new String[] {ACCESS_FINE_LOCATION},
+                         PERMISSION_REQUEST_FINE_LOCATION);
+             }
+
+             @Override
+             public void onRequestPermissionsResult(int code, @Nullable String permissions[], @Nullable int[] results) {
+                 super.onRequestPermissionsResult(code, permissions, results);
+                 switch (code) {
+                     case PERMISSION_REQUEST_FINE_LOCATION:
+                         if (isPermissionGranted(results)) {
+                             getLocationRequest();
+                         }
+                 }
+             }
+
+             private boolean isPermissionGranted(int[] results) {
+                 return results != null && results.length > 0 && isGranted(results[0]);
+             }
+
+             private boolean isGranted(int permission) {
+                 return permission == PackageManager.PERMISSION_GRANTED;
+             }
+
+     // UploadImage method
+     public void uploadImage(Uri uri){
+
+         String izena=nameJatetxe.replace(" ","");
+         String fileName=user+izena;
+         storageReference = FirebaseStorage.getInstance().getReference("images/"+fileName);
+         storageReference.putFile(uri)
+                 .addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+                     @Override
+                     public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+
+                     }
+                 }).addOnFailureListener(new OnFailureListener() {
+             @Override
+             public void onFailure(@NonNull Exception e) {
+
+             }
+         });
+     }
+
+     public void uploadcameraImage(Bitmap bitmap){
+         ByteArrayOutputStream baos = new ByteArrayOutputStream();
+         bitmap.compress(Bitmap.CompressFormat.JPEG, 100, baos);
+         byte[] data = baos.toByteArray();
+
+         String izena=nameJatetxe.replace(" ","");
+         String fileName=user+izena;
+         storageReference = FirebaseStorage.getInstance().getReference("images/"+fileName);
+
+         storageReference.putBytes(data)
+                 .addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+                     @Override
+                     public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+
+                     }
+                 }).addOnFailureListener(new OnFailureListener() {
+             @Override
+             public void onFailure(@NonNull Exception e) {
+
+             }
+         });
+     }
 
 
 }

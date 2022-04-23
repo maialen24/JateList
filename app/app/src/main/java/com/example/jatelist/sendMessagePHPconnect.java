@@ -16,6 +16,8 @@ import java.io.PrintWriter;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 
 public class sendMessagePHPconnect extends Worker {
     public sendMessagePHPconnect(@NonNull Context context, @NonNull WorkerParameters workerParams) {
@@ -28,6 +30,11 @@ public class sendMessagePHPconnect extends Worker {
 
         String mssg = getInputData().getString("mssg");
         String token = getInputData().getString("token");
+        String jatetxeizena = getInputData().getString("jatetxe");
+        DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss");
+        LocalDateTime now = LocalDateTime.now();
+        String fecha=dtf.format(now).toString();
+
         String direccion = "http://ec2-52-56-170-196.eu-west-2.compute.amazonaws.com/mruiz142/WEB/sendtoTopic.php";
      //   String direccion = "http://ec2-52-56-170-196.eu-west-2.compute.amazonaws.com/mruiz142/WEB/fcm.php";
         HttpURLConnection urlConnection = null;
@@ -40,13 +47,13 @@ public class sendMessagePHPconnect extends Worker {
             urlConnection.setRequestMethod("POST");
             urlConnection.setDoOutput(true);
             urlConnection.setRequestProperty("Content-Type", "application/x-www-form-urlencoded");
-            String parametros = "mssg="+mssg+"&token="+token;
+            String parametros = "mssg="+mssg+"&token="+token+"&jatetxe="+jatetxeizena+"&fecha="+fecha;
             PrintWriter out = new PrintWriter(urlConnection.getOutputStream());
             out.print(parametros);
             out.close();
-            Log.i("TAG","statusCode: " + urlConnection);
+            Log.i("mssg","statusCode: " + urlConnection);
             int statusCode = urlConnection.getResponseCode();
-            Log.i("TAG","statusCode: " + statusCode);
+            Log.i("mssg","statusCode: " + statusCode);
             if (statusCode == 200)
             {
                 BufferedInputStream inputStream = new BufferedInputStream(urlConnection.getInputStream());
@@ -57,9 +64,9 @@ public class sendMessagePHPconnect extends Worker {
                 }
                 inputStream.close();
                 Data json = new Data.Builder()
-                        .putString("result","true")
+                        .putString("result",result)
                         .build();
-                Log.i("php","listaJson: " + json);
+
                 return Result.success(json);
             }
             return Result.failure();

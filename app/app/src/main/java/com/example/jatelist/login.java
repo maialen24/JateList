@@ -355,7 +355,7 @@ public class login extends AppCompatActivity implements DialogClass.Listener, se
         changeTheme();
 
         if(recordatorio){
-            FirebaseMessaging.getInstance().subscribeToTopic("new")
+            FirebaseMessaging.getInstance().subscribeToTopic("recordatorio")
                     .addOnCompleteListener(new OnCompleteListener<Void>() {
 
                         @Override
@@ -369,7 +369,7 @@ public class login extends AppCompatActivity implements DialogClass.Listener, se
                         }
                     });
         }else{
-            FirebaseMessaging.getInstance().unsubscribeFromTopic("new")
+            FirebaseMessaging.getInstance().unsubscribeFromTopic("recordatorio")
                     .addOnCompleteListener(new OnCompleteListener<Void>() {
 
                         @Override

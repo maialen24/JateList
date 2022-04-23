@@ -11,11 +11,14 @@ import androidx.work.WorkInfo;
 import androidx.work.WorkManager;
 
 import android.content.Intent;
+import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
+import android.provider.DocumentsContract;
+import android.provider.MediaStore;
 import android.util.Base64;
 import android.util.Log;
 import android.view.View;
@@ -32,6 +35,8 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.ByteArrayInputStream;
+import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity {
@@ -52,6 +57,7 @@ public class MainActivity extends AppCompatActivity {
     private RecyclerView rvJatetxeakInfo;
     private GridLayoutManager glmInfo;
     private JatetxeInfoAdapter adapterInfo;
+    private Boolean eginda=false;
 
 
     @Override
@@ -87,6 +93,9 @@ public class MainActivity extends AppCompatActivity {
                 //Bitmap img=null;
                 //images[i]=
                 getimage(user,a.get(0));
+                while(eginda){
+
+                }
 
                 /*
                 if (images[i]!=null){
@@ -277,7 +286,7 @@ public class MainActivity extends AppCompatActivity {
     public void getimage(String user, String izena){
         final Boolean[] emaitza = {false};
         Data.Builder data = new Data.Builder();
-
+        eginda=false;
         data.putString("user",user);
         data.putString("izena",izena);
         data.putString("funcion","get");
@@ -292,14 +301,33 @@ public class MainActivity extends AppCompatActivity {
                         if(workInfo != null && workInfo.getState().isFinished())
                         {
 
-                            String emaitza = workInfo.getOutputData().getString("foto");
-                            if (emaitza!=null) {
+                            Log.i("f","terminado");
 
-                                    //GO TO MAIN ACTIVITY
-                                    Log.i("jatetxeak","lortu");
+                            String emaitza = workInfo.getOutputData().getString("foto");
+                            //String tipo = workInfo.getOutputData().getString("tipo");
+                            if (emaitza!=null) {
+                                imageBitmap = toBitmap(emaitza);
+
+                                eginda=true;
+
+                              /*  if (emaitza.contains("content")){
+
+                                        String path=getPathFromURI(Uri.parse(emaitza));
+                                      //  imageBitmap = MediaStore.Images.Media.getBitmap(getContentResolver(), getgaleryImage(emaitza));
+
+                                    if (path != null) {
+                                        File f = new File(path);
+                                        Uri selectedImageUri = Uri.fromFile(f);
+                                        try {
+                                            Bitmap vBitmap = MediaStore.Images.Media.getBitmap( MainActivity.this.getContentResolver(), selectedImageUri); // get bitmap
+                                        } catch (IOException e) {
+                                            e.printStackTrace();
+                                        }
+                                    }
+                                }else{
                                     imageBitmap = toBitmap(emaitza);
                                     //images[images.length+1]=elBitmap;
-
+                                }*/
 
                             }
                         }
@@ -311,13 +339,28 @@ public class MainActivity extends AppCompatActivity {
 
     public Bitmap toBitmap(String encodedString){
         try{
-            byte [] encodeByte = Base64.decode(encodedString,Base64.DEFAULT);
+            byte [] encodeByte = Base64.decode(encodedString,Base64.URL_SAFE);
             Bitmap bitmap = BitmapFactory.decodeByteArray(encodeByte, 0, encodeByte.length);
             return bitmap;
         }
         catch(Exception e){
             e.getMessage();
+            Log.i("foto",e.getMessage());
             return null;
         }
+    }
+
+
+
+    public String getPathFromURI(Uri contentUri) {
+        String res = null;
+        String[] proj = {MediaStore.Images.Media.DATA};
+        Cursor cursor = getContentResolver().query(contentUri, proj, null, null, null);
+        if (cursor.moveToFirst()) {
+            int column_index = cursor.getColumnIndexOrThrow(MediaStore.Images.Media.DATA);
+            res = cursor.getString(column_index);
+        }
+        cursor.close();
+        return res;
     }
 }
