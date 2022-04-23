@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.CheckBox;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.Switch;
@@ -25,7 +26,7 @@ public class settingsDialog  extends DialogFragment {
 
     // login activity implements positive button on click method
     public interface Listener {
-        void alpulsarSave(Boolean mode, String language);
+        void alpulsarSave(Boolean mode, boolean noti,boolean notir);
 
 
     }
@@ -47,22 +48,20 @@ public class settingsDialog  extends DialogFragment {
 
         //get actual language and theme
         Bundle bundle = getArguments();
-        String language = bundle.getString("language","es");
+
         Boolean mode= bundle.getBoolean("mode",false);
+        Boolean noti= bundle.getBoolean("noti",false);
+        Boolean notir= bundle.getBoolean("notir",false);
 
         Switch modeS=elaspecto.findViewById(R.id.modo);
         modeS.setChecked(mode);
+        CheckBox checkBox=elaspecto.findViewById(R.id.notiRestaurant);
+        checkBox.setChecked(noti);
 
-        RadioGroup rg=elaspecto.findViewById(R.id.radioGroup);
+        CheckBox checkBox2=elaspecto.findViewById(R.id.notiRecordatorio);
+        checkBox2.setChecked(notir);
 
-        switch (language) {
-            case "eu":
-                rg.check(R.id.eu);
-            case "en":
-                rg.check(R.id.en);
-            default:
-                rg.check(R.id.es);
-        }
+
 
 
         builder.setView(elaspecto);
@@ -73,18 +72,11 @@ public class settingsDialog  extends DialogFragment {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 Switch mode=(Switch) elaspecto.findViewById(R.id.modo);
-                //RadioGroup language=elaspecto.findViewById(R.id.radioGroup);
-                RadioButton euskera=elaspecto.findViewById(R.id.eu);
-                RadioButton ingles=elaspecto.findViewById(R.id.en);
-                String language="es";
-                if (euskera.isChecked()){
-                    language="eu";
-                }else if(ingles.isChecked()){
-                    language="en";
-                }
 
+                CheckBox checkBox=(CheckBox) elaspecto.findViewById(R.id.notiRestaurant);
+                CheckBox checkBoxr=(CheckBox) elaspecto.findViewById(R.id.notiRecordatorio);
 
-                miListener.alpulsarSave(mode.isChecked(),language);
+                miListener.alpulsarSave(mode.isChecked(),checkBox.isChecked(),checkBoxr.isChecked());
             }
         });
 

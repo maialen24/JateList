@@ -39,10 +39,8 @@ public class jatetxeakPHPconnect extends Worker {
             return delete();
         }else if(funcion.equals("update")){
             return update();
-        }else if(funcion.equals("getAll")){
-            return getAll();
         }else if(funcion.equals("get")){
-            return get();
+            return getAll();
         }
 
         return ListenableWorker.Result.failure();
@@ -55,9 +53,6 @@ public class jatetxeakPHPconnect extends Worker {
         String user = getInputData().getString("user");
         String name = getInputData().getString("izena");
         String valoracion = getInputData().getString("valoracion");
-        String comentarios = getInputData().getString("comentarios");
-        String tlf = getInputData().getString("tlf");
-        String ubi = getInputData().getString("ubi");
         String funcion= "insert";
         Log.i("insert jatetxe","jatetxe");
 
@@ -72,7 +67,7 @@ public class jatetxeakPHPconnect extends Worker {
             urlConnection.setRequestMethod("POST");
             urlConnection.setDoOutput(true);
             urlConnection.setRequestProperty("Content-Type", "application/x-www-form-urlencoded");
-            String parametros = "funcion="+funcion+"&user="+user+"&name="+name+"&ubi="+ubi+"&valoracion="+valoracion+"&comentarios="+comentarios+"&tlf="+tlf;
+            String parametros = "funcion="+funcion+"&user="+user+"&name="+name+"&valoracion="+valoracion;
             PrintWriter out = new PrintWriter(urlConnection.getOutputStream());
             out.print(parametros);
             out.close();
@@ -115,10 +110,8 @@ public class jatetxeakPHPconnect extends Worker {
         String funcion= "update";
         String user = getInputData().getString("user");
         String name = getInputData().getString("izena");
-        String valoracion = getInputData().getString("valoracion");
-        String comentarios = getInputData().getString("comentarios");
-        String tlf = getInputData().getString("tlf");
-        String ubi = getInputData().getString("ubi");
+        String valoracion = getInputData().getString("rating");
+
 
         String direccion = "http://ec2-52-56-170-196.eu-west-2.compute.amazonaws.com/mruiz142/WEB/jatetxeak.php";
         HttpURLConnection urlConnection = null;
@@ -131,7 +124,7 @@ public class jatetxeakPHPconnect extends Worker {
             urlConnection.setRequestMethod("POST");
             urlConnection.setDoOutput(true);
             urlConnection.setRequestProperty("Content-Type", "application/x-www-form-urlencoded");
-            String parametros = "funcion="+funcion+"&user="+user+"&name="+name+"&ubi="+ubi+"&valoracion="+valoracion+"&comentarios="+comentarios+"&tlf="+tlf;
+            String parametros = "funcion="+funcion+"&user="+user+"&name="+name+"&valoracion="+valoracion;
             PrintWriter out = new PrintWriter(urlConnection.getOutputStream());
             out.print(parametros);
             out.close();
@@ -283,7 +276,7 @@ public class jatetxeakPHPconnect extends Worker {
         String funcion= "getAll";
 
 
-        String direccion = "http://ec2-18-132-60-229.eu-west-2.compute.amazonaws.com/mruiz142/WEB/jatetxeak.php";
+        String direccion = "http://ec2-52-56-170-196.eu-west-2.compute.amazonaws.com/mruiz142/WEB/jatetxeak.php";
         HttpURLConnection urlConnection = null;
         try
         {
@@ -311,15 +304,26 @@ public class jatetxeakPHPconnect extends Worker {
                 }
                 inputStream.close();
                 JSONArray jsonArray = new JSONArray(result);
-                String resultado="";
+                String izena="";
+                String valoracion="";
                 for(int i = 0; i < jsonArray.length(); i++)
                 {
-                    resultado = jsonArray.getJSONObject(i).getString("resultado");
+
+                    if(izena==""){
+                        izena = jsonArray.getJSONObject(i).getString("izena");
+                        valoracion = jsonArray.getJSONObject(i).getString("valoracion");
+                    }else{
+                        izena = izena+","+jsonArray.getJSONObject(i).getString("izena");
+                        valoracion = valoracion+","+jsonArray.getJSONObject(i).getString("valoracion");
+                    }
+
                 }
                 Data json = new Data.Builder()
-                        .putString("result",resultado)
+                        .putString("izena", izena)
+                        .putString("valoracion", valoracion)
                         .build();
                 Log.i("php","json: " + json);
+
                 return ListenableWorker.Result.success(json);
             }
             return ListenableWorker.Result.failure();

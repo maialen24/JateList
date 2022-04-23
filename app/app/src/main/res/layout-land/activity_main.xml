@@ -2,6 +2,7 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/tab"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
@@ -54,12 +55,38 @@
         android:layout_marginTop="15dp"
         android:layout_marginEnd="113dp"
         android:layout_marginBottom="16dp"
-        android:contentDescription="@string/app_name"
         android:background="@null"
+        android:contentDescription="@string/app_name"
         app:layout_constraintBottom_toTopOf="@+id/exitButton"
         app:layout_constraintEnd_toStartOf="@+id/rv_jatetxeak"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/logo"
         app:srcCompat="@mipmap/add_round" />
+
+    <com.google.android.material.tabs.TabLayout
+        android:id="@+id/tab"
+        android:layout_width="267dp"
+        android:layout_height="48dp"
+        android:layout_marginStart="254dp"
+        android:layout_marginTop="24dp"
+        android:layout_marginEnd="1dp"
+        app:layout_constraintBottom_toTopOf="@+id/rv_jatetxeak"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/logo"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:ignore="DuplicateIds">
+
+        <com.google.android.material.tabs.TabItem
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Your List" />
+
+        <com.google.android.material.tabs.TabItem
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="SEARCH" />
+
+
+    </com.google.android.material.tabs.TabLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>

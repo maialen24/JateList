@@ -1,5 +1,6 @@
 package com.example.jatelist;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.app.AppCompatDelegate;
@@ -38,6 +39,11 @@ import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.Switch;
 import android.widget.TextView;
+import android.widget.Toast;
+
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.messaging.FirebaseMessaging;
 
 import java.net.HttpURLConnection;
 import java.net.URL;
@@ -54,8 +60,10 @@ public class login extends AppCompatActivity implements DialogClass.Listener, se
     public static final String MyPREFERENCES = "MyPrefs" ;
     private SharedPreferences sharedpreferences;
     private Boolean spNight;
+    private Boolean notifications;
     private String spLanguage;
 
+    private Boolean recordatorio;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -72,6 +80,8 @@ public class login extends AppCompatActivity implements DialogClass.Listener, se
             user = savedInstanceState.getString("user");
             language =savedInstanceState.getString("language");
             night=savedInstanceState.getBoolean("mode");
+            notifications=savedInstanceState.getBoolean("notifications");
+            recordatorio=savedInstanceState.getBoolean("recordatorio");
 
         }else{
 
@@ -313,6 +323,8 @@ public class login extends AppCompatActivity implements DialogClass.Listener, se
                 Bundle bundle = new Bundle();
                 bundle.putString("language",spLanguage);
                 bundle.putBoolean("mode",spNight);
+                bundle.putBoolean("noti",notifications);
+                bundle.putBoolean("notir",recordatorio);
 
                 DialogFragment dialogSettings= new settingsDialog();
                 dialogSettings.setArguments(bundle);
@@ -329,21 +341,85 @@ public class login extends AppCompatActivity implements DialogClass.Listener, se
     //implements alpulsarSave method of settingsDialog interface
     // save user preferences
     @Override
-    public void alpulsarSave(Boolean pmode, String planguage) {
+    public void alpulsarSave(Boolean pmode, boolean noti,boolean notir) {
         //save preferences (settings dialog)
         SharedPreferences.Editor myEdit = sharedpreferences.edit();
 
         // Storing the key and its value as the data fetched from edittext
         myEdit.putBoolean("mode", pmode);
-
+        myEdit.putBoolean("notifications", noti);
+        myEdit.putBoolean("recordatorio", notir);
+        notifications=noti;
+        recordatorio=notir;
         night=pmode;
         changeTheme();
+
+        if(recordatorio){
+            FirebaseMessaging.getInstance().subscribeToTopic("new")
+                    .addOnCompleteListener(new OnCompleteListener<Void>() {
+
+                        @Override
+                        public void onComplete(@NonNull Task<Void> task) {
+                            String msg = getString(R.string.msg_subscribed);
+                            if (!task.isSuccessful()) {
+                                msg = getString(R.string.msg_subscribe_failed);
+                            }
+
+                            Toast.makeText(login.this, msg, Toast.LENGTH_SHORT).show();
+                        }
+                    });
+        }else{
+            FirebaseMessaging.getInstance().unsubscribeFromTopic("new")
+                    .addOnCompleteListener(new OnCompleteListener<Void>() {
+
+                        @Override
+                        public void onComplete(@NonNull Task<Void> task) {
+                            String msg = getString(R.string.msg_unsubscribed);
+                            if (!task.isSuccessful()) {
+                                msg = getString(R.string.msg_unsubscribe_failed);
+                            }
+
+                            Toast.makeText(login.this, msg, Toast.LENGTH_SHORT).show();
+                        }
+                    });
+
+        }
+
+        if(notifications){
+            FirebaseMessaging.getInstance().subscribeToTopic("new")
+                    .addOnCompleteListener(new OnCompleteListener<Void>() {
+
+                        @Override
+                        public void onComplete(@NonNull Task<Void> task) {
+                            String msg = getString(R.string.msg_subscribed);
+                            if (!task.isSuccessful()) {
+                                msg = getString(R.string.msg_subscribe_failed);
+                            }
+
+                            Toast.makeText(login.this, msg, Toast.LENGTH_SHORT).show();
+                        }
+                    });
+        }else{
+            FirebaseMessaging.getInstance().unsubscribeFromTopic("new")
+                    .addOnCompleteListener(new OnCompleteListener<Void>() {
+
+                        @Override
+                        public void onComplete(@NonNull Task<Void> task) {
+                            String msg = getString(R.string.msg_unsubscribed);
+                            if (!task.isSuccessful()) {
+                                msg = getString(R.string.msg_unsubscribe_failed);
+                            }
+
+                            Toast.makeText(login.this, msg, Toast.LENGTH_SHORT).show();
+                        }
+                    });
+
+        }
 
         // Once the changes have been made,
         // we need to commit to apply those changes made,
         // otherwise, it will throw an error
         myEdit.commit();
-
     }
 
     // implements infoDialog interface positive button method, close dialog
@@ -357,6 +433,8 @@ public class login extends AppCompatActivity implements DialogClass.Listener, se
         sharedpreferences = getSharedPreferences(MyPREFERENCES, Context.MODE_PRIVATE);
 
         spNight = sharedpreferences.getBoolean("mode",false);
+        notifications = sharedpreferences.getBoolean("notifications",false);
+        recordatorio = sharedpreferences.getBoolean("recordatorio",false);
         language=spLanguage;
      //   firstTime = sharedpreferences.getBoolean("firstTime",true);
 
@@ -512,6 +590,8 @@ public void insert(String user, String password){
             });
     WorkManager.getInstance(this).enqueue(otwr);
 }
+
+
 }
 
 

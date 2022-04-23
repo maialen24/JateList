@@ -36,5 +36,9 @@
     <string name="takePhoto">Argazkia atera</string>
     <string name="selectPhoto">Galeriatik hartu</string>
     <string name="fotomssg">Argazkia gehitu</string>
+    <string name="msg_unsubscribed">Harpidetza kendu da</string>
+    <string name="msg_unsubscribe_failed">Arazoa harpidetza kentzen</string>
+    <string name="msg_subscribed">Harpidetuta</string>
+    <string name="msg_subscribe_failed">Harpidetza errorea</string>
 
 </resources>

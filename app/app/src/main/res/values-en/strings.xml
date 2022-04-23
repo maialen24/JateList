@@ -36,4 +36,8 @@
     <string name="takePhoto">Take photo</string>
     <string name="selectPhoto">Select from galery</string>
     <string name="fotomssg">Load image</string>
+    <string name="msg_subscribe_failed">Suscribe error</string>
+    <string name="msg_subscribed">Succesfully suscribed</string>
+    <string name="msg_unsubscribed">Unsuscribed correctly</string>
+    <string name="msg_unsubscribe_failed">Unsuscribed error</string>
 </resources>

@@ -28,7 +28,8 @@ public class sendMessagePHPconnect extends Worker {
 
         String mssg = getInputData().getString("mssg");
         String token = getInputData().getString("token");
-        String direccion = "http://ec2-52-56-170-196.eu-west-2.compute.amazonaws.com/mruiz142/WEB/fcm.php";
+        String direccion = "http://ec2-52-56-170-196.eu-west-2.compute.amazonaws.com/mruiz142/WEB/sendtoTopic.php";
+     //   String direccion = "http://ec2-52-56-170-196.eu-west-2.compute.amazonaws.com/mruiz142/WEB/fcm.php";
         HttpURLConnection urlConnection = null;
         try
         {

@@ -14,20 +14,19 @@ exit();
 
 $funcion = $_POST["funcion"];
 if ($funcion=='insert'){
-    insertJatetxea($_POST["name"],$_POST["ubi"],$_POST["valoracion"],$_POST["comentarios"],$_POST["tlf"],$_POST["user"]);
+    insertJatetxea($_POST["name"],$_POST["valoracion"],$_POST["user"],$con);
 }else if($funcion=='update'){
-    updateJatetxea($_POST["name"],$_POST["ubi"],$_POST["valoracion"],$_POST["comentarios"],$_POST["tlf"],$_POST["user"]);
+    updateJatetxea($_POST["name"],$_POST["valoracion"],$_POST["user"],$con);
+}else if($funcion=='getAll'){
+         getAll($con);
 }else if($funcion=='delete'){
-     deleteJatetxea($_POST["user"],$_POST["name"]);
- }else if($funcion=='get'){
-      getAllfromUser($_POST["user"]);
-  }else if($funcion=='getAll'){
-         getAll();
-  }
+          deleteJatetxea($_POST["name"],$_POST["name"],$_POST["user"],$con);
+ }
 
-function insertJatetxea($name, $ubi, $valoracion, $comentarios, $tlf, $user){
 
-    $resultado = mysqli_query($con," INSERT into jatetxea (izena,ubicacion,valoracion,comentarios,tlf,user) VALUES ('$name','$ubi','$valoracion','$comentarios','$tlf','$user') ");
+function insertJatetxea($name, $valoracion,$user,$con){
+
+    $resultado = mysqli_query($con," INSERT into jatetxea (izena,valoracion,user) VALUES ('$name','$valoracion','$user') ");
 
     if (!$resultado) {
         echo 'Ha ocurrido algún error: ' . mysqli_error($con);
@@ -37,11 +36,11 @@ function insertJatetxea($name, $ubi, $valoracion, $comentarios, $tlf, $user){
     }
 
 mysqli_close($con);
-echo json_encode($result)
+echo json_encode($result);
 
 }
 
-function deleteJatetxea($name,$user){
+function deleteJatetxea($name,$user,$con){
 
     $resultado = mysqli_query($con," DELETE FROM jatetxea where izena='$name' and user='$user' ");
 
@@ -53,12 +52,12 @@ function deleteJatetxea($name,$user){
     }
 
 mysqli_close($con);
-echo json_encode($result)
+echo json_encode($result);
 }
 
-function updateJatetxea($name, $ubi, $valoracion, $comentarios, $tlf, $user){
+function updateJatetxea($name, $valoracion,$user,$con){
 
-    $resultado = mysqli_query($con," UPDATE jatetxea SET ubi='$ubi',valoracion='$valoracion',comentarios='$comentarios',tlf='$tlf' where user='$user' and izena='$name' ");
+    $resultado = mysqli_query($con," UPDATE jatetxea SET valoracion='$valoracion' where user='$user' and izena='$name' ");
 
     if (!$resultado) {
         echo 'Ha ocurrido algún error: ' . mysqli_error($con);
@@ -68,13 +67,13 @@ function updateJatetxea($name, $ubi, $valoracion, $comentarios, $tlf, $user){
     }
 
 mysqli_close($con);
-echo json_encode($result)
+echo json_encode($result);
 
 }
 
-function getAllfromUser($user){
+function getAllfromUser($user,$con){
 
-    $resultado = mysqli_query($con," SELECT * FROM jatetxea WHERE user='$user' ");
+    $resultado = mysqli_query($con," SELECT * FROM jatetxea WHERE user='$user'");
 
      if (!$resultado) {
      echo 'Ha ocurrido algún error: ' . mysqli_error($con);
@@ -83,6 +82,7 @@ function getAllfromUser($user){
      while($fila=mysqli_fetch_row($resultado)){
          //$fila = mysqli_fetch_row($resultado);
          $arrayresultados[$fila] = array(
+         'resultado'=> true,
          'izena' => $fila[1],
          'ubicacion' => $fila[2],
          'valoracion' => $fila[3],
@@ -99,7 +99,7 @@ function getAllfromUser($user){
      echo json_encode($arrayresultados);
 }
 
-function getAll(){
+function getAll($con){
     $resultado = mysqli_query($con," SELECT * FROM jatetxea");
 
      if (!$resultado) {

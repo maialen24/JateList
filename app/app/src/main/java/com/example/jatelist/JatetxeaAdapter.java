@@ -47,7 +47,11 @@ public class JatetxeaAdapter extends RecyclerView.Adapter<JatetxeaAdapter.Jatetx
         holder.rbValoracion.setRating(Float.parseFloat(jatetxea.getValoracion()));
         holder.comentarios= jatetxea.getComentarios();
         holder.tlf_number=jatetxea.getTlf();
-        holder.ivfoto.setImageBitmap(jatetxea.getImage());
+        Bitmap img=jatetxea.getImage();
+        if(img!=null){
+            holder.ivfoto.setImageBitmap(jatetxea.getImage());
+        }
+
 
     }
 

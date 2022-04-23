@@ -7,6 +7,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.util.Log;
+
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -19,6 +20,7 @@ import com.google.firebase.iid.InstanceIdResult;
 import com.google.firebase.messaging.FirebaseMessaging;
 import com.google.firebase.messaging.FirebaseMessagingService;
 import com.google.firebase.messaging.RemoteMessage;
+
 
 public class ServicioFirebase extends FirebaseMessagingService {
     private String token;
@@ -58,6 +60,23 @@ public class ServicioFirebase extends FirebaseMessagingService {
     }
 
 
+/*
+public void sendmessage(){
+    // The topic name can be optionally prefixed with "/topics/".
+    String topic = "highScores";
+
+// See documentation on defining a message payload.
+    Message message = Message.builder()
+            .putData("score", "850")
+            .putData("time", "2:45")
+            .setTopic(topic)
+            .build();
+
+// Send a message to the devices subscribed to the provided topic.
+    String response = FirebaseMessaging.getInstance().send(message);
+// Response is a message ID string.
+    System.out.println("Successfully sent message: " + response);
+}*/
 
 
 

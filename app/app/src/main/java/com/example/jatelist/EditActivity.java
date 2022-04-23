@@ -14,6 +14,8 @@ import androidx.work.WorkInfo;
 import androidx.work.WorkManager;
 
 import android.Manifest;
+import android.annotation.SuppressLint;
+import android.app.Activity;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -25,18 +27,24 @@ import android.location.Address;
 import android.location.Geocoder;
 import android.location.Location;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
+import android.os.Looper;
 import android.provider.MediaStore;
+import android.provider.Settings;
 import android.text.method.KeyListener;
 import android.util.Base64;
 import android.util.Log;
 import android.view.View;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.RatingBar;
 import android.widget.Toast;
 
+import com.google.android.gms.common.ConnectionResult;
+import com.google.android.gms.common.GoogleApiAvailability;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationCallback;
 import com.google.android.gms.location.LocationRequest;
@@ -60,13 +68,14 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 
-public class EditActivity extends AppCompatActivity implements OnMapReadyCallback,ActivityCompat.OnRequestPermissionsResultCallback {
+public class EditActivity extends AppCompatActivity implements  OnMapReadyCallback,ActivityCompat.OnRequestPermissionsResultCallback
+         {
     private static final int CAMERA_REQUEST = 2;
 
     /* This class implements edit activity that is going to be used to add or update restaurants and to show more info about them */
-    private static final int PERMISSIONS_REQUEST_ACCESS_FINE_LOCATION = 1;
-    private static final int REQUEST_FINE_LOCATION = 1;
+
     private boolean locationPermissionGranted;
     private Boolean update = true;
     private db dbHelper = new db(this);
@@ -81,8 +90,8 @@ public class EditActivity extends AppCompatActivity implements OnMapReadyCallbac
     double userlo=0;
     int CODIGO_GALERIA=4;
     String izena="";
-    LocationCallback actualizador;
-
+    FusedLocationProviderClient fusedLocationProviderClient;
+    LocationCallback actualizar;
 
 
     private static final  String MAPVIEW_BUNDLE_KEY="MapViewBundleKey";
@@ -163,22 +172,15 @@ public class EditActivity extends AppCompatActivity implements OnMapReadyCallbac
             } catch (IOException e) {
                 e.printStackTrace();
             }
-
-
-
         }
+
+
 
         //crear mapa
         map = (MapView) findViewById(R.id.mapview);
         map.onCreate(mapViewBundle);
         map.getMapAsync(  this);
         map.onResume();
-
-
-
-
-
-
 
 
         //habilitar o deshabilitar dependiendo si es update o new restaurant
@@ -245,6 +247,7 @@ public class EditActivity extends AppCompatActivity implements OnMapReadyCallbac
                         //Jatetxea ezabatu
                         dbHelper.deleteJatetxea(izena.getText().toString(),user);
                         //pulsar button bueltatu
+                        delete(izena.getText().toString());
                         bueltatu.performClick();
 
                     }
@@ -323,9 +326,12 @@ public class EditActivity extends AppCompatActivity implements OnMapReadyCallbac
                 if (update){
                     //update(izena.getText().toString(),ubi.getText().toString(),String.valueOf(valoracion.getRating()),comments.getText().toString(),tlf_number.getText().toString(),user);
                     succes=dbHelper.updateJatetxe(izena.getText().toString(),ubi.getText().toString(),String.valueOf(valoracion.getRating()),comments.getText().toString(),tlf_number.getText().toString(),user);
+                    update(izena.getText().toString(),String.valueOf(valoracion.getRating()));
                 }else{
                     //insert(izena.getText().toString(),ubi.getText().toString(),String.valueOf(valoracion.getRating()),comments.getText().toString(),tlf_number.getText().toString(),user);
                    succes=dbHelper.insertJatetxe(izena.getText().toString(),ubi.getText().toString(),String.valueOf(valoracion.getRating()),comments.getText().toString(),tlf_number.getText().toString(),user);
+                   insert(izena.getText().toString(),String.valueOf(valoracion.getRating()));
+                   sendtoNovedadesTopic(izena.getText().toString());
                 }
                 //deshabilitar la ediccion
                 disableEditText(izena);
@@ -421,25 +427,16 @@ public class EditActivity extends AppCompatActivity implements OnMapReadyCallbac
                     .title(nameJatetxe));
             // [START_EXCLUDE silent]
             googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(jatetxea, 15));
+           // getlocation();
+
+            getUserLocation();
+            Log.i("map", String.valueOf(userlat));
+            Log.i("map", String.valueOf(userlo));
         }
 
-
-    }
-    private boolean checkPermissions() {
-        if (ContextCompat.checkSelfPermission(this,
-                Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
-            return true;
-        } else {
-            requestPermissions();
-            return false;
-        }
     }
 
-    private void requestPermissions() {
-        ActivityCompat.requestPermissions(this,
-                new String[]{Manifest.permission.ACCESS_FINE_LOCATION},
-                REQUEST_FINE_LOCATION);
-    }
+
 
 
     @Override
@@ -482,20 +479,18 @@ public class EditActivity extends AppCompatActivity implements OnMapReadyCallbac
     }
 
 
-public boolean update(String izena, String ubi,String rating,String comments,String tlf,String user){
+public boolean update(String izena, String rating){
     final Boolean[] emaitza = {false};
     Data.Builder data = new Data.Builder();
-
-    data.putString("user",user);
 
     data.putString("izena",izena);
-    data.putString("ubi",ubi);
-    data.putString("valoracion",rating);
-    data.putString("tlf",tlf);
-    data.putString("comentarios",comments);
+    data.putString("rating",rating);
+    data.putString("user",user);
+    data.putFloat("ratingNumber",Float.parseFloat(rating));
+    data.putString("funcion","update");
 
 
-    data.putString("funcion","get");
+    data.putString("funcion","update");
 
     OneTimeWorkRequest otwr = new OneTimeWorkRequest.Builder(jatetxeakPHPconnect.class).setInputData(data.build()).build();
     WorkManager.getInstance(this).getWorkInfoByIdLiveData(otwr.getId())
@@ -521,13 +516,15 @@ public boolean update(String izena, String ubi,String rating,String comments,Str
     WorkManager.getInstance(this).enqueue(otwr);
     return emaitza[0];
 }
-public Boolean insert(String izena, String ubi,String rating,String comments,String tlf,String user){
+public Boolean insert(String izena,String rating){
     final Boolean[] emaitza = {false};
     Data.Builder data = new Data.Builder();
-
+    data.putString("funcion","insert");
+    data.putString("izena",izena);
+    data.putString("valoracion",rating);
     data.putString("user",user);
+    data.putFloat("ratingNumber",Float.parseFloat(rating));
 
-    data.putString("funcion","get");
 
     OneTimeWorkRequest otwr = new OneTimeWorkRequest.Builder(jatetxeakPHPconnect.class).setInputData(data.build()).build();
     WorkManager.getInstance(this).getWorkInfoByIdLiveData(otwr.getId())
@@ -553,6 +550,38 @@ public Boolean insert(String izena, String ubi,String rating,String comments,Str
     WorkManager.getInstance(this).enqueue(otwr);
     return emaitza[0];
 }
+
+     public Boolean delete(String izena){
+         final Boolean[] emaitza = {false};
+         Data.Builder data = new Data.Builder();
+         data.putString("funcion","delete");
+         data.putString("izena",izena);
+         data.putString("user",user);
+
+         OneTimeWorkRequest otwr = new OneTimeWorkRequest.Builder(jatetxeakPHPconnect.class).setInputData(data.build()).build();
+         WorkManager.getInstance(this).getWorkInfoByIdLiveData(otwr.getId())
+                 .observe(this, new Observer<WorkInfo>() {
+                     @Override
+                     public void onChanged(WorkInfo workInfo)
+                     {
+                         //Si se puede iniciar sesión porque devulve true se cambiará la actividad cerrando en la que se encuentra. Si la devolución es null o no es true se mostrará un toast en la interfaz actual.
+                         if(workInfo != null && workInfo.getState().isFinished())
+                         {
+                             String emaitza = workInfo.getOutputData().getString("result");
+                             if (emaitza!=null) {
+                                 if (emaitza.equals("true")) {
+                                     //GO TO MAIN ACTIVITY
+                                     Log.i("jatetxeak","lortu");
+
+                                 }
+
+                             }
+                         }
+                     }
+                 });
+         WorkManager.getInstance(this).enqueue(otwr);
+         return emaitza[0];
+     }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -620,22 +649,7 @@ public Boolean insert(String izena, String ubi,String rating,String comments,Str
         WorkManager.getInstance(this).enqueue(otwr);
     }
 
-    private void getLocationPermission() {
-        /*
-         * Request location permission, so that we can get the location of the
-         * device. The result of the permission request is handled by a callback,
-         * onRequestPermissionsResult.
-         */
-        if (ContextCompat.checkSelfPermission(this.getApplicationContext(),
-                android.Manifest.permission.ACCESS_FINE_LOCATION)
-                == PackageManager.PERMISSION_GRANTED) {
-            locationPermissionGranted = true;
-        } else {
-            ActivityCompat.requestPermissions(this,
-                    new String[]{android.Manifest.permission.ACCESS_FINE_LOCATION},
-                    PERMISSIONS_REQUEST_ACCESS_FINE_LOCATION);
-        }
-    }
+
 
 
     //cuando cambie la loc enviar mensaje
@@ -667,6 +681,125 @@ public Boolean insert(String izena, String ubi,String rating,String comments,Str
         WorkManager.getInstance(this).enqueue(otwr);
     }
 
+/*
+             private Boolean permissionsGranted() {
+                 return ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED;
+             }*/
+
+             @Override
+             public void onRequestPermissionsResult(final int requestCode, @NonNull final String[] permissions, @NonNull final int[] grantResults) {
+                 super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+                 if (requestCode == 123) {
+                     if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                         // Permission granted.
+                         //getlocation();
+                     } else {
+                         // User refused to grant permission. You can add AlertDialog here
+                         Toast.makeText(this, "You didn't give permission to access device location", Toast.LENGTH_LONG).show();
+                         startInstalledAppDetailsActivity();
+                     }
+                 }
+             }
+
+             private void startInstalledAppDetailsActivity() {
+                 Intent i = new Intent();
+                 i.setAction(Settings.ACTION_APPLICATION_DETAILS_SETTINGS);
+                 i.addCategory(Intent.CATEGORY_DEFAULT);
+                 i.setData(Uri.parse("package:" + getPackageName()));
+                 i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                 startActivity(i);
+             }
+/*
+    private void getlocation(){
+        FusedLocationProviderClient proveedordelocalizacion =
+                LocationServices.getFusedLocationProviderClient(this);
+
+        fusedLocationProviderClient.getLastLocation()
+                .addOnSuccessListener(this, new OnSuccessListener<Location>() {
+                    @Override
+                    public void onSuccess(Location location) {
+                        userlo=location.getLongitude();
+                        userlat=location.getLatitude();
+
+                    }
+                })
+                .addOnFailureListener(this, new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        Log.i("map","error");
+                    }
+                });
+    }
+
+    */
+
+
+
+             public void getUserLocation(){
+
+                     if (ContextCompat.checkSelfPermission(EditActivity.this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+                         ActivityCompat.requestPermissions(EditActivity.this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, 1);
+                     }
+                     else if (ContextCompat.checkSelfPermission(EditActivity.this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+                         ActivityCompat.requestPermissions(EditActivity.this, new String[]{Manifest.permission.ACCESS_COARSE_LOCATION}, 1);
+                     }
+                     if (ContextCompat.checkSelfPermission(EditActivity.this, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED||ContextCompat.checkSelfPermission(EditActivity.this, Manifest.permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
+                         fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(this);
+                         fusedLocationProviderClient.getLastLocation().addOnSuccessListener(this, new OnSuccessListener<Location>(){
+                             @Override
+                             public void onSuccess(Location location) {
+
+                                 if (location != null) {
+                                         userlat=location.getLatitude();
+                                         userlo=location.getLongitude();
+                                 }
+                             }
+                         });
+
+                         LocationRequest peticion = LocationRequest.create();
+                         peticion.setInterval(5000);
+                         peticion.setFastestInterval(1000);
+                         peticion.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
+                         actualizar = new LocationCallback() {
+                             @Override
+                             public void onLocationResult(LocationResult locationResult) {
+                                 super.onLocationResult(locationResult);
+                                 if(locationResult !=null) {
+                                     userlat = locationResult.getLastLocation().getLatitude();
+                                     userlo = locationResult.getLastLocation().getLongitude();
+                                 }
+                             }
+                         };
+                         fusedLocationProviderClient.requestLocationUpdates(peticion,actualizar, Looper.getMainLooper());
+                     }
+             }
+
+     public void sendtoNovedadesTopic(String jatetxeIzena){
+             ServicioFirebase firebase=new ServicioFirebase();
+             String token=firebase.generarToken();
+             String mssg="";
+             Log.i("Mensaje", mssg);
+             Data.Builder data = new Data.Builder();
+             //Se introducen los datos necesarios a pasar a ConexionPHP
+             //data.putString("mssg",mssg);
+             data.putString("jatetxe",jatetxeIzena);
+             OneTimeWorkRequest otwr = new OneTimeWorkRequest.Builder(sendMessagePHPconnect.class)
+                     .setInputData(data.build())
+                     .build();
+             WorkManager.getInstance(this).getWorkInfoByIdLiveData(otwr.getId())
+                     .observe(this, new Observer<WorkInfo>() {
+                         @Override
+                         public void onChanged(WorkInfo workInfo)
+                         {
+                             if(workInfo != null && workInfo.getState().isFinished())
+                             {
+                                 String result = workInfo.getOutputData().getString("result");
+                                 Log.i("mssg", result);
+                             }
+                         }
+                     });
+             WorkManager.getInstance(this).enqueue(otwr);
+         }
 
 
 }

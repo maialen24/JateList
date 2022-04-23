@@ -25,6 +25,12 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.Toast;
 
+import com.google.android.material.tabs.TabLayout;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.io.ByteArrayInputStream;
 import java.util.ArrayList;
 
@@ -42,25 +48,25 @@ public class MainActivity extends AppCompatActivity {
     private int CODIGO_GALERIA=4;
     private  Bitmap[] images;
     private Bitmap imageBitmap;
+    private ArrayList<JatetxeInfo> allrestaurants=new ArrayList<JatetxeInfo>();
+    private RecyclerView rvJatetxeakInfo;
+    private GridLayoutManager glmInfo;
+    private JatetxeInfoAdapter adapterInfo;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
         if (savedInstanceState!= null) {
-
             user = savedInstanceState.getString("user");
-
         }
-
 
         setContentView(R.layout.activity_main);
 
         Bundle extras = getIntent().getExtras();
         if (extras != null) {
             user = extras.getString("user");
-
-
         }
 
         // establecer a false, when restaurant clicked is true, otherwise (add button) false
@@ -93,14 +99,52 @@ public class MainActivity extends AppCompatActivity {
             }
 
         }
+        getRestaurants();
 
         //initialize list
         rvJatetxeak = (RecyclerView) findViewById(R.id.rv_jatetxeak);
 
-        glm = new GridLayoutManager(this, 1);
+        glm = new GridLayoutManager(MainActivity.this, 1);
         rvJatetxeak.setLayoutManager(glm);
         adapter = new JatetxeaAdapter(data,user);
         rvJatetxeak.setAdapter(adapter);
+
+        TabLayout tablayout=(TabLayout) findViewById(R.id.tab);
+        tablayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
+            @Override
+            public void onTabSelected(TabLayout.Tab tab) {
+                tab.getText();
+                int i= tablayout.getSelectedTabPosition();
+
+                if (i==0){
+                    rvJatetxeak = (RecyclerView) findViewById(R.id.rv_jatetxeak);
+
+                    glm = new GridLayoutManager(MainActivity.this, 1);
+                    rvJatetxeak.setLayoutManager(glm);
+                    adapter = new JatetxeaAdapter(data,user);
+                    rvJatetxeak.setAdapter(adapter);
+
+                }else{
+                    rvJatetxeakInfo = (RecyclerView) findViewById(R.id.rv_jatetxeak);
+
+                    glmInfo = new GridLayoutManager(MainActivity.this, 1);
+                    rvJatetxeakInfo.setLayoutManager(glmInfo);
+                    adapterInfo = new JatetxeInfoAdapter(allrestaurants,user);
+                    rvJatetxeakInfo.setAdapter(adapterInfo);
+                }
+
+            }
+            @Override
+            public void onTabUnselected(TabLayout.Tab tab) {
+            }
+            @Override
+            public void onTabReselected(TabLayout.Tab tab) {
+            }
+        });
+
+
+
+
 
         // add button on click method, go to edit activity (update=false)
         ImageButton add= (ImageButton)findViewById((R.id.addButton));
@@ -196,11 +240,10 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
-    public void getUserRestaurants(){
+    public void getRestaurants(){
         final Boolean[] emaitza = {false};
         Data.Builder data = new Data.Builder();
 
-        data.putString("user",user);
 
         data.putString("funcion","get");
 
@@ -213,13 +256,15 @@ public class MainActivity extends AppCompatActivity {
                         //Si se puede iniciar sesión porque devulve true se cambiará la actividad cerrando en la que se encuentra. Si la devolución es null o no es true se mostrará un toast en la interfaz actual.
                         if(workInfo != null && workInfo.getState().isFinished())
                         {
-                            String emaitza = workInfo.getOutputData().getString("arrayresultados");
+                            String emaitzaizena = workInfo.getOutputData().getString("izena");
+                            String emaitzavaloracion = workInfo.getOutputData().getString("valoracion");
                             if (emaitza!=null) {
-                                if (emaitza.equals("true")) {
-                                    //GO TO MAIN ACTIVITY
-                                    Log.i("jatetxeak","lortu");
-
+                                String[]  izenaList=emaitzaizena.split(",");
+                                String[]  valoracionList=emaitzavaloracion.split(",");
+                                for (int i=0;i<izenaList.length;i++){
+                                    allrestaurants.add(new JatetxeInfo(izenaList[i],valoracionList[i]));
                                 }
+
 
                             }
                         }

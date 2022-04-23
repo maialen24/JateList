@@ -32,7 +32,11 @@
     <string name="modeText">Modo</string>
     <string name="permisos">Permisos</string>
     <string name="marcar">Marcar tlf</string>
-    <string name="takePhoto">Sacar foto</string>
+    <string name="takePhoto" translatable="false">Sacar foto</string>
     <string name="selectPhoto">Seleccionar desde galeria</string>
     <string name="fotomssg">Cargar imagen</string>
+    <string name="msg_subscribed">Te has suscrito a novedades</string>
+    <string name="msg_subscribe_failed">Error suscripcion</string>
+    <string name="msg_unsubscribed">Desubscrito de novedades</string>
+    <string name="msg_unsubscribe_failed">Desubscripcion fallida</string>
 </resources>
