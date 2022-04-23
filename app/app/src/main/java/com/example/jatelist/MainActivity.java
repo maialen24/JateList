@@ -1,5 +1,6 @@
 package com.example.jatelist;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.Observer;
@@ -15,6 +16,7 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.drawable.BitmapDrawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.DocumentsContract;
@@ -28,7 +30,14 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.Toast;
 
+
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
 import com.google.android.material.tabs.TabLayout;
+import com.google.firebase.storage.FileDownloadTask;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -38,11 +47,11 @@ import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.stream.Stream;
 
 public class MainActivity extends AppCompatActivity {
 
     /* This class implements main activity, show restaurants list */
-
 
     private RecyclerView rvJatetxeak;
     private GridLayoutManager glm;
@@ -58,6 +67,8 @@ public class MainActivity extends AppCompatActivity {
     private GridLayoutManager glmInfo;
     private JatetxeInfoAdapter adapterInfo;
     private Boolean eginda=false;
+    FirebaseStorage storage;
+    StorageReference storageReference;
 
 
     @Override
@@ -92,11 +103,11 @@ public class MainActivity extends AppCompatActivity {
                 //Bitmap img=dbHelper.getImage(user,a.get(5));
                 //Bitmap img=null;
                 //images[i]=
-                getimage(user,a.get(0));
+           /*     getimage(user,a.get(0));
                 while(eginda){
 
-                }
-
+                }*/
+                downloadImage(user,a.get(0));
                 /*
                 if (images[i]!=null){
                     ByteArrayInputStream imageStream = new ByteArrayInputStream(image);
@@ -111,13 +122,7 @@ public class MainActivity extends AppCompatActivity {
         getRestaurants();
 
         //initialize list
-        rvJatetxeak = (RecyclerView) findViewById(R.id.rv_jatetxeak);
-
-        glm = new GridLayoutManager(MainActivity.this, 1);
-        rvJatetxeak.setLayoutManager(glm);
-        adapter = new JatetxeaAdapter(data,user);
-        rvJatetxeak.setAdapter(adapter);
-
+        tabYourList();
         TabLayout tablayout=(TabLayout) findViewById(R.id.tab);
         tablayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
             @Override
@@ -126,22 +131,12 @@ public class MainActivity extends AppCompatActivity {
                 int i= tablayout.getSelectedTabPosition();
 
                 if (i==0){
-                    rvJatetxeak = (RecyclerView) findViewById(R.id.rv_jatetxeak);
-
-                    glm = new GridLayoutManager(MainActivity.this, 1);
-                    rvJatetxeak.setLayoutManager(glm);
-                    adapter = new JatetxeaAdapter(data,user);
-                    rvJatetxeak.setAdapter(adapter);
+                    tabYourList();
 
                 }else{
-                    rvJatetxeakInfo = (RecyclerView) findViewById(R.id.rv_jatetxeak);
+                    tabSearch();
 
-                    glmInfo = new GridLayoutManager(MainActivity.this, 1);
-                    rvJatetxeakInfo.setLayoutManager(glmInfo);
-                    adapterInfo = new JatetxeInfoAdapter(allrestaurants,user);
-                    rvJatetxeakInfo.setAdapter(adapterInfo);
                 }
-
             }
             @Override
             public void onTabUnselected(TabLayout.Tab tab) {
@@ -150,9 +145,6 @@ public class MainActivity extends AppCompatActivity {
             public void onTabReselected(TabLayout.Tab tab) {
             }
         });
-
-
-
 
 
         // add button on click method, go to edit activity (update=false)
@@ -187,6 +179,25 @@ public class MainActivity extends AppCompatActivity {
         });
 
     }
+
+    private void tabYourList(){
+        rvJatetxeak = (RecyclerView) findViewById(R.id.rv_jatetxeak);
+
+        glm = new GridLayoutManager(MainActivity.this, 1);
+        rvJatetxeak.setLayoutManager(glm);
+        adapter = new JatetxeaAdapter(data,user);
+        rvJatetxeak.setAdapter(adapter);
+    }
+
+    private void tabSearch(){
+        rvJatetxeakInfo = (RecyclerView) findViewById(R.id.rv_jatetxeak);
+
+        glmInfo = new GridLayoutManager(MainActivity.this, 1);
+        rvJatetxeakInfo.setLayoutManager(glmInfo);
+        adapterInfo = new JatetxeInfoAdapter(allrestaurants,user);
+        rvJatetxeakInfo.setAdapter(adapterInfo);
+    }
+
     protected void onSaveInstanceState(Bundle savedInstanceState) {
         super.onSaveInstanceState(savedInstanceState);
         savedInstanceState.putString("user",user );
@@ -236,7 +247,7 @@ public class MainActivity extends AppCompatActivity {
         Log.i("CONTROL","main ON DESTROY");
     }
 
-    @Override
+    /*@Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == CODIGO_GALERIA && resultCode == RESULT_OK) {
@@ -246,13 +257,12 @@ public class MainActivity extends AppCompatActivity {
             //gorde image uri in db
 
         }
-    }
+    }*/
 
 
     public void getRestaurants(){
         final Boolean[] emaitza = {false};
         Data.Builder data = new Data.Builder();
-
 
         data.putString("funcion","get");
 
@@ -273,14 +283,11 @@ public class MainActivity extends AppCompatActivity {
                                 for (int i=0;i<izenaList.length;i++){
                                     allrestaurants.add(new JatetxeInfo(izenaList[i],valoracionList[i]));
                                 }
-
-
                             }
                         }
                     }
                 });
         WorkManager.getInstance(this).enqueue(otwr);
-
     }
 
     public void getimage(String user, String izena){
@@ -362,5 +369,40 @@ public class MainActivity extends AppCompatActivity {
         }
         cursor.close();
         return res;
+    }
+
+
+    public void downloadImage(String user,String izena){
+        storageReference = FirebaseStorage.getInstance().getReference("images/");
+        StorageReference pathReference = storageReference.child("space.jpg");
+        pathReference.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+            @Override
+            public void onSuccess(Uri uri) {
+                ImageView elImageView= findViewById(R.id.imageView);
+               // Glide.with(getApplicationContext()).load(uri).into(elImageView);
+                BitmapDrawable drawable = (BitmapDrawable) elImageView.getDrawable();
+                imageBitmap = drawable.getBitmap();
+            }
+        });
+
+   /*     storageReference = FirebaseStorage.getInstance().getReference("images/"+user+izena.replace(" ","")+".jpg");
+
+       // storageReference.getStream();
+        try {
+            File localfile=File.createTempFile("tempfile",".jpeg");
+            Task<Uri> u=storageReference.getDownloadUrl();
+            storageReference.getFile(localfile).addOnSuccessListener(new OnSuccessListener<FileDownloadTask.TaskSnapshot>() {
+                @Override
+                public void onSuccess(FileDownloadTask.TaskSnapshot taskSnapshot) {
+                    imageBitmap=BitmapFactory.decodeFile(localfile.getAbsolutePath());
+                }
+            });{
+
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+*/
     }
 }

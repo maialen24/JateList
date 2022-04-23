@@ -27,6 +27,7 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.location.Address;
 import android.location.Geocoder;
@@ -619,10 +620,11 @@ public Boolean insert(String izena,String rating){
                 e.printStackTrace();
             }
             // Bitmap img = (Bitmap) data.getExtras().get("data");
-            //guardar foto en server
-            String img64=getEncodedString(img);
+            //guardar foto en server//
 
-           // insertargazkia(user,nameJatetxe,imagenSeleccionada.toString());
+           // String img64=getEncodedString(img);
+
+            //insertargazkia(user,nameJatetxe,imagenSeleccionada.toString());
 
         }
         if (requestCode == CAMERA_REQUEST && resultCode == RESULT_OK) {
