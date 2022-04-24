@@ -22,13 +22,14 @@ import java.io.PrintWriter;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
-
+//Esta clase es la que llama al php relacionado con el almacenamiento de fotos y gestiona los resultados
 public class argazkiakPHPconnect extends Worker {
     public argazkiakPHPconnect(@NonNull Context context, @NonNull WorkerParameters workerParams)
     {
         super(context, workerParams);
     }
 
+    /* Este metodo llama a las funciones de insertar o get dependiendo de los parametros recibidos */
     @NonNull
     @Override
     public ListenableWorker.Result doWork() {
@@ -44,7 +45,7 @@ public class argazkiakPHPconnect extends Worker {
 
 
     }
-
+    /* Metodo que gestiona el insertar fotos en la db remota  */
     public ListenableWorker.Result insert(String user,  String  image, String izena ){
         //String user = getInputData().getString("user");
         //String password = getInputData().getString("password");
@@ -97,6 +98,7 @@ public class argazkiakPHPconnect extends Worker {
         return ListenableWorker.Result.failure();
     }
 
+    /* Metodo que gestiona la extraccion de fotos de la db remota */
     public ListenableWorker.Result get(String user, String izena){
 
         String funcion= "get";

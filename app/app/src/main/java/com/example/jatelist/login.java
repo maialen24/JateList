@@ -349,11 +349,13 @@ public class login extends AppCompatActivity implements DialogClass.Listener, se
         myEdit.putBoolean("mode", pmode);
         myEdit.putBoolean("notifications", noti);
         myEdit.putBoolean("recordatorio", notir);
+
+        /* Actualiza subscripciones */
         notifications=noti;
         recordatorio=notir;
         night=pmode;
         changeTheme();
-
+        /* Subscribe al topic recordatorio */
         if(recordatorio){
             FirebaseMessaging.getInstance().subscribeToTopic("recordatorio")
                     .addOnCompleteListener(new OnCompleteListener<Void>() {
@@ -369,6 +371,7 @@ public class login extends AppCompatActivity implements DialogClass.Listener, se
                         }
                     });
         }else{
+            /* Elimina subscripcion al topic recordatorio */
             FirebaseMessaging.getInstance().unsubscribeFromTopic("recordatorio")
                     .addOnCompleteListener(new OnCompleteListener<Void>() {
 
@@ -386,6 +389,7 @@ public class login extends AppCompatActivity implements DialogClass.Listener, se
         }
 
         if(notifications){
+            /* Subscribe al topic new */
             FirebaseMessaging.getInstance().subscribeToTopic("new")
                     .addOnCompleteListener(new OnCompleteListener<Void>() {
 
@@ -400,6 +404,7 @@ public class login extends AppCompatActivity implements DialogClass.Listener, se
                         }
                     });
         }else{
+            /* Elimina subscripcion topic new */
             FirebaseMessaging.getInstance().unsubscribeFromTopic("new")
                     .addOnCompleteListener(new OnCompleteListener<Void>() {
 
@@ -505,8 +510,8 @@ public class login extends AppCompatActivity implements DialogClass.Listener, se
 
     }
 
-
-public void check(){
+    /* Metodo que gestiona la tarea de comprobar las credenciales del usuario */
+    public void check(){
     final Boolean[] emaitza = {false};
     Data.Builder data = new Data.Builder();
     //Se introducen los datos necesarios a pasar a ConexionPHP
@@ -560,8 +565,8 @@ public void check(){
 
 
 }
-
-public void insert(String user, String password){
+    /* Funcion que gestinoa la tarea de inserta nuevo usuario en db remota */
+    public void insert(String user, String password){
     final Boolean[] emaitza = {false};
     Data.Builder data = new Data.Builder();
     //Se introducen los datos necesarios a pasar a ConexionPHP

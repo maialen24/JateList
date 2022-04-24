@@ -16,6 +16,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.ArrayList;
 
+/* Adaptador del item JatetxeInfo */
 public class JatetxeInfoAdapter extends RecyclerView.Adapter<JatetxeInfoAdapter.JatetxeInfoViewHolder>{
 
 

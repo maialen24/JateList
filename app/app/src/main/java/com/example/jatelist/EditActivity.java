@@ -135,6 +135,8 @@ public class EditActivity extends AppCompatActivity implements OnMapReadyCallbac
         }
 
         setContentView(R.layout.activity_edit);
+        new utils().camaraPermission(EditActivity.this, EditActivity.this);
+        new utils().locationPermission(EditActivity.this,EditActivity.this);
 
         //crear instancia de la base de datos
         dbHelper = new db(this);
@@ -335,8 +337,11 @@ public class EditActivity extends AppCompatActivity implements OnMapReadyCallbac
                     update(izena.getText().toString(),String.valueOf(valoracion.getRating()));
                 }else{
                     //insert(izena.getText().toString(),ubi.getText().toString(),String.valueOf(valoracion.getRating()),comments.getText().toString(),tlf_number.getText().toString(),user);
+                  //insert en db local
                    succes=dbHelper.insertJatetxe(izena.getText().toString(),ubi.getText().toString(),String.valueOf(valoracion.getRating()),comments.getText().toString(),tlf_number.getText().toString(),user);
+                   //insert en db remota
                    insert(izena.getText().toString(),String.valueOf(valoracion.getRating()));
+                   //enviar mensaje FCM a subscriptores new
                    sendtoNovedadesTopic(izena.getText().toString());
                 }
                 //deshabilitar la ediccion
@@ -469,7 +474,7 @@ public class EditActivity extends AppCompatActivity implements OnMapReadyCallbac
         Log.i("CONTROL", "EDIT ON LOW MEMORY");
     }
 
-
+    /* Metodo que llama al gestor que se ocupa de actualizar los datos de los restaurantes en la db remota */
 public boolean update(String izena, String rating){
     final Boolean[] emaitza = {false};
     Data.Builder data = new Data.Builder();
@@ -507,6 +512,7 @@ public boolean update(String izena, String rating){
     WorkManager.getInstance(this).enqueue(otwr);
     return emaitza[0];
 }
+/* Metodo que añade la tarea de insertar un nuevo restaurante en la db remota */
 public Boolean insert(String izena,String rating){
     final Boolean[] emaitza = {false};
     Data.Builder data = new Data.Builder();
@@ -540,7 +546,7 @@ public Boolean insert(String izena,String rating){
     WorkManager.getInstance(this).enqueue(otwr);
     return emaitza[0];
 }
-
+             /* Metodo que crea la tarea de borrar un restaurante de la db remota */
      public Boolean delete(String izena){
          final Boolean[] emaitza = {false};
          Data.Builder data = new Data.Builder();
@@ -571,10 +577,12 @@ public Boolean insert(String izena,String rating){
          return emaitza[0];
      }
 
+             /* Se gestionan las fotos elegidas o sacadas por el usuario */
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 
         super.onActivityResult(requestCode, resultCode, data);
+        /* Si la foto se escoge desde galeria se guarda el path de la img */
         if (requestCode == CODIGO_GALERIA && resultCode == RESULT_OK) {
             Uri imagenSeleccionada = data.getData();
 
@@ -584,13 +592,14 @@ public Boolean insert(String izena,String rating){
               //  InputStream inputStream=getContentResolver().openInputStream(data.getData());
                 //img=BitmapFactory.decodeStream(inputStream);
                 img = MediaStore.Images.Media.getBitmap(this.getContentResolver(), imagenSeleccionada);
-                String base64img=encodeGalery(img);
+               // String base64img=encodeGalery(img);
                 insertargazkia(user,nameJatetxe,getPath(imagenSeleccionada));
             } catch (IOException e) {
                 e.printStackTrace();
             }
 
         }
+        /* Si la img se captura desde la camara se guarda el string base64 del bitmap */
         if (requestCode == CAMERA_REQUEST && resultCode == RESULT_OK) {
             Bitmap img = (Bitmap) data.getExtras().get("data");
            // uploadcameraImage(img);
@@ -598,7 +607,7 @@ public Boolean insert(String izena,String rating){
         }
 
     }
-
+             /* Convierte el bitmap en un string base64*/
     private String encode(Bitmap img){
 
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
@@ -607,7 +616,7 @@ public Boolean insert(String izena,String rating){
         String encodedImage = Base64.encodeToString(b , Base64.URL_SAFE);
         return encodedImage;
     }
-
+/*
      private String encodeGalery(Bitmap img){
 
          ByteArrayOutputStream baos = new ByteArrayOutputStream();
@@ -615,9 +624,9 @@ public Boolean insert(String izena,String rating){
          byte[] b = baos.toByteArray();
          String encodedImage = Base64.encodeToString(b , Base64.URL_SAFE);
          return encodedImage;
-     }
+     }*/
 
-
+             /* Metodo que encola la tarea de almacenar la foto en la db remota */
     public void insertargazkia(String user, String izena, String foto){
         final Boolean[] emaitza = {false};
         Data.Builder data = new Data.Builder();
@@ -652,7 +661,7 @@ public Boolean insert(String izena,String rating){
         WorkManager.getInstance(this).enqueue(otwr);
     }
 
-
+/*
     //cuando cambie la loc enviar mensaje
     public void send(){
         ServicioFirebase firebase=new ServicioFirebase();
@@ -682,7 +691,7 @@ public Boolean insert(String izena,String rating){
                     }
                 });
         WorkManager.getInstance(this).enqueue(otwr);
-    }
+    }*/
 
 
              private void startInstalledAppDetailsActivity() {
@@ -694,7 +703,7 @@ public Boolean insert(String izena,String rating){
                  startActivity(i);
              }
 
-
+             /* Cuando un usuario añade un restaurante se ejecuta este metodo para enviar la notificacion a los subscriptores del topico new */
      public void sendtoNovedadesTopic(String jatetxeIzena){
              ServicioFirebase firebase=new ServicioFirebase();
              String token=firebase.generarToken();
@@ -738,7 +747,7 @@ public Boolean insert(String izena,String rating){
          }
      }
 
-     // UploadImage method
+     // UploadImage method to firebase storage
      public void uploadImage(Uri uri){
          String izena=nameJatetxe.replace(" ","");
          String fileName=user+izena;
@@ -782,7 +791,7 @@ public Boolean insert(String izena,String rating){
 
 
 
-
+             /* Metodo para conseguir el real path de una URI de imagen de galeria */
      public String getPath(Uri uri) {
          String[] projection = { MediaStore.Images.Media.DATA };
          Cursor cursor = managedQuery(uri, projection, null, null, null);

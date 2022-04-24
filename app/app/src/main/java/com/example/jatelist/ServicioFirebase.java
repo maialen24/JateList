@@ -24,12 +24,13 @@ import com.google.firebase.messaging.FirebaseMessaging;
 import com.google.firebase.messaging.FirebaseMessagingService;
 import com.google.firebase.messaging.RemoteMessage;
 
-
+/* Gestiona el servicio de mensajeria FCM */
 public class ServicioFirebase extends FirebaseMessagingService {
     private String token;
     public ServicioFirebase() {
 
 }
+    /* Consigue el token del dispositivo */
     public String generarToken(){
         token= FirebaseInstanceId.getInstance().getToken();
         FirebaseInstanceId.getInstance().getInstanceId().addOnCompleteListener(new OnCompleteListener<InstanceIdResult>(){
@@ -49,6 +50,7 @@ public class ServicioFirebase extends FirebaseMessagingService {
         return  token;
     }
 
+    /* Gestiona los mensajes recibidos */
     public void onMessageReceived(RemoteMessage remoteMessage) {
         if (remoteMessage.getData().size() > 0) {
 /*
@@ -121,7 +123,7 @@ public void sendmessage(){
 
 
 
-
+    /* Actualiza token del dispositivo */
     @Override
     public void onNewToken(String s) {
         super.onNewToken(s);

@@ -19,13 +19,14 @@ import java.io.PrintWriter;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
-
+/* Gestiona las funciones del php de la tabla users */
 public class usersPHPconnect extends Worker {
     public usersPHPconnect(@NonNull Context context, @NonNull WorkerParameters workerParams)
     {
         super(context, workerParams);
     }
 
+    /* Llamada a diferentes funciones dependiendo de los parametros */
     @NonNull
     @Override
     public Result doWork() {
@@ -40,7 +41,7 @@ public class usersPHPconnect extends Worker {
 
 
     }
-
+    /* Gestiona la funcion de añadir nuevo usuario del php */
     public Result insertUser(String user,String password){
         //String user = getInputData().getString("user");
         //String password = getInputData().getString("password");
@@ -95,6 +96,7 @@ public class usersPHPconnect extends Worker {
         return Result.failure();
     }
 
+    /* Gestiona la funcion de comprobar credenciales del php*/
     public Result check(String user,String password){
         //String user = getInputData().getString("user");
         //String password = getInputData().getString("password");

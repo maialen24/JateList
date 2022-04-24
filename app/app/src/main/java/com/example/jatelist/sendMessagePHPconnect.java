@@ -19,6 +19,7 @@ import java.net.URL;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
+/* Gestiona las funciones del php de mensajes FCM */
 public class sendMessagePHPconnect extends Worker {
     public sendMessagePHPconnect(@NonNull Context context, @NonNull WorkerParameters workerParams) {
         super(context, workerParams);

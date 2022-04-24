@@ -3,6 +3,7 @@ package com.example.jatelist;
 import android.graphics.Bitmap;
 import android.net.Uri;
 
+/* Clase que representa el objeto JatetxeInfo utilizado para mostrar la informacion de los restaurantes de la db remota*/
 public class JatetxeInfo {
 
     /*  This class define Jatetxea object */

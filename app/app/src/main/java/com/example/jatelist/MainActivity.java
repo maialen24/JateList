@@ -115,6 +115,7 @@ public class MainActivity extends AppCompatActivity {
         getRestaurants();
 
         //initialize list
+        /* Gestiona los tab */
         tabYourList();
         TabLayout tablayout=(TabLayout) findViewById(R.id.tab);
         tablayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
@@ -169,7 +170,7 @@ public class MainActivity extends AppCompatActivity {
         });
 
     }
-
+    /* Gestiona la visualizacion de los restaurantes de el usuario*/
     private void tabYourList(){
         rvJatetxeak = (RecyclerView) findViewById(R.id.rv_jatetxeak);
 
@@ -179,6 +180,7 @@ public class MainActivity extends AppCompatActivity {
         rvJatetxeak.setAdapter(adapter);
     }
 
+    /* Gestiona la visualizacion de los restaurantes de todos los usuarios */
     private void tabSearch(){
         rvJatetxeakInfo = (RecyclerView) findViewById(R.id.rv_jatetxeak);
 
@@ -238,7 +240,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
-
+    /* Tarea que extrae los restaurantes de la db remota */
     public void getRestaurants(){
         final Boolean[] emaitza = {false};
         Data.Builder data = new Data.Builder();
@@ -269,7 +271,8 @@ public class MainActivity extends AppCompatActivity {
         WorkManager.getInstance(this).enqueue(otwr);
     }
 
-private Bitmap decode(String encodedimg){
+    /* Decode el bitmap encoded */
+    private Bitmap decode(String encodedimg){
     byte[] b = Base64.decode(encodedimg,Base64.URL_SAFE);
     Bitmap bitmap = BitmapFactory.decodeByteArray(b,0,b.length);
     return bitmap;
@@ -292,15 +295,16 @@ private Bitmap decode(String encodedimg){
                     @Override
                     public void onChanged(WorkInfo workInfo)
                     {
-                        //Si se puede iniciar sesión porque devulve true se cambiará la actividad cerrando en la que se encuentra. Si la devolución es null o no es true se mostrará un toast en la interfaz actual.
+
                         if(workInfo != null && workInfo.getState().isFinished())
                         {
                             String emaitza = workInfo.getOutputData().getString("foto");
                             if (emaitza!=null) {
-
+                                /* Si es bitmap encoded*/
                                 imageBitmap=decode(emaitza);
                                 if(imageBitmap==null){
                                     try {
+                                        /* Si es path de foto*/
                                         Uri newUri = Uri.fromFile(new File(emaitza));
                                         imageBitmap = BitmapFactory.decodeStream(getContentResolver().openInputStream(newUri));
                                     } catch (FileNotFoundException e) {
@@ -322,7 +326,7 @@ private Bitmap decode(String encodedimg){
     }
 
 
-
+    /* Actualiza los items de los restaurantes */
     private void updateData(String user, Bitmap img,int index){
         data.get(index).setImage(img);
         tabYourList();

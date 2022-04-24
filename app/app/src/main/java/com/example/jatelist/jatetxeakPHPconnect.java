@@ -20,13 +20,14 @@ import java.io.PrintWriter;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
-
+/*  Clase gestora del archivo php relacionado con la tabla jatetxea de la db remota */
 public class jatetxeakPHPconnect extends Worker {
     public jatetxeakPHPconnect(@NonNull Context context, @NonNull WorkerParameters workerParams)
     {
         super(context, workerParams);
     }
 
+    /* Metodo que gestiona las llamadas a las diferentes funciones segun parametros recibidos */
     @NonNull
     @Override
     public ListenableWorker.Result doWork() {
@@ -47,6 +48,7 @@ public class jatetxeakPHPconnect extends Worker {
 
     }
 
+/* Llamada a la funcion insert del php para el almacenamiento de restaurantes */
     public ListenableWorker.Result insert(){
         //String user = getInputData().getString("user");
         //String password = getInputData().getString("password");
@@ -104,6 +106,7 @@ public class jatetxeakPHPconnect extends Worker {
         return ListenableWorker.Result.failure();
     }
 
+    /* Llamada a la funcion update del php que gestiona las actualizaciones del restaurante */
     public ListenableWorker.Result update(){
         //String user = getInputData().getString("user");
         //String password = getInputData().getString("password");
@@ -161,6 +164,7 @@ public class jatetxeakPHPconnect extends Worker {
         return ListenableWorker.Result.failure();
     }
 
+    /* Llamada a la funcion delete del php que gestiona el borrado de restaurantes */
     public ListenableWorker.Result delete(){
         //String user = getInputData().getString("user");
         //String password = getInputData().getString("password");
@@ -216,6 +220,7 @@ public class jatetxeakPHPconnect extends Worker {
         return ListenableWorker.Result.failure();
     }
 
+    /* Llamada */
     public ListenableWorker.Result get(){
         //String user = getInputData().getString("user");
         //String password = getInputData().getString("password");
@@ -270,6 +275,7 @@ public class jatetxeakPHPconnect extends Worker {
         return ListenableWorker.Result.failure();
     }
 
+    /* Llamada al metodo get del php para extraer los registros de los restaurantes */
     public ListenableWorker.Result getAll(){
         //String user = getInputData().getString("user");
         //String password = getInputData().getString("password");
