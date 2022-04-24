@@ -45,6 +45,7 @@ import org.json.JSONObject;
 
 import java.io.ByteArrayInputStream;
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.stream.Stream;
@@ -82,6 +83,7 @@ public class MainActivity extends AppCompatActivity {
 
 
         setContentView(R.layout.activity_main);
+        new utils().readPermission(MainActivity.this,MainActivity.this);
 
         Bundle extras = getIntent().getExtras();
         if (extras != null) {
@@ -295,7 +297,18 @@ private Bitmap decode(String encodedimg){
                         {
                             String emaitza = workInfo.getOutputData().getString("foto");
                             if (emaitza!=null) {
+
                                 imageBitmap=decode(emaitza);
+                                if(imageBitmap==null){
+                                    try {
+                                        Uri newUri = Uri.fromFile(new File(emaitza));
+                                        imageBitmap = BitmapFactory.decodeStream(getContentResolver().openInputStream(newUri));
+                                    } catch (FileNotFoundException e) {
+                                        e.printStackTrace();
+                                    }
+
+                                    //imageBitmap =  BitmapFactory.decodeFile(emaitza);
+                                }
                                 updateData(user,imageBitmap,index);
 
                             }
@@ -307,6 +320,8 @@ private Bitmap decode(String encodedimg){
 
 
     }
+
+
 
     private void updateData(String user, Bitmap img,int index){
         data.get(index).setImage(img);

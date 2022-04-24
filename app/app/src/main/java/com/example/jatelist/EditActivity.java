@@ -25,6 +25,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -114,8 +115,8 @@ public class EditActivity extends AppCompatActivity implements OnMapReadyCallbac
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        new utils().permisosCamara(EditActivity.this, EditActivity.this);
-        new utils().pedirpermisosLocalizar(EditActivity.this,EditActivity.this);
+        new utils().camaraPermission(EditActivity.this, EditActivity.this);
+        new utils().locationPermission(EditActivity.this,EditActivity.this);
         super.onCreate(savedInstanceState);
 
         db=dbHelper.getWritableDatabase();
@@ -309,8 +310,8 @@ public class EditActivity extends AppCompatActivity implements OnMapReadyCallbac
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
                         //Jatetxea argazkia aukeratu
-                       // Intent elIntentGal = new Intent(Intent.ACTION_PICK, android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
-                        Intent elIntentGal=new Intent(Intent.ACTION_GET_CONTENT,android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+                        Intent elIntentGal = new Intent(Intent.ACTION_PICK, android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+                       // Intent elIntentGal=new Intent(Intent.ACTION_OPEN_DOCUMENT_TREE,android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
                         startActivityForResult(elIntentGal, CODIGO_GALERIA);
                     }
                 });
@@ -580,10 +581,11 @@ public Boolean insert(String izena,String rating){
             uploadImage(imagenSeleccionada);
             Bitmap img= null;
             try {
-                InputStream inputStream=getContentResolver().openInputStream(data.getData());
-                img=BitmapFactory.decodeStream(inputStream);
-                //img = MediaStore.Images.Media.getBitmap(this.getContentResolver(), imagenSeleccionada);
-                insertargazkia(user,nameJatetxe,encode(img));
+              //  InputStream inputStream=getContentResolver().openInputStream(data.getData());
+                //img=BitmapFactory.decodeStream(inputStream);
+                img = MediaStore.Images.Media.getBitmap(this.getContentResolver(), imagenSeleccionada);
+                String base64img=encodeGalery(img);
+                insertargazkia(user,nameJatetxe,getPath(imagenSeleccionada));
             } catch (IOException e) {
                 e.printStackTrace();
             }
@@ -605,6 +607,15 @@ public Boolean insert(String izena,String rating){
         String encodedImage = Base64.encodeToString(b , Base64.URL_SAFE);
         return encodedImage;
     }
+
+     private String encodeGalery(Bitmap img){
+
+         ByteArrayOutputStream baos = new ByteArrayOutputStream();
+         img.compress(Bitmap.CompressFormat.PNG, 10, baos); //bm is the bitmap object
+         byte[] b = baos.toByteArray();
+         String encodedImage = Base64.encodeToString(b , Base64.URL_SAFE);
+         return encodedImage;
+     }
 
 
     public void insertargazkia(String user, String izena, String foto){
@@ -634,15 +645,12 @@ public Boolean insert(String izena,String rating){
                                     Log.i("argazkia ","sartu");
 
                                 }
-
                             }
                         }
                     }
                 });
         WorkManager.getInstance(this).enqueue(otwr);
     }
-
-
 
 
     //cuando cambie la loc enviar mensaje
@@ -775,7 +783,14 @@ public Boolean insert(String izena,String rating){
 
 
 
-
+     public String getPath(Uri uri) {
+         String[] projection = { MediaStore.Images.Media.DATA };
+         Cursor cursor = managedQuery(uri, projection, null, null, null);
+         startManagingCursor(cursor);
+         int column_index = cursor.getColumnIndexOrThrow(MediaStore.Images.Media.DATA);
+         cursor.moveToFirst();
+         return cursor.getString(column_index);
+     }
 
 
 
