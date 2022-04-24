@@ -20,7 +20,7 @@ if ($funcion=='insert'){
 }else if($funcion=='getAll'){
          getAll($con);
 }else if($funcion=='delete'){
-          deleteJatetxea($_POST["name"],$_POST["name"],$_POST["user"],$con);
+          deleteJatetxea($_POST["name"],$_POST["user"],$con);
  }
 
 
@@ -102,23 +102,27 @@ function getAllfromUser($user,$con){
 function getAll($con){
     $resultado = mysqli_query($con," SELECT * FROM jatetxea");
 
+
      if (!$resultado) {
      echo 'Ha ocurrido algún error: ' . mysqli_error($con);
      $arrayresultados[] = array('resultado' => false);
      }else{
-     while($fila=mysqli_fetch_row($resultado)){
-         //$fila = mysqli_fetch_row($resultado);
-         $arrayresultados[$fila] = array(
-         'izena' => $fila[1],
-         'ubicacion' => $fila[2],
-         'valoracion' => $fila[3],
-         'comentarios' => $fila[4],
-         'tlf' => $fila[5],
-         'user' => $fila[6],
-         );
-     }
 
-     }
+        $numeroFila=0;
+        while($row = $resultado->fetch_assoc())
+        {
+
+            $arrayresultados[$numeroFila] = array(
+             'izena' => $row['izena'],
+             'valoracion' => $row['valoracion'],
+
+             );
+            $numeroFila=$numeroFila+1;
+
+
+        }
+        $result[] = array('resultado' => $arrayresultados);
+    }
 
      #Devolver el resultado en formato JSON
      mysqli_close($con);

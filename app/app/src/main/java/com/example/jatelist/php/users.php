@@ -17,13 +17,13 @@ $funcion = $_POST["funcion"];
 if ($funcion=='insertUser'){
     insertUser($_POST["user"],$_POST["password"],$con);
 }else{
-    checkCredentials($_POST["user"],$_POST["password"]);
+    checkCredentials($_POST["user"],$_POST["password"],$con);
 }
 
 //insert new user into db
 function insertUser($user,$password,$con) {
     $hash=password_hash($password, PASSWORD_DEFAULT);
-    $resultado = mysqli_query($con,"INSERT INTO users (user,password) values ('$user','$password')");
+    $resultado = mysqli_query($con,"INSERT INTO users (user,password) values ('$user','$hash')");
 
     if (!$resultado) {
         echo 'Ha ocurrido algún error: ' . mysqli_error($con);

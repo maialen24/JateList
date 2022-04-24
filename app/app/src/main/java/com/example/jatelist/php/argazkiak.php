@@ -12,22 +12,31 @@ echo 'Error de conexion: ' . mysqli_connect_error();
 exit();
 }
 
-$foto = $_POST["foto"];
-$jatetxeid = $_POST["jatetxeid"];
+
+
+
 
 $funcion = $_POST["funcion"];
 if ($funcion=='insert'){
-    inserIrudia($foto)
+    $foto = $_POST["foto"];
+    $user=$_POST["user"];
+    $izena=$_POST["izena"];
+    insertIrudia($foto,$user,$izena,$con);
 }else{
-    getIrudia($jatetxeid)
+
+    $user=$_POST["user"];
+    $izena=$_POST["izena"];
+    getIrudia($user,$izena,$con);
 }
 
 
 
 
-function inserIrudia($foto,$jatetxeid){
-    $izena=$jatetxeid+'f'
-    $resultado = mysqli_query($con," INSERT into irudiak (foto,jatetxeid) VALUES ('$foto','$jatetxeid','$izena') ");
+function insertIrudia($foto,$user,$izena,$con){
+
+    mysqli_query($con," DELETE from irudiak where izena='$izena' and user='$user' ");
+
+    $resultado = mysqli_query($con," INSERT into irudiak (izena,user,foto) VALUES ('$izena','$user','$foto') ");
 
     if (!$resultado) {
         echo 'Ha ocurrido algún error: ' . mysqli_error($con);
@@ -36,24 +45,26 @@ function inserIrudia($foto,$jatetxeid){
         $result[] = array('resultado' => true);
     }
 
-mysqli_close($con);
-echo json_encode($result)
+    mysqli_close($con);
+    echo json_encode($result);
 }
 
-function getIrudia($jatetxeid){
-    $izena=$jatetxeid+'f'
-    $resultado = mysqli_query($con," SELECT * FROM irudiak WHERE izena='$izena' and jatetxeid='$jatetxeid'");
+function getIrudia($user,$izena,$con){
+
+    $resultado = mysqli_query($con," SELECT * FROM irudiak WHERE izena='$izena' and user='$user'");
 
      if (!$resultado) {
      echo 'Ha ocurrido algún error: ' . mysqli_error($con);
      $result[] = array('resultado' => false);
      }else{
-        $fila = mysqli_fetch_row($resultado);
-        $image=$fila['foto']
-        $result[] = array('resultado' => true);
-        $result[] = array('image' => $image);
+        #$fila = mysqli_fetch_row($resultado);
 
+            while($row = $resultado->fetch_assoc())
+            {
+                $imagenes= $row['foto'];
+            }
 
+            $result[] = array('resultado' => $imagenes);
      }
 
      #Devolver el resultado en formato JSON

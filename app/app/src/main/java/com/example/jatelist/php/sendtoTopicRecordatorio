@@ -5,15 +5,16 @@ $cabecera= array(
 'Content-Type: application/json'
 );
 
-$message="No te olvides de Jatelist :( ";
+$message="No te olvides de JateList :(";
 
 $msg= array(
 'to'=>  "/topics/recordatorio",
-),
+'data' => array (
+"fecha" => $fecha),
 
 'notification' => array (
 'body' => $message,
-'title' => 'Recordatorio',
+'title' => 'Recoradotrio',
 'icon' => 'ic_stat_ic_notification',
 ),
 
