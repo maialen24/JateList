@@ -351,6 +351,7 @@ public class EditActivity extends AppCompatActivity implements OnMapReadyCallbac
                 valoracion.setIsIndicator(true);
                 disableEditText(comments);
                 disableEditText(tlf_number);
+                onMapReady(googleMap);
                 if (succes){
                     Toast.makeText(getApplicationContext(),v.getContext().getString(R.string.toast),Toast.LENGTH_SHORT).show();
                 }
