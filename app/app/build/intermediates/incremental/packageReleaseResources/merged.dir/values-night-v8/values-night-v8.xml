@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources xmlns:ns1="http://schemas.android.com/tools">
+    <style name="Theme.JateList" parent="Theme.MaterialComponents.DayNight.NoActionBar">
+        <!-- Primary brand color. -->
+        <item name="colorPrimary">#445563</item>
+        <item name="colorPrimaryVariant">#2B4153</item>
+        <item name="colorOnPrimary">#122535</item>
+        <!-- Secondary brand color. -->
+        <item name="colorSecondary">#1A1F23</item>
+        <item name="colorSecondaryVariant">#2F3C47</item>
+        <item name="colorOnSecondary">#3F474C</item>
+        <!-- Status bar color. -->
+        <item name="android:statusBarColor" ns1:targetApi="l">?attr/colorPrimaryVariant</item>
+        <!-- Customize your theme here. -->
+
+    </style>
+</resources>

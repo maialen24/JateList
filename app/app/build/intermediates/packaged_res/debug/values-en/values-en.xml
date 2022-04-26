@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="No">No</string>
+    <string name="about">About</string>
+    <string name="app_name">JateList</string>
+    <string name="backButton">Back</string>
+    <string name="cancel">Cancel</string>
+    <string name="comments">Comments</string>
+    <string name="crear">Create</string>
+    <string name="editButton">Edit</string>
+    <string name="español">Spanish</string>
+    <string name="euskera">Basque</string>
+    <string name="fotomssg">Load image</string>
+    <string name="infoText">Save your favorite restaurants or even those that you did not like. This application allows you to keep track of the restaurants you have tried. So the next time you\'re hungry you can\'t go wrong. Enjoy your food! :)</string>
+    <string name="ingles">English</string>
+    <string name="izena">Name</string>
+    <string name="language">Language</string>
+    <string name="login_mssg">Username or password incorrect</string>
+    <string name="map">Maoa</string>
+    <string name="marcar">Mark tlf</string>
+    <string name="mode">Night</string>
+    <string name="modeText">Theme</string>
+    <string name="msg_subscribe_failed">Suscribe error</string>
+    <string name="msg_subscribed">Succesfully suscribed</string>
+    <string name="msg_unsubscribe_failed">Unsuscribed error</string>
+    <string name="msg_unsubscribed">Unsuscribed correctly</string>
+    <string name="password">password</string>
+    <string name="permisos">Permissions</string>
+    <string name="phone">Phone: 123456789</string>
+    <string name="remove_mssg">Are you sure to delete the restaurant?</string>
+    <string name="salir">Exit</string>
+    <string name="saveButton">Save</string>
+    <string name="selectPhoto">Select from galery</string>
+    <string name="settings">Settings</string>
+    <string name="si">Yes</string>
+    <string name="takePhoto">Take photo</string>
+    <string name="toast">New restaurant added</string>
+    <string name="toastOut">Log out</string>
+    <string name="ubicacion">Location</string>
+    <string name="usercreate_mssg">User perfectly created :)</string>
+    <string name="username">username</string>
+    <string name="valoracion">Opinion</string>
+</resources>

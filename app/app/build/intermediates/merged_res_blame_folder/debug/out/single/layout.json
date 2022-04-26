@@ -1,0 +1,38 @@
+[
+    {
+        "merged": "C:\\Users\\maiar\\AndroidStudioProjects\\JateList\\app\\app\\build\\intermediates\\incremental\\mergeDebugResources\\stripped.dir\\layout\\dialog_sigin.xml",
+        "source": "C:\\Users\\maiar\\AndroidStudioProjects\\JateList\\app\\app\\src\\main\\res\\layout\\dialog_sigin.xml"
+    },
+    {
+        "merged": "C:\\Users\\maiar\\AndroidStudioProjects\\JateList\\app\\app\\build\\intermediates\\incremental\\mergeDebugResources\\stripped.dir\\layout\\settings_dialog.xml",
+        "source": "C:\\Users\\maiar\\AndroidStudioProjects\\JateList\\app\\app\\src\\main\\res\\layout\\settings_dialog.xml"
+    },
+    {
+        "merged": "C:\\Users\\maiar\\AndroidStudioProjects\\JateList\\app\\app\\build\\intermediates\\incremental\\mergeDebugResources\\stripped.dir\\layout\\activity_main.xml",
+        "source": "C:\\Users\\maiar\\AndroidStudioProjects\\JateList\\app\\app\\src\\main\\res\\layout\\activity_main.xml"
+    },
+    {
+        "merged": "C:\\Users\\maiar\\AndroidStudioProjects\\JateList\\app\\app\\build\\intermediates\\incremental\\mergeDebugResources\\stripped.dir\\layout\\proba.xml",
+        "source": "C:\\Users\\maiar\\AndroidStudioProjects\\JateList\\app\\app\\src\\main\\res\\layout\\proba.xml"
+    },
+    {
+        "merged": "C:\\Users\\maiar\\AndroidStudioProjects\\JateList\\app\\app\\build\\intermediates\\incremental\\mergeDebugResources\\stripped.dir\\layout\\activity_edit.xml",
+        "source": "C:\\Users\\maiar\\AndroidStudioProjects\\JateList\\app\\app\\src\\main\\res\\layout\\activity_edit.xml"
+    },
+    {
+        "merged": "C:\\Users\\maiar\\AndroidStudioProjects\\JateList\\app\\app\\build\\intermediates\\incremental\\mergeDebugResources\\stripped.dir\\layout\\activity_login.xml",
+        "source": "C:\\Users\\maiar\\AndroidStudioProjects\\JateList\\app\\app\\src\\main\\res\\layout\\activity_login.xml"
+    },
+    {
+        "merged": "C:\\Users\\maiar\\AndroidStudioProjects\\JateList\\app\\app\\build\\intermediates\\incremental\\mergeDebugResources\\stripped.dir\\layout\\info_dialog.xml",
+        "source": "C:\\Users\\maiar\\AndroidStudioProjects\\JateList\\app\\app\\src\\main\\res\\layout\\info_dialog.xml"
+    },
+    {
+        "merged": "C:\\Users\\maiar\\AndroidStudioProjects\\JateList\\app\\app\\build\\intermediates\\incremental\\mergeDebugResources\\stripped.dir\\layout\\item_jatetxea.xml",
+        "source": "C:\\Users\\maiar\\AndroidStudioProjects\\JateList\\app\\app\\src\\main\\res\\layout\\item_jatetxea.xml"
+    },
+    {
+        "merged": "C:\\Users\\maiar\\AndroidStudioProjects\\JateList\\app\\app\\build\\intermediates\\incremental\\mergeDebugResources\\stripped.dir\\layout\\item_jatetxeinfo.xml",
+        "source": "C:\\Users\\maiar\\AndroidStudioProjects\\JateList\\app\\app\\src\\main\\res\\layout\\item_jatetxeinfo.xml"
+    }
+]

@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources xmlns:ns1="http://schemas.android.com/tools">
+    <color name="black">#FF000000</color>
+    <color name="erase_background">#3DDC84</color>
+    <color name="purple_200">#FFBB86FC</color>
+    <color name="purple_500">#FF6200EE</color>
+    <color name="purple_700">#FF3700B3</color>
+    <color name="teal_200">#FF03DAC5</color>
+    <color name="teal_700">#FF018786</color>
+    <color name="white">#FFFFFFFF</color>
+    <string name="No">No</string>
+    <string name="about">Info</string>
+    <string name="app_name">JateList</string>
+    <string name="backButton">Atras</string>
+    <string name="cancel">Cancelar</string>
+    <string name="comments">Comentarios</string>
+    <string name="crear">Crear</string>
+    <string name="editButton">Editar</string>
+    <string name="español">Castellano</string>
+    <string name="euskera">Euskera</string>
+    <string name="infoText">JateList es una aplicación creada para poder guardar tus restaurantes favoritos o incluso los que no lo son tanto. Te permite guardar un registro de los restaurantes que has estado con su informacion y tu valoracion. Así te será mas facil elegir y disfrutarás de tu comida como nunca! :)</string>
+    <string name="ingles">Inglés</string>
+    <string name="izena">Nombre</string>
+    <string name="language">Idioma</string>
+    <string name="login_mssg">Usuario o contraseña incorrectos</string>
+    <string name="map">Mapa</string>
+    <string name="marcar">Marcar tlf</string>
+    <string name="mode">Noche</string>
+    <string name="modeText">Modo</string>
+    <string name="password">contraseña</string>
+    <string name="permisos">Permisos</string>
+    <string name="phone">Teléfono: 123456789</string>
+    <string name="remove_mssg">¿Estas seguro que deseas eliminar este restaurante?</string>
+    <string name="salir">Salir</string>
+    <string name="saveButton">Guardar</string>
+    <string name="settings">Configuración</string>
+    <string name="si">Si</string>
+    <string name="toast">Nuevo restaurante añadido</string>
+    <string name="toastOut">Desconectado</string>
+    <string name="ubicacion">Ubicacion</string>
+    <string name="usercreate_mssg">Usuario creado correctamente :)</string>
+    <string name="username">usuario</string>
+    <string name="valoracion">Valoracion</string>
+    <style name="Theme.JateList" parent="Theme.MaterialComponents.DayNight.NoActionBar">
+        <!-- Primary brand color. -->
+        <item name="colorPrimary">#9A8DAF</item>
+        <item name="colorPrimaryVariant">#4F435E</item>
+        <item name="colorOnPrimary">#E1DFE4</item>
+        <!-- Secondary brand color. -->
+        <item name="colorSecondary">#D8D2A1</item>
+        <item name="colorSecondaryVariant">#CDC363</item>
+        <item name="colorOnSecondary">#171917</item>
+        <!-- Status bar color. -->
+        <item name="android:statusBarColor" ns1:targetApi="l">?attr/colorPrimaryVariant</item>
+        <!-- Customize your theme here. -->
+
+    </style>
+</resources>

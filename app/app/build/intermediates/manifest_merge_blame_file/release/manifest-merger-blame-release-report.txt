@@ -1,0 +1,138 @@
+1<?xml version="1.0" encoding="utf-8"?>
+2<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+3    package="com.example.jatelist"
+4    android:versionCode="1"
+5    android:versionName="1.0" >
+6
+7    <uses-sdk
+8        android:minSdkVersion="28"
+8-->C:\Users\maiar\AndroidStudioProjects\JateList\app\app\src\main\AndroidManifest.xml
+9        android:targetSdkVersion="32" />
+9-->C:\Users\maiar\AndroidStudioProjects\JateList\app\app\src\main\AndroidManifest.xml
+10
+11    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+11-->C:\Users\maiar\AndroidStudioProjects\JateList\app\app\src\main\AndroidManifest.xml:5:5-81
+11-->C:\Users\maiar\AndroidStudioProjects\JateList\app\app\src\main\AndroidManifest.xml:5:22-78
+12    <uses-permission android:name="android.permission.INTERNET" />
+12-->C:\Users\maiar\AndroidStudioProjects\JateList\app\app\src\main\AndroidManifest.xml:6:5-66
+12-->C:\Users\maiar\AndroidStudioProjects\JateList\app\app\src\main\AndroidManifest.xml:6:22-64
+13
+14    <!-- Include required permissions for Google Maps API to run. -->
+15    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+15-->[com.google.android.gms:play-services-maps:18.0.2] C:\Users\maiar\.gradle\caches\transforms-3\9ef2828fd45f65aeffb0dfed6b2c96a8\transformed\play-services-maps-18.0.2\AndroidManifest.xml:23:5-79
+15-->[com.google.android.gms:play-services-maps:18.0.2] C:\Users\maiar\.gradle\caches\transforms-3\9ef2828fd45f65aeffb0dfed6b2c96a8\transformed\play-services-maps-18.0.2\AndroidManifest.xml:23:22-76
+16
+17    <uses-feature
+17-->[com.google.android.gms:play-services-maps:18.0.2] C:\Users\maiar\.gradle\caches\transforms-3\9ef2828fd45f65aeffb0dfed6b2c96a8\transformed\play-services-maps-18.0.2\AndroidManifest.xml:26:5-28:35
+18        android:glEsVersion="0x00020000"
+18-->[com.google.android.gms:play-services-maps:18.0.2] C:\Users\maiar\.gradle\caches\transforms-3\9ef2828fd45f65aeffb0dfed6b2c96a8\transformed\play-services-maps-18.0.2\AndroidManifest.xml:27:9-41
+19        android:required="true" />
+19-->[com.google.android.gms:play-services-maps:18.0.2] C:\Users\maiar\.gradle\caches\transforms-3\9ef2828fd45f65aeffb0dfed6b2c96a8\transformed\play-services-maps-18.0.2\AndroidManifest.xml:28:9-32
+20
+21    <queries>
+21-->[com.google.android.gms:play-services-maps:18.0.2] C:\Users\maiar\.gradle\caches\transforms-3\9ef2828fd45f65aeffb0dfed6b2c96a8\transformed\play-services-maps-18.0.2\AndroidManifest.xml:30:5-34:15
+22
+23        <!-- Needs to be explicitly declared on Android R+ -->
+24        <package android:name="com.google.android.apps.maps" />
+24-->[com.google.android.gms:play-services-maps:18.0.2] C:\Users\maiar\.gradle\caches\transforms-3\9ef2828fd45f65aeffb0dfed6b2c96a8\transformed\play-services-maps-18.0.2\AndroidManifest.xml:33:9-64
+24-->[com.google.android.gms:play-services-maps:18.0.2] C:\Users\maiar\.gradle\caches\transforms-3\9ef2828fd45f65aeffb0dfed6b2c96a8\transformed\play-services-maps-18.0.2\AndroidManifest.xml:33:18-61
+25    </queries>
+26
+27    <application
+27-->C:\Users\maiar\AndroidStudioProjects\JateList\app\app\src\main\AndroidManifest.xml:8:5-46:19
+28        android:allowBackup="true"
+28-->C:\Users\maiar\AndroidStudioProjects\JateList\app\app\src\main\AndroidManifest.xml:9:9-35
+29        android:appComponentFactory="androidx.core.app.CoreComponentFactory"
+29-->[androidx.core:core:1.7.0] C:\Users\maiar\.gradle\caches\transforms-3\ad9a15aaa3bb8620f5d652029ce06ef4\transformed\core-1.7.0\AndroidManifest.xml:24:18-86
+30        android:extractNativeLibs="false"
+31        android:icon="@mipmap/ic_launcher"
+31-->C:\Users\maiar\AndroidStudioProjects\JateList\app\app\src\main\AndroidManifest.xml:10:9-43
+32        android:label="@string/app_name"
+32-->C:\Users\maiar\AndroidStudioProjects\JateList\app\app\src\main\AndroidManifest.xml:11:9-41
+33        android:roundIcon="@mipmap/ic_launcher_round"
+33-->C:\Users\maiar\AndroidStudioProjects\JateList\app\app\src\main\AndroidManifest.xml:12:9-54
+34        android:supportsRtl="true"
+34-->C:\Users\maiar\AndroidStudioProjects\JateList\app\app\src\main\AndroidManifest.xml:13:9-35
+35        android:theme="@style/Theme.JateList" >
+35-->C:\Users\maiar\AndroidStudioProjects\JateList\app\app\src\main\AndroidManifest.xml:14:9-46
+36        <uses-library
+36-->C:\Users\maiar\AndroidStudioProjects\JateList\app\app\src\main\AndroidManifest.xml:16:9-18:40
+37            android:name="org.apache.http.legacy"
+37-->C:\Users\maiar\AndroidStudioProjects\JateList\app\app\src\main\AndroidManifest.xml:17:13-50
+38            android:required="false" />
+38-->C:\Users\maiar\AndroidStudioProjects\JateList\app\app\src\main\AndroidManifest.xml:18:13-37
+39
+40        <meta-data
+40-->C:\Users\maiar\AndroidStudioProjects\JateList\app\app\src\main\AndroidManifest.xml:21:9-23:69
+41            android:name="com.google.android.gms.version"
+41-->C:\Users\maiar\AndroidStudioProjects\JateList\app\app\src\main\AndroidManifest.xml:22:13-58
+42            android:value="@integer/google_play_services_version" />
+42-->C:\Users\maiar\AndroidStudioProjects\JateList\app\app\src\main\AndroidManifest.xml:23:13-66
+43        <meta-data
+44            android:name="com.google.android.geo.API_KEY"
+44-->C:\Users\maiar\AndroidStudioProjects\JateList\app\app\src\main\AndroidManifest.xml:26:13-58
+45            android:value="AIzaSyD6aFW-lFMYhxHMgrOGupHVK7axlQzgeW8" />
+45-->C:\Users\maiar\AndroidStudioProjects\JateList\app\app\src\main\AndroidManifest.xml:27:13-44
+46
+47        <activity
+47-->C:\Users\maiar\AndroidStudioProjects\JateList\app\app\src\main\AndroidManifest.xml:29:9-31:40
+48            android:name="com.example.jatelist.EditActivity"
+48-->C:\Users\maiar\AndroidStudioProjects\JateList\app\app\src\main\AndroidManifest.xml:30:13-41
+49            android:exported="false" />
+49-->C:\Users\maiar\AndroidStudioProjects\JateList\app\app\src\main\AndroidManifest.xml:31:13-37
+50        <activity
+50-->C:\Users\maiar\AndroidStudioProjects\JateList\app\app\src\main\AndroidManifest.xml:32:9-34:40
+51            android:name="com.example.jatelist.MainActivity"
+51-->C:\Users\maiar\AndroidStudioProjects\JateList\app\app\src\main\AndroidManifest.xml:33:13-41
+52            android:exported="false" />
+52-->C:\Users\maiar\AndroidStudioProjects\JateList\app\app\src\main\AndroidManifest.xml:34:13-37
+53        <activity
+53-->C:\Users\maiar\AndroidStudioProjects\JateList\app\app\src\main\AndroidManifest.xml:35:9-43:20
+54            android:name="com.example.jatelist.login"
+54-->C:\Users\maiar\AndroidStudioProjects\JateList\app\app\src\main\AndroidManifest.xml:36:13-34
+55            android:exported="true" >
+55-->C:\Users\maiar\AndroidStudioProjects\JateList\app\app\src\main\AndroidManifest.xml:37:13-36
+56            <intent-filter>
+56-->C:\Users\maiar\AndroidStudioProjects\JateList\app\app\src\main\AndroidManifest.xml:38:13-42:29
+57                <action android:name="android.intent.action.MAIN" />
+57-->C:\Users\maiar\AndroidStudioProjects\JateList\app\app\src\main\AndroidManifest.xml:39:17-69
+57-->C:\Users\maiar\AndroidStudioProjects\JateList\app\app\src\main\AndroidManifest.xml:39:25-66
+58
+59                <category android:name="android.intent.category.LAUNCHER" />
+59-->C:\Users\maiar\AndroidStudioProjects\JateList\app\app\src\main\AndroidManifest.xml:41:17-77
+59-->C:\Users\maiar\AndroidStudioProjects\JateList\app\app\src\main\AndroidManifest.xml:41:27-74
+60            </intent-filter>
+61        </activity>
+62        <activity
+62-->[com.google.android.gms:play-services-base:18.0.1] C:\Users\maiar\.gradle\caches\transforms-3\db9db3f2acfda1780d504f72968089da\transformed\play-services-base-18.0.1\AndroidManifest.xml:20:9-22:45
+63            android:name="com.google.android.gms.common.api.GoogleApiActivity"
+63-->[com.google.android.gms:play-services-base:18.0.1] C:\Users\maiar\.gradle\caches\transforms-3\db9db3f2acfda1780d504f72968089da\transformed\play-services-base-18.0.1\AndroidManifest.xml:20:19-85
+64            android:exported="false"
+64-->[com.google.android.gms:play-services-base:18.0.1] C:\Users\maiar\.gradle\caches\transforms-3\db9db3f2acfda1780d504f72968089da\transformed\play-services-base-18.0.1\AndroidManifest.xml:22:19-43
+65            android:theme="@android:style/Theme.Translucent.NoTitleBar" />
+65-->[com.google.android.gms:play-services-base:18.0.1] C:\Users\maiar\.gradle\caches\transforms-3\db9db3f2acfda1780d504f72968089da\transformed\play-services-base-18.0.1\AndroidManifest.xml:21:19-78
+66
+67        <provider
+67-->[androidx.emoji2:emoji2:1.0.0] C:\Users\maiar\.gradle\caches\transforms-3\f85febffdabb059c94764b3fc52e96fb\transformed\emoji2-1.0.0\AndroidManifest.xml:26:9-34:20
+68            android:name="androidx.startup.InitializationProvider"
+68-->[androidx.emoji2:emoji2:1.0.0] C:\Users\maiar\.gradle\caches\transforms-3\f85febffdabb059c94764b3fc52e96fb\transformed\emoji2-1.0.0\AndroidManifest.xml:27:13-67
+69            android:authorities="com.example.jatelist.androidx-startup"
+69-->[androidx.emoji2:emoji2:1.0.0] C:\Users\maiar\.gradle\caches\transforms-3\f85febffdabb059c94764b3fc52e96fb\transformed\emoji2-1.0.0\AndroidManifest.xml:28:13-68
+70            android:exported="false" >
+70-->[androidx.emoji2:emoji2:1.0.0] C:\Users\maiar\.gradle\caches\transforms-3\f85febffdabb059c94764b3fc52e96fb\transformed\emoji2-1.0.0\AndroidManifest.xml:29:13-37
+71            <meta-data
+71-->[androidx.emoji2:emoji2:1.0.0] C:\Users\maiar\.gradle\caches\transforms-3\f85febffdabb059c94764b3fc52e96fb\transformed\emoji2-1.0.0\AndroidManifest.xml:31:13-33:52
+72                android:name="androidx.emoji2.text.EmojiCompatInitializer"
+72-->[androidx.emoji2:emoji2:1.0.0] C:\Users\maiar\.gradle\caches\transforms-3\f85febffdabb059c94764b3fc52e96fb\transformed\emoji2-1.0.0\AndroidManifest.xml:32:17-75
+73                android:value="androidx.startup" />
+73-->[androidx.emoji2:emoji2:1.0.0] C:\Users\maiar\.gradle\caches\transforms-3\f85febffdabb059c94764b3fc52e96fb\transformed\emoji2-1.0.0\AndroidManifest.xml:33:17-49
+74            <meta-data
+74-->[androidx.lifecycle:lifecycle-process:2.4.0] C:\Users\maiar\.gradle\caches\transforms-3\62690f2417248fdf8f62c03c5126c847\transformed\lifecycle-process-2.4.0\AndroidManifest.xml:31:13-33:52
+75                android:name="androidx.lifecycle.ProcessLifecycleInitializer"
+75-->[androidx.lifecycle:lifecycle-process:2.4.0] C:\Users\maiar\.gradle\caches\transforms-3\62690f2417248fdf8f62c03c5126c847\transformed\lifecycle-process-2.4.0\AndroidManifest.xml:32:17-78
+76                android:value="androidx.startup" />
+76-->[androidx.lifecycle:lifecycle-process:2.4.0] C:\Users\maiar\.gradle\caches\transforms-3\62690f2417248fdf8f62c03c5126c847\transformed\lifecycle-process-2.4.0\AndroidManifest.xml:33:17-49
+77        </provider>
+78    </application>
+79
+80</manifest>

@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="No">Ez</string>
+    <string name="about">Info</string>
+    <string name="app_name">JateList</string>
+    <string name="backButton">Atzera</string>
+    <string name="cancel">Ezeztatu</string>
+    <string name="comments">Iruzkinak</string>
+    <string name="crear">Sortu</string>
+    <string name="editButton">Editatu</string>
+    <string name="español">Erdera</string>
+    <string name="euskera">Euskera</string>
+    <string name="fotomssg">Argazkia gehitu</string>
+    <string name="infoText">JateList jatetxe erregistro bat gordetzen ahalbidetzen dizun aplikazioa da. Jatetxearen informazioarekin batera, zure iritzia gorde dezakezu. JateList zure erabakia errazteko asmoz jaio da. On egin! :)</string>
+    <string name="ingles">Ingelesa</string>
+    <string name="izena">Izena</string>
+    <string name="language">Hizkuntza</string>
+    <string name="login_mssg">Erabiltzaile edo pasahitza okerrak</string>
+    <string name="map">Mapa</string>
+    <string name="marcar">Markatu tlf</string>
+    <string name="mode">Gaua</string>
+    <string name="modeText">Itxura</string>
+    <string name="msg_subscribe_failed">Harpidetza errorea</string>
+    <string name="msg_subscribed">Harpidetuta</string>
+    <string name="msg_unsubscribe_failed">Arazoa harpidetza kentzen</string>
+    <string name="msg_unsubscribed">Harpidetza kendu da</string>
+    <string name="password">pasahitza</string>
+    <string name="permisos">Baimenak</string>
+    <string name="phone">Telefonoa: 123456789</string>
+    <string name="remove_mssg">Ziur zauda jatetxea ezabatu nahi duzula?</string>
+    <string name="salir">Atera</string>
+    <string name="saveButton">Gorde</string>
+    <string name="selectPhoto">Galeriatik hartu</string>
+    <string name="settings">Ezarpenak</string>
+    <string name="si">Bai</string>
+    <string name="takePhoto">Argazkia atera</string>
+    <string name="toast">Jatetxe berri bat gehitu da</string>
+    <string name="toastOut">Deskonektatuta</string>
+    <string name="ubicacion">Localizazioa</string>
+    <string name="usercreate_mssg">Erabiltzailea sortu da :)</string>
+    <string name="username">Erabiltzailea</string>
+    <string name="valoracion">Iritzia</string>
+</resources>
