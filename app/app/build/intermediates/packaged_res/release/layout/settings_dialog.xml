@@ -6,6 +6,7 @@
     android:layout_height="wrap_content">
 
     <LinearLayout
+        android:id="@+id/linearLayout"
         android:layout_width="235dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="81dp"
@@ -31,42 +32,33 @@
             android:minHeight="48dp"
             android:text="@string/mode" />
 
-        <RadioGroup
-            android:id="@+id/radioGroup"
+        <TextView
+            android:id="@+id/notifications"
             android:layout_width="match_parent"
-            android:layout_height="178dp">
+            android:layout_height="wrap_content"
+            android:text="Notifications" />
 
-            <TextView
-                android:id="@+id/languageT"
-                android:layout_width="match_parent"
-                android:layout_height="31dp"
-                android:text="@string/language" />
+        <CheckBox
+            android:id="@+id/notiRestaurant"
+            android:layout_width="match_parent"
+            android:layout_height="61dp"
+            android:text="New restaurants" />
 
-            <RadioButton
-                android:id="@+id/eu"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="Euskera" />
+        <CheckBox
+            android:id="@+id/notiRecordatorio"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Recordatorio" /><![CDATA[
 
-            <RadioButton
-                android:id="@+id/en"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="Ingles" />
 
-            <RadioButton
-                android:id="@+id/es"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="Castellano" />
-        </RadioGroup>
-        <![CDATA[
 
         Switch
             android:id="@+id/callpermiso"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="@string/marcar" />
+
     ]]>
     </LinearLayout>
+
 </androidx.constraintlayout.widget.ConstraintLayout>

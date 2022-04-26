@@ -55,6 +55,7 @@
     <string name="common_signin_button_text_long">Googleతో సైన్ ఇన్ చేయి</string>
     <string name="error_icon_content_description">ఎర్రర్</string>
     <string name="exposed_dropdown_menu_content_description">డ్రాప్‌డౌన్ మెనూను చూపు</string>
+    <string msgid="4133737464567140336" name="fcm_fallback_notification_channel_label">"ఇతరాలు"</string>
     <string name="icon_content_description">డైలాగ్ చిహ్నం</string>
     <string name="item_view_role_description">ట్యాబ్</string>
     <string name="material_clock_toggle_content_description">AM లేదా PMను ఎంచుకోండి</string>

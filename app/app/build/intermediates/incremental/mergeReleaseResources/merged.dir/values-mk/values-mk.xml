@@ -55,6 +55,7 @@
     <string name="common_signin_button_text_long">Најави се со Google</string>
     <string name="error_icon_content_description">Грешка</string>
     <string name="exposed_dropdown_menu_content_description">Прикажи паѓачко мени</string>
+    <string msgid="4133737464567140336" name="fcm_fallback_notification_channel_label">"Разно"</string>
     <string name="icon_content_description">Икона за дијалог</string>
     <string name="item_view_role_description">Картичка</string>
     <string name="material_clock_toggle_content_description">Изберете претпладне или попладне</string>

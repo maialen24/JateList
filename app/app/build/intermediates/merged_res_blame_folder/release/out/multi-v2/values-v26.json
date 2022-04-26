@@ -4,7 +4,7 @@
             "outputFile": "C:\\Users\\maiar\\AndroidStudioProjects\\JateList\\app\\app\\build\\intermediates\\incremental\\mergeReleaseResources\\merged.dir\\values-v26\\values-v26.xml",
             "map": [
                 {
-                    "source": "C:\\Users\\maiar\\.gradle\\caches\\transforms-3\\296500a08abebf0ce7d4ff07d41dff75\\transformed\\appcompat-1.4.1\\res\\values-v26\\values-v26.xml",
+                    "source": "C:\\Users\\maiar\\.gradle\\caches\\transforms-3\\82f90a9af39b9c2a00a7e8cd9570ec89\\transformed\\appcompat-1.4.1\\res\\values-v26\\values-v26.xml",
                     "from": {
                         "startLines": "2,3,4,8,12,16",
                         "startColumns": "4,4,4,4,4,4",

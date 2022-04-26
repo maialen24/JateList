@@ -555,6 +555,9 @@
     </attr>
     <bool name="abc_action_bar_embed_tabs">true</bool>
     <bool name="abc_config_actionMenuItemAllCaps">true</bool>
+    <bool name="enable_system_alarm_service_default">true</bool>
+    <bool name="enable_system_foreground_service_default">true</bool>
+    <bool name="enable_system_job_service_default">false</bool>
     <bool name="m3_sys_typescale_body_large_text_all_caps">false</bool>
     <bool name="m3_sys_typescale_body_medium_text_all_caps">false</bool>
     <bool name="m3_sys_typescale_body_small_text_all_caps">false</bool>
@@ -571,6 +574,7 @@
     <bool name="m3_sys_typescale_title_medium_text_all_caps">false</bool>
     <bool name="m3_sys_typescale_title_small_text_all_caps">false</bool>
     <bool name="mtrl_btn_textappearance_all_caps">true</bool>
+    <bool name="workmanager_test_configuration">false</bool>
     <color name="abc_decor_view_status_guard">#ff000000</color>
     <color name="abc_decor_view_status_guard_light">#ffffffff</color>
     <color name="abc_search_url_text_normal">#7fa87f</color>
@@ -651,6 +655,10 @@
     <color name="foreground_material_light">@android:color/black</color>
     <color name="highlighted_text_material_dark">#6680cbc4</color>
     <color name="highlighted_text_material_light">#66009688</color>
+    <color name="light_blue_200">#FF81D4FA</color>
+    <color name="light_blue_50">#FFE1F5FE</color>
+    <color name="light_blue_600">#FF039BE5</color>
+    <color name="light_blue_900">#FF01579B</color>
     <color name="m3_ref_palette_error0">#ff000000</color>
     <color name="m3_ref_palette_error10">#ff410e0b</color>
     <color name="m3_ref_palette_error100">#ffffffff</color>
@@ -1413,6 +1421,7 @@
     <dimen name="tooltip_vertical_padding">6.5dp</dimen>
     <dimen name="tooltip_y_offset_non_touch">0dp</dimen>
     <dimen name="tooltip_y_offset_touch">16dp</dimen>
+    <dimen name="widget_margin">0dp</dimen>
     <item name="material_ic_keyboard_arrow_next_black_24dp" type="drawable">@drawable/material_ic_keyboard_arrow_right_black_24dp</item>
     <item name="material_ic_keyboard_arrow_previous_black_24dp" type="drawable">@drawable/material_ic_keyboard_arrow_left_black_24dp</item>
     <drawable name="notification_template_icon_bg">#3333B5E5</drawable>
@@ -1634,6 +1643,7 @@
     <string name="common_signin_button_text">Sign in</string>
     <string name="common_signin_button_text_long">Sign in with Google</string>
     <string name="crear">Crear</string>
+    <string name="default_web_client_id" translatable="false">881242448804-q3h47fob4tkgohlr81gjki4t8391mfn8.apps.googleusercontent.com</string>
     <string name="editButton">Editar</string>
     <string name="error_icon_content_description">Error</string>
     <string name="español">Castellano</string>
@@ -1641,6 +1651,13 @@
     <string name="exposed_dropdown_menu_content_description">Show dropdown menu</string>
     <string name="fab_transformation_scrim_behavior" translatable="false">com.google.android.material.transformation.FabTransformationScrimBehavior</string>
     <string name="fab_transformation_sheet_behavior" translatable="false">com.google.android.material.transformation.FabTransformationSheetBehavior</string>
+    <string name="fcm_fallback_notification_channel_label">Miscellaneous</string>
+    <string name="fotomssg">Cargar imagen</string>
+    <string name="gcm_defaultSenderId" translatable="false">881242448804</string>
+    <string name="google_api_key" translatable="false">AIzaSyDqWX5cXDlTCsoVo-DZVTxP3ya7QCXU-y8</string>
+    <string name="google_app_id" translatable="false">1:881242448804:android:df91c48a19dfe0fe309731</string>
+    <string name="google_crash_reporting_api_key" translatable="false">AIzaSyDqWX5cXDlTCsoVo-DZVTxP3ya7QCXU-y8</string>
+    <string name="google_storage_bucket" translatable="false">jatelist-6a7e4.appspot.com</string>
     <string name="hide_bottom_view_on_scroll_behavior" translatable="false">com.google.android.material.behavior.HideBottomViewOnScrollBehavior</string>
     <string description="Content description for an icon that appears in the title area of a dialog" name="icon_content_description">Dialog Icon</string>
     <string name="infoText">JateList es una aplicación creada para poder guardar tus restaurantes favoritos o incluso los que no lo son tanto. Te permite guardar un registro de los restaurantes que has estado con su informacion y tu valoracion. Así te será mas facil elegir y disfrutarás de tu comida como nunca! :)</string>
@@ -1698,6 +1715,10 @@
     <string name="material_timepicker_text_input_mode_description">Switch to text input mode for the time input.</string>
     <string name="mode">Noche</string>
     <string name="modeText">Modo</string>
+    <string name="msg_subscribe_failed">Error suscripcion</string>
+    <string name="msg_subscribed">Te has suscrito a novedades</string>
+    <string name="msg_unsubscribe_failed">Desubscripcion fallida</string>
+    <string name="msg_unsubscribed">Desubscrito de novedades</string>
     <string description="Content description for new notification (no number count) [CHAR_LIMIT=NONE]" name="mtrl_badge_numberless_content_description">New notification</string>
     <string description="Content description for a close icon that lets the user remove content from the screen" name="mtrl_chip_close_icon_content_description">Remove %1$s</string>
     <string description="Plural form content description for when the number of new notifications exceeds a maximum count[CHAR_LIMIT=NONE]" name="mtrl_exceed_max_badge_number_content_description" ns1:ignore="PluralsCandidate">More than <ns2:g example="999" id="maximum number">%1$d</ns2:g> new notifications</string>
@@ -1742,13 +1763,16 @@
     <string name="path_password_strike_through" translatable="false">M3.27,4.27 L19.74,20.74</string>
     <string name="permisos">Permisos</string>
     <string name="phone">Teléfono: 123456789</string>
+    <string name="project_id" translatable="false">jatelist-6a7e4</string>
     <string name="remove_mssg">¿Estas seguro que deseas eliminar este restaurante?</string>
     <string name="salir">Salir</string>
     <string name="saveButton">Guardar</string>
     <string name="search_menu_title">Search</string>
+    <string name="selectPhoto">Seleccionar desde galeria</string>
     <string name="settings">Configuración</string>
     <string name="si">Si</string>
     <string name="status_bar_notification_info_overflow">999+</string>
+    <string name="takePhoto" translatable="false">Sacar foto</string>
     <string name="toast">Nuevo restaurante añadido</string>
     <string name="toastOut">Desconectado</string>
     <string name="ubicacion">Ubicacion</string>
@@ -5612,6 +5636,19 @@
         <!-- Customize your theme here. -->
 
     </style>
+    <style name="Theme.JateList.AppWidgetContainer" parent="Theme.JateList.AppWidgetContainerParent">
+        <!-- Apply padding to avoid the content of the widget colliding with the rounded corners -->
+        <item name="appWidgetPadding">16dp</item>
+    </style>
+    <style name="Theme.JateList.AppWidgetContainerParent" parent="@android:style/Theme.DeviceDefault">
+        <!-- Radius of the outer bound of widgets to make the rounded corners -->
+        <item name="appWidgetRadius">16dp</item>
+        <!--
+        Radius of the inner view's bound of widgets to make the rounded corners.
+        It needs to be 8dp or less than the value of appWidgetRadius
+        -->
+        <item name="appWidgetInnerRadius">8dp</item>
+    </style>
     <style name="Theme.Material3.Dark" parent="Base.Theme.Material3.Dark"/>
     <style name="Theme.Material3.Dark.BottomSheetDialog" parent="Base.Theme.Material3.Dark.BottomSheetDialog"/>
     <style name="Theme.Material3.Dark.Dialog" parent="Base.Theme.Material3.Dark.Dialog"/>
@@ -6387,6 +6424,14 @@
     <item name="shapeAppearance">@null</item>
     <item name="shapeAppearanceOverlay">@null</item>
   </style>
+    <style name="Widget.JateList.AppWidget.Container" parent="android:Widget">
+        <item name="android:id">@android:id/background</item>
+        <item name="android:background">?android:attr/colorBackground</item>
+    </style>
+    <style name="Widget.JateList.AppWidget.InnerView" parent="android:Widget">
+        <item name="android:background">?android:attr/colorBackground</item>
+        <item name="android:textColor">?android:attr/textColorPrimary</item>
+    </style>
     <style name="Widget.Material3.ActionBar.Solid" parent="Base.Widget.Material3.ActionBar.Solid"/>
     <style name="Widget.Material3.ActionMode" parent="Base.Widget.Material3.ActionMode"/>
     <style name="Widget.Material3.AppBarLayout" parent="Widget.MaterialComponents.AppBarLayout.Surface">
@@ -8733,6 +8778,11 @@
         <!-- Animated Drawable to use for multiple choice indicators. -->
         <attr format="reference" name="listChoiceIndicatorMultipleAnimated"/>
 
+    </declare-styleable>
+    <declare-styleable name="AppWidgetAttrs">
+        <attr format="dimension" name="appWidgetPadding"/>
+        <attr format="dimension" name="appWidgetInnerRadius"/>
+        <attr format="dimension" name="appWidgetRadius"/>
     </declare-styleable>
     <declare-styleable name="Badge">
     <!-- The radius of a badge without text (a "dot"). -->

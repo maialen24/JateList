@@ -115,6 +115,9 @@ attr animateCircleAngleTo
 attr animateRelativeTo
 attr animationMode
 attr appBarLayoutStyle
+attr appWidgetInnerRadius
+attr appWidgetPadding
+attr appWidgetRadius
 attr applyMotionScene
 attr arcMode
 attr arrowHeadLength
@@ -1193,6 +1196,9 @@ attr yearTodayStyle
 attr zOrderOnTop
 bool abc_action_bar_embed_tabs
 bool abc_config_actionMenuItemAllCaps
+bool enable_system_alarm_service_default
+bool enable_system_foreground_service_default
+bool enable_system_job_service_default
 bool m3_sys_typescale_body_large_text_all_caps
 bool m3_sys_typescale_body_medium_text_all_caps
 bool m3_sys_typescale_body_small_text_all_caps
@@ -1209,6 +1215,7 @@ bool m3_sys_typescale_title_large_text_all_caps
 bool m3_sys_typescale_title_medium_text_all_caps
 bool m3_sys_typescale_title_small_text_all_caps
 bool mtrl_btn_textappearance_all_caps
+bool workmanager_test_configuration
 color abc_background_cache_hint_selector_material_dark
 color abc_background_cache_hint_selector_material_light
 color abc_btn_colored_borderless_text_material
@@ -1316,6 +1323,10 @@ color foreground_material_dark
 color foreground_material_light
 color highlighted_text_material_dark
 color highlighted_text_material_light
+color light_blue_200
+color light_blue_50
+color light_blue_600
+color light_blue_900
 color m3_appbar_overlay_color
 color m3_assist_chip_icon_tint_color
 color m3_assist_chip_stroke_color
@@ -2399,6 +2410,7 @@ dimen tooltip_precise_anchor_threshold
 dimen tooltip_vertical_padding
 dimen tooltip_y_offset_non_touch
 dimen tooltip_y_offset_touch
+dimen widget_margin
 drawable abc_ab_share_pack_mtrl_alpha
 drawable abc_action_bar_item_background_material
 drawable abc_btn_borderless_material
@@ -2479,6 +2491,8 @@ drawable abc_textfield_search_default_mtrl_alpha
 drawable abc_textfield_search_material
 drawable abc_vector_test
 drawable add_background
+drawable app_widget_background
+drawable app_widget_inner_view_background
 drawable avd_hide_password
 drawable avd_show_password
 drawable btn_checkbox_checked_mtrl
@@ -2513,6 +2527,7 @@ drawable design_ic_visibility
 drawable design_ic_visibility_off
 drawable design_password_eye
 drawable design_snackbar_background
+drawable example_appwidget_preview
 drawable googleg_disabled_color_18
 drawable googleg_standard_color_18
 drawable header_logo
@@ -2759,14 +2774,11 @@ id east
 id editButton
 id edit_query
 id elastic
-id en
 id end
 id endToStart
 id enterAlways
 id enterAlwaysCollapsed
-id es
 id español
-id eu
 id euskera
 id exitButton
 id exitUntilCollapsed
@@ -2782,6 +2794,8 @@ id fixed
 id flip
 id floating
 id forever
+id foto
+id fotoButton
 id fragment_container_view_tag
 id frost
 id ghost_view
@@ -2808,6 +2822,7 @@ id ignore
 id ignoreRequest
 id image
 id imageView
+id imageView2
 id immediateStop
 id included
 id info
@@ -2824,7 +2839,6 @@ id izena
 id jumpToEnd
 id jumpToStart
 id labeled
-id languageT
 id layout
 id left
 id leftToRight
@@ -2833,6 +2847,7 @@ id light
 id line1
 id line3
 id linear
+id linearLayout
 id listMode
 id list_item
 id loginButton
@@ -2906,15 +2921,17 @@ id navigation_header_container
 id never
 id neverCompleteToEnd
 id neverCompleteToStart
-id nightMode
 id noScroll
 id noState
 id none
 id normal
 id north
+id notiRecordatorio
+id notiRestaurant
 id notification_background
 id notification_main_column
 id notification_main_column_container
+id notifications
 id off
 id on
 id onInterceptTouchReturnSwipe
@@ -2940,7 +2957,6 @@ id postLayout
 id progress_circular
 id progress_horizontal
 id radio
-id radioGroup
 id rating
 id ratio
 id rectangles
@@ -3017,6 +3033,7 @@ id stretch
 id submenuarrow
 id submit_area
 id supportScrollUp
+id tab
 id tabMode
 id tag_accessibility_actions
 id tag_accessibility_clickable_spans
@@ -3205,6 +3222,7 @@ layout design_text_input_start_icon
 layout dialog_sigin
 layout info_dialog
 layout item_jatetxea
+layout item_jatetxeinfo
 layout m3_alert_dialog
 layout m3_alert_dialog_actions
 layout m3_alert_dialog_title
@@ -3257,6 +3275,7 @@ layout notification_template_custom_big
 layout notification_template_icon_group
 layout notification_template_part_chronometer
 layout notification_template_part_time
+layout proba
 layout select_dialog_item_material
 layout select_dialog_multichoice_material
 layout select_dialog_singlechoice_material
@@ -3351,6 +3370,7 @@ string common_open_on_phone
 string common_signin_button_text
 string common_signin_button_text_long
 string crear
+string default_web_client_id
 string editButton
 string error_icon_content_description
 string español
@@ -3358,6 +3378,13 @@ string euskera
 string exposed_dropdown_menu_content_description
 string fab_transformation_scrim_behavior
 string fab_transformation_sheet_behavior
+string fcm_fallback_notification_channel_label
+string fotomssg
+string gcm_defaultSenderId
+string google_api_key
+string google_app_id
+string google_crash_reporting_api_key
+string google_storage_bucket
 string hide_bottom_view_on_scroll_behavior
 string icon_content_description
 string infoText
@@ -3415,6 +3442,10 @@ string material_timepicker_select_time
 string material_timepicker_text_input_mode_description
 string mode
 string modeText
+string msg_subscribe_failed
+string msg_subscribed
+string msg_unsubscribe_failed
+string msg_unsubscribed
 string mtrl_badge_numberless_content_description
 string mtrl_chip_close_icon_content_description
 string mtrl_exceed_max_badge_number_content_description
@@ -3459,13 +3490,16 @@ string path_password_eye_mask_visible
 string path_password_strike_through
 string permisos
 string phone
+string project_id
 string remove_mssg
 string salir
 string saveButton
 string search_menu_title
+string selectPhoto
 string settings
 string si
 string status_bar_notification_info_overflow
+string takePhoto
 string toast
 string toastOut
 string ubicacion
@@ -3973,6 +4007,8 @@ style Theme_Design_Light_BottomSheetDialog
 style Theme_Design_Light_NoActionBar
 style Theme_Design_NoActionBar
 style Theme_JateList
+style Theme_JateList_AppWidgetContainer
+style Theme_JateList_AppWidgetContainerParent
 style Theme_Material3_Dark
 style Theme_Material3_Dark_BottomSheetDialog
 style Theme_Material3_Dark_Dialog
@@ -4230,6 +4266,8 @@ style Widget_Design_Snackbar
 style Widget_Design_TabLayout
 style Widget_Design_TextInputEditText
 style Widget_Design_TextInputLayout
+style Widget_JateList_AppWidget_Container
+style Widget_JateList_AppWidget_InnerView
 style Widget_Material3_ActionBar_Solid
 style Widget_Material3_ActionMode
 style Widget_Material3_AppBarLayout
@@ -4510,6 +4548,7 @@ styleable AppCompatSeekBar android_thumb tickMark tickMarkTint tickMarkTintMode
 styleable AppCompatTextHelper android_textAppearance android_drawableTop android_drawableBottom android_drawableLeft android_drawableRight android_drawableStart android_drawableEnd
 styleable AppCompatTextView android_textAppearance autoSizeMaxTextSize autoSizeMinTextSize autoSizePresetSizes autoSizeStepGranularity autoSizeTextType drawableBottomCompat drawableEndCompat drawableLeftCompat drawableRightCompat drawableStartCompat drawableTint drawableTintMode drawableTopCompat emojiCompatEnabled firstBaselineToTopHeight fontFamily fontVariationSettings lastBaselineToBottomHeight lineHeight textAllCaps textLocale
 styleable AppCompatTheme android_windowIsFloating android_windowAnimationStyle actionBarDivider actionBarItemBackground actionBarPopupTheme actionBarSize actionBarSplitStyle actionBarStyle actionBarTabBarStyle actionBarTabStyle actionBarTabTextStyle actionBarTheme actionBarWidgetTheme actionButtonStyle actionDropDownStyle actionMenuTextAppearance actionMenuTextColor actionModeBackground actionModeCloseButtonStyle actionModeCloseContentDescription actionModeCloseDrawable actionModeCopyDrawable actionModeCutDrawable actionModeFindDrawable actionModePasteDrawable actionModePopupWindowStyle actionModeSelectAllDrawable actionModeShareDrawable actionModeSplitBackground actionModeStyle actionModeTheme actionModeWebSearchDrawable actionOverflowButtonStyle actionOverflowMenuStyle activityChooserViewStyle alertDialogButtonGroupStyle alertDialogCenterButtons alertDialogStyle alertDialogTheme autoCompleteTextViewStyle borderlessButtonStyle buttonBarButtonStyle buttonBarNegativeButtonStyle buttonBarNeutralButtonStyle buttonBarPositiveButtonStyle buttonBarStyle buttonStyle buttonStyleSmall checkboxStyle checkedTextViewStyle colorAccent colorBackgroundFloating colorButtonNormal colorControlActivated colorControlHighlight colorControlNormal colorError colorPrimary colorPrimaryDark colorSwitchThumbNormal controlBackground dialogCornerRadius dialogPreferredPadding dialogTheme dividerHorizontal dividerVertical dropDownListViewStyle dropdownListPreferredItemHeight editTextBackground editTextColor editTextStyle homeAsUpIndicator imageButtonStyle listChoiceBackgroundIndicator listChoiceIndicatorMultipleAnimated listChoiceIndicatorSingleAnimated listDividerAlertDialog listMenuViewStyle listPopupWindowStyle listPreferredItemHeight listPreferredItemHeightLarge listPreferredItemHeightSmall listPreferredItemPaddingEnd listPreferredItemPaddingLeft listPreferredItemPaddingRight listPreferredItemPaddingStart panelBackground panelMenuListTheme panelMenuListWidth popupMenuStyle popupWindowStyle radioButtonStyle ratingBarStyle ratingBarStyleIndicator ratingBarStyleSmall searchViewStyle seekBarStyle selectableItemBackground selectableItemBackgroundBorderless spinnerDropDownItemStyle spinnerStyle switchStyle textAppearanceLargePopupMenu textAppearanceListItem textAppearanceListItemSecondary textAppearanceListItemSmall textAppearancePopupMenuHeader textAppearanceSearchResultSubtitle textAppearanceSearchResultTitle textAppearanceSmallPopupMenu textColorAlertDialogListItem textColorSearchUrl toolbarNavigationButtonStyle toolbarStyle tooltipForegroundColor tooltipFrameBackground viewInflaterClass windowActionBar windowActionBarOverlay windowActionModeOverlay windowFixedHeightMajor windowFixedHeightMinor windowFixedWidthMajor windowFixedWidthMinor windowMinWidthMajor windowMinWidthMinor windowNoTitle
+styleable AppWidgetAttrs appWidgetInnerRadius appWidgetPadding appWidgetRadius
 styleable Badge backgroundColor badgeGravity badgeRadius badgeTextColor badgeWidePadding badgeWithTextRadius horizontalOffset horizontalOffsetWithText maxCharacterCount number verticalOffset verticalOffsetWithText
 styleable BaseProgressIndicator android_indeterminate hideAnimationBehavior indicatorColor minHideDelay showAnimationBehavior showDelay trackColor trackCornerRadius trackThickness
 styleable BottomAppBar backgroundTint elevation fabAlignmentMode fabAnimationMode fabCradleMargin fabCradleRoundedCornerRadius fabCradleVerticalOffset hideOnScroll navigationIconTint paddingBottomSystemWindowInsets paddingLeftSystemWindowInsets paddingRightSystemWindowInsets
@@ -4643,6 +4682,7 @@ styleable ViewPager2 android_orientation
 styleable ViewStubCompat android_id android_layout android_inflatedId
 styleable ViewTransition android_id SharedValue SharedValueId clearsTag duration ifTagNotSet ifTagSet motionInterpolator motionTarget onStateTransition pathMotionArc setsTag transitionDisable upDuration viewTransitionMode
 styleable include constraintSet
+xml network_security_confi
 xml standalone_badge
 xml standalone_badge_gravity_bottom_end
 xml standalone_badge_gravity_bottom_start

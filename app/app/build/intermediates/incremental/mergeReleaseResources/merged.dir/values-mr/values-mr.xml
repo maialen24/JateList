@@ -55,6 +55,7 @@
     <string name="common_signin_button_text_long">Google सह साइन इन करा</string>
     <string name="error_icon_content_description">एरर</string>
     <string name="exposed_dropdown_menu_content_description">ड्रॉपडाउन मेनू दाखवा</string>
+    <string msgid="4133737464567140336" name="fcm_fallback_notification_channel_label">"मिश्र"</string>
     <string name="icon_content_description">डायलॉग आयकन</string>
     <string name="item_view_role_description">टॅब</string>
     <string name="material_clock_toggle_content_description">AM किंवा PM निवडा</string>

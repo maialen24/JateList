@@ -55,6 +55,7 @@
     <string name="common_signin_button_text_long">Google ಮೂಲಕ ಸೈನ್ ಇನ್ ಮಾಡಿ</string>
     <string name="error_icon_content_description">ದೋಷ</string>
     <string name="exposed_dropdown_menu_content_description">ಡ್ರಾಪ್‌ಡೌನ್ ಮೆನು ತೋರಿಸಿ</string>
+    <string msgid="4133737464567140336" name="fcm_fallback_notification_channel_label">"ಇತರೆ"</string>
     <string name="icon_content_description">ಡೈಲಾಗ್ ಐಕಾನ್</string>
     <string name="item_view_role_description">ಟ್ಯಾಬ್</string>
     <string name="material_clock_toggle_content_description">ಬೆಳಿಗ್ಗೆ ಅಥವಾ ಮಧ್ಯಾಹ್ನ ಆಯ್ಕೆಮಾಡಿ</string>

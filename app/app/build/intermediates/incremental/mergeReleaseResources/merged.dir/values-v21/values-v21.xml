@@ -417,6 +417,14 @@
         <item name="android:textColor">@color/androidx_core_secondary_text_default_material_light</item>
         <item name="android:textSize">@dimen/notification_action_text_size</item>
     </style>
+    <style name="Widget.JateList.AppWidget.Container" parent="android:Widget">
+        <item name="android:padding">?attr/appWidgetPadding</item>
+        <item name="android:background">@drawable/app_widget_background</item>
+    </style>
+    <style name="Widget.JateList.AppWidget.InnerView" parent="android:Widget">
+        <item name="android:padding">?attr/appWidgetPadding</item>
+        <item name="android:background">@drawable/app_widget_inner_view_background</item>
+    </style>
     <style name="Widget.Material3.TabLayout" parent="Base.Widget.Material3.TabLayout">
     <item name="android:background">@drawable/m3_tabs_background</item>
   </style>

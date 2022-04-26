@@ -2,12 +2,17 @@
 <resources xmlns:ns1="http://schemas.android.com/tools">
     <color name="black">#FF000000</color>
     <color name="erase_background">#3DDC84</color>
+    <color name="light_blue_200">#FF81D4FA</color>
+    <color name="light_blue_50">#FFE1F5FE</color>
+    <color name="light_blue_600">#FF039BE5</color>
+    <color name="light_blue_900">#FF01579B</color>
     <color name="purple_200">#FFBB86FC</color>
     <color name="purple_500">#FF6200EE</color>
     <color name="purple_700">#FF3700B3</color>
     <color name="teal_200">#FF03DAC5</color>
     <color name="teal_700">#FF018786</color>
     <color name="white">#FFFFFFFF</color>
+    <dimen name="widget_margin">0dp</dimen>
     <string name="No">No</string>
     <string name="about">Info</string>
     <string name="app_name">JateList</string>
@@ -15,9 +20,16 @@
     <string name="cancel">Cancelar</string>
     <string name="comments">Comentarios</string>
     <string name="crear">Crear</string>
+    <string name="default_web_client_id" translatable="false">881242448804-q3h47fob4tkgohlr81gjki4t8391mfn8.apps.googleusercontent.com</string>
     <string name="editButton">Editar</string>
     <string name="español">Castellano</string>
     <string name="euskera">Euskera</string>
+    <string name="fotomssg">Cargar imagen</string>
+    <string name="gcm_defaultSenderId" translatable="false">881242448804</string>
+    <string name="google_api_key" translatable="false">AIzaSyDqWX5cXDlTCsoVo-DZVTxP3ya7QCXU-y8</string>
+    <string name="google_app_id" translatable="false">1:881242448804:android:df91c48a19dfe0fe309731</string>
+    <string name="google_crash_reporting_api_key" translatable="false">AIzaSyDqWX5cXDlTCsoVo-DZVTxP3ya7QCXU-y8</string>
+    <string name="google_storage_bucket" translatable="false">jatelist-6a7e4.appspot.com</string>
     <string name="infoText">JateList es una aplicación creada para poder guardar tus restaurantes favoritos o incluso los que no lo son tanto. Te permite guardar un registro de los restaurantes que has estado con su informacion y tu valoracion. Así te será mas facil elegir y disfrutarás de tu comida como nunca! :)</string>
     <string name="ingles">Inglés</string>
     <string name="izena">Nombre</string>
@@ -27,14 +39,21 @@
     <string name="marcar">Marcar tlf</string>
     <string name="mode">Noche</string>
     <string name="modeText">Modo</string>
+    <string name="msg_subscribe_failed">Error suscripcion</string>
+    <string name="msg_subscribed">Te has suscrito a novedades</string>
+    <string name="msg_unsubscribe_failed">Desubscripcion fallida</string>
+    <string name="msg_unsubscribed">Desubscrito de novedades</string>
     <string name="password">contraseña</string>
     <string name="permisos">Permisos</string>
     <string name="phone">Teléfono: 123456789</string>
+    <string name="project_id" translatable="false">jatelist-6a7e4</string>
     <string name="remove_mssg">¿Estas seguro que deseas eliminar este restaurante?</string>
     <string name="salir">Salir</string>
     <string name="saveButton">Guardar</string>
+    <string name="selectPhoto">Seleccionar desde galeria</string>
     <string name="settings">Configuración</string>
     <string name="si">Si</string>
+    <string name="takePhoto" translatable="false">Sacar foto</string>
     <string name="toast">Nuevo restaurante añadido</string>
     <string name="toastOut">Desconectado</string>
     <string name="ubicacion">Ubicacion</string>
@@ -55,4 +74,30 @@
         <!-- Customize your theme here. -->
 
     </style>
+    <style name="Theme.JateList.AppWidgetContainer" parent="Theme.JateList.AppWidgetContainerParent">
+        <!-- Apply padding to avoid the content of the widget colliding with the rounded corners -->
+        <item name="appWidgetPadding">16dp</item>
+    </style>
+    <style name="Theme.JateList.AppWidgetContainerParent" parent="@android:style/Theme.DeviceDefault">
+        <!-- Radius of the outer bound of widgets to make the rounded corners -->
+        <item name="appWidgetRadius">16dp</item>
+        <!--
+        Radius of the inner view's bound of widgets to make the rounded corners.
+        It needs to be 8dp or less than the value of appWidgetRadius
+        -->
+        <item name="appWidgetInnerRadius">8dp</item>
+    </style>
+    <style name="Widget.JateList.AppWidget.Container" parent="android:Widget">
+        <item name="android:id">@android:id/background</item>
+        <item name="android:background">?android:attr/colorBackground</item>
+    </style>
+    <style name="Widget.JateList.AppWidget.InnerView" parent="android:Widget">
+        <item name="android:background">?android:attr/colorBackground</item>
+        <item name="android:textColor">?android:attr/textColorPrimary</item>
+    </style>
+    <declare-styleable name="AppWidgetAttrs">
+        <attr format="dimension" name="appWidgetPadding"/>
+        <attr format="dimension" name="appWidgetInnerRadius"/>
+        <attr format="dimension" name="appWidgetRadius"/>
+    </declare-styleable>
 </resources>

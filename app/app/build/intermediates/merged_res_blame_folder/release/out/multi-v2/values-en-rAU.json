@@ -4,7 +4,7 @@
             "outputFile": "C:\\Users\\maiar\\AndroidStudioProjects\\JateList\\app\\app\\build\\intermediates\\incremental\\mergeReleaseResources\\merged.dir\\values-en-rAU\\values-en-rAU.xml",
             "map": [
                 {
-                    "source": "C:\\Users\\maiar\\.gradle\\caches\\transforms-3\\ad9a15aaa3bb8620f5d652029ce06ef4\\transformed\\core-1.7.0\\res\\values-en-rAU\\values-en-rAU.xml",
+                    "source": "C:\\Users\\maiar\\.gradle\\caches\\transforms-3\\43c46355f7c47535f942739254c0e32d\\transformed\\core-1.7.0\\res\\values-en-rAU\\values-en-rAU.xml",
                     "from": {
                         "startLines": "2",
                         "startColumns": "4",
@@ -21,7 +21,7 @@
                     }
                 },
                 {
-                    "source": "C:\\Users\\maiar\\.gradle\\caches\\transforms-3\\296500a08abebf0ce7d4ff07d41dff75\\transformed\\appcompat-1.4.1\\res\\values-en-rAU\\values-en-rAU.xml",
+                    "source": "C:\\Users\\maiar\\.gradle\\caches\\transforms-3\\82f90a9af39b9c2a00a7e8cd9570ec89\\transformed\\appcompat-1.4.1\\res\\values-en-rAU\\values-en-rAU.xml",
                     "from": {
                         "startLines": "2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29",
                         "startColumns": "4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4",

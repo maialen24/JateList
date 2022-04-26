@@ -68,6 +68,10 @@
         "source": "C:\\Users\\maiar\\AndroidStudioProjects\\JateList\\app\\app\\src\\main\\res\\mipmap-mdpi\\erase.png"
     },
     {
+        "merged": "C:\\Users\\maiar\\AndroidStudioProjects\\JateList\\app\\app\\build\\intermediates\\merged_res\\release\\drawable-v21_app_widget_background.xml.flat",
+        "source": "C:\\Users\\maiar\\AndroidStudioProjects\\JateList\\app\\app\\src\\main\\res\\drawable-v21\\app_widget_background.xml"
+    },
+    {
         "merged": "C:\\Users\\maiar\\AndroidStudioProjects\\JateList\\app\\app\\build\\intermediates\\merged_res\\release\\mipmap-mdpi_erase_round.png.flat",
         "source": "C:\\Users\\maiar\\AndroidStudioProjects\\JateList\\app\\app\\src\\main\\res\\mipmap-mdpi\\erase_round.png"
     },
@@ -152,6 +156,10 @@
         "source": "C:\\Users\\maiar\\AndroidStudioProjects\\JateList\\app\\app\\src\\main\\res\\menu\\toolbar_menu.xml"
     },
     {
+        "merged": "C:\\Users\\maiar\\AndroidStudioProjects\\JateList\\app\\app\\build\\intermediates\\merged_res\\release\\xml_network_security_confi.xml.flat",
+        "source": "C:\\Users\\maiar\\AndroidStudioProjects\\JateList\\app\\app\\src\\main\\res\\xml\\network_security_confi.xml"
+    },
+    {
         "merged": "C:\\Users\\maiar\\AndroidStudioProjects\\JateList\\app\\app\\build\\intermediates\\merged_res\\release\\mipmap-hdpi_add.png.flat",
         "source": "C:\\Users\\maiar\\AndroidStudioProjects\\JateList\\app\\app\\src\\main\\res\\mipmap-hdpi\\add.png"
     },
@@ -190,6 +198,10 @@
     {
         "merged": "C:\\Users\\maiar\\AndroidStudioProjects\\JateList\\app\\app\\build\\intermediates\\merged_res\\release\\mipmap-hdpi_erase_foreground.png.flat",
         "source": "C:\\Users\\maiar\\AndroidStudioProjects\\JateList\\app\\app\\src\\main\\res\\mipmap-hdpi\\erase_foreground.png"
+    },
+    {
+        "merged": "C:\\Users\\maiar\\AndroidStudioProjects\\JateList\\app\\app\\build\\intermediates\\merged_res\\release\\drawable-v21_app_widget_inner_view_background.xml.flat",
+        "source": "C:\\Users\\maiar\\AndroidStudioProjects\\JateList\\app\\app\\src\\main\\res\\drawable-v21\\app_widget_inner_view_background.xml"
     },
     {
         "merged": "C:\\Users\\maiar\\AndroidStudioProjects\\JateList\\app\\app\\build\\intermediates\\merged_res\\release\\mipmap-xhdpi_ic_launcher_foreground.png.flat",
@@ -240,6 +252,10 @@
         "source": "C:\\Users\\maiar\\AndroidStudioProjects\\JateList\\app\\app\\src\\main\\res\\mipmap-xhdpi\\ic_launcher_round.webp"
     },
     {
+        "merged": "C:\\Users\\maiar\\AndroidStudioProjects\\JateList\\app\\app\\build\\intermediates\\merged_res\\release\\drawable-nodpi_example_appwidget_preview.png.flat",
+        "source": "C:\\Users\\maiar\\AndroidStudioProjects\\JateList\\app\\app\\src\\main\\res\\drawable-nodpi\\example_appwidget_preview.png"
+    },
+    {
         "merged": "C:\\Users\\maiar\\AndroidStudioProjects\\JateList\\app\\app\\build\\intermediates\\merged_res\\release\\drawable_ic_launcher_background.xml.flat",
         "source": "C:\\Users\\maiar\\AndroidStudioProjects\\JateList\\app\\app\\src\\main\\res\\drawable\\ic_launcher_background.xml"
     },
@@ -252,6 +268,10 @@
         "source": "C:\\Users\\maiar\\AndroidStudioProjects\\JateList\\app\\app\\src\\main\\res\\layout-land\\activity_main.xml"
     },
     {
+        "merged": "C:\\Users\\maiar\\AndroidStudioProjects\\JateList\\app\\app\\build\\intermediates\\merged_res\\release\\layout_proba.xml.flat",
+        "source": "C:\\Users\\maiar\\AndroidStudioProjects\\JateList\\app\\app\\src\\main\\res\\layout\\proba.xml"
+    },
+    {
         "merged": "C:\\Users\\maiar\\AndroidStudioProjects\\JateList\\app\\app\\build\\intermediates\\merged_res\\release\\mipmap-xhdpi_ic_launcher.webp.flat",
         "source": "C:\\Users\\maiar\\AndroidStudioProjects\\JateList\\app\\app\\src\\main\\res\\mipmap-xhdpi\\ic_launcher.webp"
     },
@@ -262,5 +282,9 @@
     {
         "merged": "C:\\Users\\maiar\\AndroidStudioProjects\\JateList\\app\\app\\build\\intermediates\\merged_res\\release\\layout-land_activity_edit.xml.flat",
         "source": "C:\\Users\\maiar\\AndroidStudioProjects\\JateList\\app\\app\\src\\main\\res\\layout-land\\activity_edit.xml"
+    },
+    {
+        "merged": "C:\\Users\\maiar\\AndroidStudioProjects\\JateList\\app\\app\\build\\intermediates\\merged_res\\release\\layout_item_jatetxeinfo.xml.flat",
+        "source": "C:\\Users\\maiar\\AndroidStudioProjects\\JateList\\app\\app\\src\\main\\res\\layout\\item_jatetxeinfo.xml"
     }
 ]
